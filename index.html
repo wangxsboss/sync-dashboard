@@ -8,7 +8,7 @@
 <title>同步看板 Sync Dashboard</title>
 <style>
   :root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--ink:#1f2329;--ink2:#5c6672;
-        --ink3:#8f97a3;--ok:#12b76a;}
+        --ink3:#8f97a3;--ok:#12b76a;--warn:#f79009;--link:#2f6bff;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--ink);
        font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
@@ -20,15 +20,15 @@
   .sub{color:var(--ink2);font-size:13px;margin-top:2px;}
   .stamp{color:var(--ink3);font-size:12px;font-variant-numeric:tabular-nums;}
 
-  .tabs{display:flex;background:#eceef2;border-radius:10px;padding:4px;margin-bottom:16px;}
+  .tabs{display:flex;background:#eceef2;border-radius:10px;padding:4px;margin-bottom:16px;gap:2px;}
   .tabs button{
     flex:1;border:0;background:transparent;color:var(--ink2);
-    font-size:14px;font-weight:600;padding:9px 12px;border-radius:8px;
-    cursor:pointer;transition:all .16s ease;font-family:inherit;
+    font-size:13.5px;font-weight:600;padding:9px 6px;border-radius:8px;
+    cursor:pointer;transition:all .16s ease;font-family:inherit;white-space:nowrap;
   }
   .tabs button:hover{color:var(--ink);}
   .tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,24,40,.10);}
-  .tabs .n{font-weight:400;color:var(--ink3);font-size:12px;margin-left:5px;}
+  .tabs .n{font-weight:400;color:var(--ink3);font-size:11px;margin-left:4px;}
 
   .panel{display:none;}
   .panel.on{display:block;}
@@ -46,6 +46,27 @@
   .v.small{font-size:13px;font-weight:500;}
   .note{margin-top:10px;}
 
+  .svhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+          margin:22px 4px 10px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .svhead:first-child{margin-top:0;}
+  .svname{font-size:15px;font-weight:600;}
+  .svip{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--ink2);}
+  .svspec{font-size:12px;color:var(--ink3);}
+  .svcount{margin-left:auto;font-size:12px;color:var(--ink3);}
+
+  .site{padding:14px 16px;}
+  .sname{font-weight:600;font-size:15px;}
+  .tag{font-size:11px;padding:1px 8px;border-radius:20px;border:1px solid;}
+  .tag.ok{background:#ecfdf3;color:#067647;border-color:#d1fadf;}
+  .tag.warn{background:#fffaeb;color:#b54708;border-color:#fedf89;}
+  .raw{margin-top:4px;}
+  .func{margin-top:8px;font-size:13.5px;color:var(--ink);}
+  .links{margin-top:8px;font-size:12.5px;word-break:break-all;}
+  .u{color:var(--link);text-decoration:none;}
+  .u:hover{text-decoration:underline;}
+  .muted{color:var(--ink3);}
+  .sz{font-weight:600;font-variant-numeric:tabular-nums;}
+
   footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);
          color:var(--ink3);font-size:12px;display:flex;justify-content:space-between;
          gap:12px;flex-wrap:wrap;}
@@ -56,14 +77,15 @@
   <header>
     <div>
       <h1>同步看板</h1>
-      <div class="sub">仓库同步状态</div>
+      <div class="sub">仓库同步 · 服务器站点</div>
     </div>
-    <div class="stamp">更新于 2026-11-01 18:56</div>
+    <div class="stamp">更新于 2026-11-01 19:02</div>
   </header>
 
   <div class="tabs">
     <button id="tab-gitcode" class="on" onclick="sw('gitcode')">GitCode<span class="n">3</span></button>
     <button id="tab-github" onclick="sw('github')">GitHub<span class="n">2</span></button>
+    <button id="tab-servers" onclick="sw('servers')">服务器<span class="n">10</span></button>
   </div>
 
   <div id="panel-gitcode" class="panel on">
@@ -101,10 +123,10 @@
         <span class="name">sync-dashboard</span>
       </div>
       <div class="meta">
-        <div><div class="k">提交</div><div class="v">4</div></div>
-        <div><div class="k">文件</div><div class="v">2</div></div>
-        <div><div class="k">体积</div><div class="v">13.3 KB</div></div>
-        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:42</div></div>
+        <div><div class="k">提交</div><div class="v">5</div></div>
+        <div><div class="k">文件</div><div class="v">3</div></div>
+        <div><div class="k">体积</div><div class="v">18.4 KB</div></div>
+        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:56</div></div>
       </div>
       <div class="k note">本看板页面的镜像</div>
     </section></div>
@@ -129,27 +151,152 @@
         <span class="name">sync-dashboard</span>
       </div>
       <div class="meta">
-        <div><div class="k">提交</div><div class="v">4</div></div>
-        <div><div class="k">文件</div><div class="v">2</div></div>
-        <div><div class="k">体积</div><div class="v">13.3 KB</div></div>
-        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:42</div></div>
+        <div><div class="k">提交</div><div class="v">5</div></div>
+        <div><div class="k">文件</div><div class="v">3</div></div>
+        <div><div class="k">体积</div><div class="v">18.4 KB</div></div>
+        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:56</div></div>
       </div>
       <div class="k note">本看板页面（Pages 托管）</div>
+    </section></div>
+  <div id="panel-servers" class="panel">
+    <div class="svhead">
+      <span class="svname">服务器 A</span>
+      <span class="svip">120.220.73.186</span>
+      <span class="svspec">2核 2G · 29G 磁盘</span>
+      <span class="svcount">7 个站点</span>
+    </div>
+    
+    <section class="card site">
+      <div class="row">
+        <span class="sname">闲鱼管家</span>
+        <span class="tag ok">运行中</span>
+      </div>
+      <div class="k raw">原名：闲鱼工作台</div>
+      <div class="func">商品采集、上下架、改价，一站式操作面板</div>
+      <div class="links"><a class="u" href="http://120.220.73.186:20789" target="_blank" rel="noopener">http://120.220.73.186:20789</a></div>
+      <div class="k">占用 <b class="sz">177 MB</b></div>
+    </section>
+
+    <section class="card site">
+      <div class="row">
+        <span class="sname">账号切换台</span>
+        <span class="tag ok">运行中</span>
+      </div>
+      <div class="k raw">原名：WorkBuddy 账号切换</div>
+      <div class="func">6 个 WorkBuddy 账号的快速切换面板</div>
+      <div class="links"><a class="u" href="http://120.220.73.186:28095" target="_blank" rel="noopener">http://120.220.73.186:28095</a></div>
+      <div class="k">占用 <b class="sz">44 KB</b></div>
+    </section>
+
+    <section class="card site">
+      <div class="row">
+        <span class="sname">模型接口站</span>
+        <span class="tag ok">运行中</span>
+      </div>
+      <div class="k raw">原名：WorkBuddy2API 控制台</div>
+      <div class="func">把 WorkBuddy 账号池包装成 OpenAI 兼容接口</div>
+      <div class="links"><a class="u" href="http://120.220.73.186:28098" target="_blank" rel="noopener">http://120.220.73.186:28098</a></div>
+      <div class="k">占用 <b class="sz">12 MB</b></div>
+    </section>
+
+    <section class="card site">
+      <div class="row">
+        <span class="sname">采集中心</span>
+        <span class="tag ok">运行中</span>
+      </div>
+      <div class="k raw">原名：MediaCrawler</div>
+      <div class="func">多平台内容批量采集抓取工具</div>
+      <div class="links"><a class="u" href="http://120.220.73.186:28081" target="_blank" rel="noopener">http://120.220.73.186:28081</a></div>
+      <div class="k">占用 <b class="sz">2.0 GB</b></div>
+    </section>
+
+    <section class="card site">
+      <div class="row">
+        <span class="sname">订单中枢</span>
+        <span class="tag warn">仅内网</span>
+      </div>
+      <div class="k raw">原名：xianyu-admin 主系统</div>
+      <div class="func">订单、商品、任务调度一体的核心后台</div>
+      <div class="links"><a class="u" href="http://120.220.73.186:3000" target="_blank" rel="noopener">http://120.220.73.186:3000</a></div>
+      <div class="k">占用 <b class="sz">450 MB</b></div>
+    </section>
+
+    <section class="card site">
+      <div class="row">
+        <span class="sname">网络文件柜</span>
+        <span class="tag warn">仅内网</span>
+      </div>
+      <div class="k raw">原名：OpenList</div>
+      <div class="func">服务器文件在线浏览与下载</div>
+      <div class="links"><a class="u" href="http://120.220.73.186:5244" target="_blank" rel="noopener">http://120.220.73.186:5244</a></div>
+      <div class="k">占用 <b class="sz">150 MB</b></div>
+    </section>
+
+    <section class="card site">
+      <div class="row">
+        <span class="sname">无头浏览器</span>
+        <span class="tag ok">后台</span>
+      </div>
+      <div class="k raw">原名：Chrome</div>
+      <div class="func">自动化抓取用的浏览器运行环境</div>
+      <div class="links"><span class="u muted">仅内网，外网无法访问</span></div>
+      <div class="k">占用 <b class="sz">446 MB</b></div>
+    </section>
+
+    <div class="svhead">
+      <span class="svname">服务器 B</span>
+      <span class="svip">183.146.215.78</span>
+      <span class="svspec">1核 1G · 40G 磁盘</span>
+      <span class="svcount">3 个站点</span>
+    </div>
+    
+    <section class="card site">
+      <div class="row">
+        <span class="sname">免费模型网关</span>
+        <span class="tag ok">运行中</span>
+      </div>
+      <div class="k raw">原名：Our Free Model</div>
+      <div class="func">免费大模型的聚合、转发与用量统计</div>
+      <div class="links"><a class="u" href="http://183.146.215.78:18901" target="_blank" rel="noopener">http://183.146.215.78:18901</a></div>
+      <div class="k">占用 <b class="sz">69 MB</b></div>
+    </section>
+
+    <section class="card site">
+      <div class="row">
+        <span class="sname">自动下注器</span>
+        <span class="tag warn">仅内网</span>
+      </div>
+      <div class="k raw">原名：石头岛 bot</div>
+      <div class="func">石头岛平台定时自动下注脚本</div>
+      <div class="links"><span class="u muted">仅内网，外网无法访问</span></div>
+      <div class="k">占用 <b class="sz">2 MB</b></div>
+    </section>
+
+    <section class="card site">
+      <div class="row">
+        <span class="sname">服务器控制台</span>
+        <span class="tag warn">未启动</span>
+      </div>
+      <div class="k raw">原名：宝塔面板</div>
+      <div class="func">站点、数据库、文件的可视化运维面板</div>
+      <div class="links"><a class="u" href="http://183.146.215.78:27976/5f6413e9" target="_blank" rel="noopener">http://183.146.215.78:27976/5f6413e9</a></div>
+      <div class="k">占用 <b class="sz">—</b></div>
     </section></div>
 
   <footer>
     <span>自动同步：每小时执行一次</span>
-    <span>全部正常</span>
+    <span>站点数据采集于 2026-11-01 19:02</span>
   </footer>
 </div>
 
 <script>
+var TABS = ['gitcode','github','servers'];
 function sw(p){
-  var a = p === 'gitcode';
-  document.getElementById('panel-gitcode').classList.toggle('on', a);
-  document.getElementById('panel-github').classList.toggle('on', !a);
-  document.getElementById('tab-gitcode').classList.toggle('on', a);
-  document.getElementById('tab-github').classList.toggle('on', !a);
+  TABS.forEach(function(k){
+    var on = (k === p);
+    document.getElementById('panel-' + k).classList.toggle('on', on);
+    document.getElementById('tab-' + k).classList.toggle('on', on);
+  });
 }
 </script>
 </body>
