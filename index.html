@@ -5,315 +5,372 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="googlebot" content="noindex, nofollow">
-<title>同步看板 Sync Dashboard</title>
+<meta name="color-scheme" content="light">
+<title>同步台账 · Sync Ledger</title>
 <style>
-  :root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--ink:#1f2329;--ink2:#5c6672;
-        --ink3:#8f97a3;--ok:#12b76a;--warn:#f79009;--link:#2f6bff;}
+  :root{
+    --paper:#f6f3ec;
+    --paper:#oklch(96.8% 0.008 85);
+    --ink:#171614;
+    --ink:#oklch(22% 0.008 80);
+    --ink-2:#5a564d;
+    --ink-3:#918b7e;
+    --rule:#ddd6c8;
+    --rule-soft:#eae4d8;
+    --accent:#b23a1c;
+    --accent:#oklch(50% 0.14 35);
+    --ok:#1c6b4f;
+    --warn:#9a6a12;
+
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:36px; --s7:56px;
+
+    --sans:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,"Cascadia Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--ink);
-       font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-       font-size:14px;line-height:1.6;padding:24px 16px 48px;-webkit-font-smoothing:antialiased;}
-  .wrap{max-width:880px;margin:0 auto;}
-  header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-         flex-wrap:wrap;margin-bottom:16px;}
-  h1{font-size:20px;font-weight:600;letter-spacing:.3px;}
-  .sub{color:var(--ink2);font-size:13px;margin-top:2px;}
-  .stamp{color:var(--ink3);font-size:12px;font-variant-numeric:tabular-nums;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:14px;line-height:1.55;
+    padding:clamp(20px,4vw,56px) clamp(16px,4vw,40px) 72px;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .page{max-width:940px;margin:0 auto;}
 
-  .tabs{display:flex;background:#eceef2;border-radius:10px;padding:4px;margin-bottom:16px;gap:2px;}
+  /* ---------- 报头 ---------- */
+  header{
+    display:flex;align-items:flex-start;justify-content:space-between;
+    gap:var(--s5);flex-wrap:wrap;
+    padding-bottom:var(--s5);border-bottom:2px solid var(--ink);
+  }
+  .kicker{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:var(--s2);
+  }
+  h1{
+    font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-.02em;
+    line-height:1.1;
+  }
+  .lede{color:var(--ink-2);font-size:13px;margin-top:var(--s2);max-width:46ch;}
+  .stamp{
+    text-align:right;font-family:var(--mono);font-size:11px;color:var(--ink-3);
+    line-height:1.7;white-space:nowrap;
+  }
+  .stamp b{display:block;color:var(--ink);font-weight:600;font-size:12.5px;}
+
+  /* ---------- 标签页 ---------- */
+  .tabs{display:flex;gap:var(--s5);margin-top:var(--s5);border-bottom:1px solid var(--rule);}
   .tabs button{
-    flex:1;border:0;background:transparent;color:var(--ink2);
-    font-size:13.5px;font-weight:600;padding:9px 6px;border-radius:8px;
-    cursor:pointer;transition:all .16s ease;font-family:inherit;white-space:nowrap;
+    appearance:none;background:none;border:0;border-bottom:2px solid transparent;
+    font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.02em;
+    color:var(--ink-3);padding:0 0 10px;margin-bottom:-1px;cursor:pointer;
+    transition:color .18s cubic-bezier(.16,1,.3,1),border-color .18s cubic-bezier(.16,1,.3,1);
   }
-  .tabs button:hover{color:var(--ink);}
-  .tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,24,40,.10);}
-  .tabs .n{font-weight:400;color:var(--ink3);font-size:11px;margin-left:4px;}
-
-  .panel{display:none;}
-  .panel.on{display:block;}
-
-  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;
-        padding:16px 18px;margin-bottom:12px;}
-  .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .name{font-weight:600;font-size:15px;}
-  .dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--ok);
-       box-shadow:0 0 0 3px rgba(18,183,106,.14);}
-  .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
-        gap:12px;margin-top:14px;}
-  .k{color:var(--ink3);font-size:12px;}
-  .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;}
-  .v.small{font-size:13px;font-weight:500;}
-  .note{margin-top:10px;}
-
-  .svhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
-          margin:22px 4px 10px;padding-bottom:8px;border-bottom:1px solid var(--line);}
-  .svhead:first-child{margin-top:0;}
-  .svname{font-size:15px;font-weight:600;}
-  .svip{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--ink2);}
-  .svspec{font-size:12px;color:var(--ink3);}
-  .svcount{margin-left:auto;font-size:12px;color:var(--ink3);}
-  .svcols{display:grid;grid-template-columns:132px minmax(150px,1fr) minmax(170px,220px) 72px;
-          gap:14px;padding:0 14px 6px;font-size:11px;color:var(--ink3);letter-spacing:.3px;}
-  .svcols .r{text-align:right;}
-  @media (max-width:640px){ .svcols{display:none;} }
-
-  .site{display:grid;grid-template-columns:132px minmax(150px,1fr) minmax(170px,220px) 72px;
-        gap:10px 14px;align-items:center;background:var(--card);border:1px solid var(--line);
-        border-radius:9px;padding:11px 14px;margin-bottom:8px;transition:border-color .15s,box-shadow .15s;}
-  .site:hover{border-color:#d5dae2;box-shadow:0 2px 8px rgba(16,24,40,.06);}
-  .c1{display:flex;flex-direction:column;gap:2px;min-width:0;}
-  .sname{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .raw{font-size:11px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .tag{align-self:flex-start;font-size:10.5px;padding:0 7px;border-radius:20px;border:1px solid;line-height:1.7;}
-  .tag.ok{background:#ecfdf3;color:#067647;border-color:#d1fadf;}
-  .tag.warn{background:#fffaeb;color:#b54708;border-color:#fedf89;}
-  .c2.func{font-size:13px;color:var(--ink2);min-width:0;}
-  .c3.links{font-size:12px;min-width:0;word-break:break-all;}
-  .u{color:var(--link);text-decoration:none;}
-  .u:hover{text-decoration:underline;}
-  .muted{color:var(--ink3);}
-  .c4.sz{font-size:12.5px;font-weight:600;color:var(--ink2);
-         font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
-
-  @media (max-width:640px){
-    .site{grid-template-columns:1fr;gap:5px;padding:12px 14px;}
-    .c4.sz{text-align:left;}
-    .svcount{margin-left:0;}
+  .tabs button:hover{color:var(--ink-2);}
+  .tabs button.on{color:var(--ink);border-bottom-color:var(--accent);}
+  .tabs button span{
+    font-family:var(--mono);font-size:10.5px;font-weight:500;color:var(--ink-3);
+    margin-left:5px;vertical-align:top;
   }
 
-  footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);
-         color:var(--ink3);font-size:12px;display:flex;justify-content:space-between;
-         gap:12px;flex-wrap:wrap;}
+  /* ---------- 面板 ---------- */
+  .panel{display:none;padding-top:var(--s2);}
+  .panel.on{display:block;animation:fade .28s cubic-bezier(.16,1,.3,1) both;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  /* ---------- 仓库行 ---------- */
+  .row{
+    display:flex;align-items:center;justify-content:space-between;gap:var(--s5);
+    padding:var(--s4) 0;border-bottom:1px solid var(--rule-soft);flex-wrap:wrap;
+  }
+  .row:last-child{border-bottom:0;}
+  .lead h2{font-size:16px;font-weight:650;letter-spacing:-.01em;}
+  .lead p{font-size:12.5px;color:var(--ink-3);margin-top:2px;}
+  .figs{display:flex;gap:clamp(18px,3vw,34px);}
+  .figs div{text-align:right;}
+  .figs dt{
+    font-size:10px;letter-spacing:.11em;color:var(--ink-3);
+    text-transform:uppercase;margin-bottom:1px;
+  }
+  .figs dd{
+    font-family:var(--mono);font-size:16px;font-weight:600;
+    font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+  }
+  .figs dd s{text-decoration:none;font-size:11px;color:var(--ink-3);margin-left:3px;font-weight:500;}
+  .figs dd.tm{font-size:12.5px;font-weight:500;color:var(--ink-2);}
+
+  /* ---------- 服务器分组 ---------- */
+  .group{margin-top:var(--s7);}
+  .group:first-child{margin-top:var(--s5);}
+  .ghead{
+    display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap;
+    padding-bottom:var(--s2);border-bottom:1px solid var(--ink);
+  }
+  .ghead h2{font-size:15px;font-weight:700;letter-spacing:.02em;}
+  .ghead code{
+    font-family:var(--mono);font-size:12px;color:var(--ink-2);
+    background:none;padding:0;
+  }
+  .ghead .spec{font-size:11.5px;color:var(--ink-3);}
+  .ghead .cnt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);}
+
+  .cols{
+    display:grid;grid-template-columns:148px minmax(140px,1fr) 196px 62px;
+    gap:var(--s4);padding:var(--s2) var(--s2) var(--s1);
+    font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);
+  }
+  .cols span:last-child{text-align:right;}
+
+  .site{
+    display:grid;grid-template-columns:148px minmax(140px,1fr) 196px 62px;
+    gap:var(--s4);align-items:center;
+    padding:11px var(--s2);border-bottom:1px solid var(--rule-soft);
+    border-left:2px solid transparent;
+    transition:background .18s cubic-bezier(.16,1,.3,1),border-color .18s cubic-bezier(.16,1,.3,1);
+  }
+  .site:hover{background:rgba(178,58,28,.035);border-left-color:var(--accent);}
+  .site:last-child{border-bottom:0;}
+
+  .s1{display:flex;flex-direction:column;gap:1px;min-width:0;}
+  .s1 b{font-size:13.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .s1 i{
+    font-style:normal;font-size:10px;letter-spacing:.06em;
+    padding:0;line-height:1.5;
+  }
+  .s1 i.ok{color:var(--ok);}
+  .s1 i.warn{color:var(--warn);}
+  .s1 i.idle{color:var(--ink-3);}
+  .s1 em{
+    font-style:normal;font-size:10.5px;color:var(--ink-3);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .s2{font-size:12.5px;color:var(--ink-2);min-width:0;}
+  .s3{font-size:11.5px;min-width:0;word-break:break-all;}
+  .s3 a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--rule);}
+  .s3 a:hover{color:var(--accent);border-bottom-color:var(--accent);}
+  .nil{color:var(--ink-3);font-style:italic;}
+  .s4{
+    font-family:var(--mono);font-size:12px;color:var(--ink-2);
+    text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+
+  /* ---------- 页脚 ---------- */
+  footer{
+    display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;
+    margin-top:var(--s7);padding-top:var(--s3);border-top:1px solid var(--rule);
+    font-size:11.5px;color:var(--ink-3);font-family:var(--mono);
+  }
+
+  @media (max-width:680px){
+    header{gap:var(--s3);}
+    .stamp{text-align:left;white-space:normal;}
+    .tabs{gap:var(--s4);}
+    .row{flex-direction:column;align-items:flex-start;gap:var(--s3);}
+    .figs{width:100%;justify-content:space-between;gap:var(--s2);}
+    .figs div{text-align:left;}
+    .cols{display:none;}
+    .site{grid-template-columns:1fr;gap:3px;padding:13px var(--s2);border-left:0;
+          border-bottom:1px solid var(--rule);}
+    .site:hover{border-left:0;}
+    .s4{text-align:left;}
+    .s1{flex-direction:row;align-items:baseline;gap:var(--s2);flex-wrap:wrap;}
+    .s1 em{flex-basis:100%;}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="page">
+
   <header>
     <div>
-      <h1>同步看板</h1>
-      <div class="sub">仓库同步 · 服务器站点</div>
+      <div class="kicker">Sync Ledger</div>
+      <h1>同步台账</h1>
+      <p class="lede">对话归档、笔记镜像与两台服务器站点的运行记录。</p>
     </div>
-    <div class="stamp">更新于 2026-11-01 19:19</div>
+    <div class="stamp">
+      最近更新
+      <b>2026-11-01 19:30</b>
+      每 60 分钟自动同步
+    </div>
   </header>
 
-  <div class="tabs">
-    <button id="tab-gitcode" class="on" onclick="sw('gitcode')">GitCode<span class="n">3</span></button>
-    <button id="tab-github" onclick="sw('github')">GitHub<span class="n">2</span></button>
-    <button id="tab-servers" onclick="sw('servers')">服务器<span class="n">10</span></button>
-  </div>
+  <nav class="tabs">
+    <button id="tab-gitcode" class="on" onclick="sw('gitcode')">GitCode<span>3</span></button>
+    <button id="tab-github" onclick="sw('github')">GitHub<span>2</span></button>
+    <button id="tab-servers" onclick="sw('servers')">服务器<span>10</span></button>
+  </nav>
 
-  <div id="panel-gitcode" class="panel on">
-    <section class="card">
-      <div class="row">
-        <span class="dot ok"></span>
-        <span class="name">workbuddy-archive</span>
-      </div>
-      <div class="meta">
-        <div><div class="k">提交</div><div class="v">20</div></div>
-        <div><div class="k">文件</div><div class="v">173</div></div>
-        <div><div class="k">体积</div><div class="v">155.3 MB</div></div>
-        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:49</div></div>
-      </div>
-      <div class="k note">WorkBuddy 全部对话归档</div>
+  <main>
+    <section id="panel-gitcode" class="panel on">
+      <article class="row">
+        <div class="lead">
+          <h2>workbuddy-archive</h2>
+          <p>WorkBuddy 全部对话归档</p>
+        </div>
+        <dl class="figs">
+          <div><dt>提交</dt><dd>20</dd></div>
+          <div><dt>文件</dt><dd>173</dd></div>
+          <div><dt>体积</dt><dd>155.3<s>MB</s></dd></div>
+          <div><dt>最后同步</dt><dd class="tm">11-01 18:49</dd></div>
+        </dl>
+      </article>
+
+      <article class="row">
+        <div class="lead">
+          <h2>obsidian-notes</h2>
+          <p>Obsidian 核心笔记镜像</p>
+        </div>
+        <dl class="figs">
+          <div><dt>提交</dt><dd>3</dd></div>
+          <div><dt>文件</dt><dd>26</dd></div>
+          <div><dt>体积</dt><dd>1.1<s>MB</s></dd></div>
+          <div><dt>最后同步</dt><dd class="tm">11-01 17:48</dd></div>
+        </dl>
+      </article>
+
+      <article class="row">
+        <div class="lead">
+          <h2>sync-dashboard</h2>
+          <p>本页面的源码镜像</p>
+        </div>
+        <dl class="figs">
+          <div><dt>提交</dt><dd>7</dd></div>
+          <div><dt>文件</dt><dd>3</dd></div>
+          <div><dt>体积</dt><dd>29.6<s>KB</s></dd></div>
+          <div><dt>最后同步</dt><dd class="tm">11-01 19:20</dd></div>
+        </dl>
+      </article>
     </section>
+    <section id="panel-github" class="panel">
+      <article class="row">
+        <div class="lead">
+          <h2>workbuddy-archive</h2>
+          <p>海外第二份，防单点失效</p>
+        </div>
+        <dl class="figs">
+          <div><dt>提交</dt><dd>20</dd></div>
+          <div><dt>文件</dt><dd>173</dd></div>
+          <div><dt>体积</dt><dd>155.3<s>MB</s></dd></div>
+          <div><dt>最后同步</dt><dd class="tm">11-01 18:49</dd></div>
+        </dl>
+      </article>
 
-    <section class="card">
-      <div class="row">
-        <span class="dot ok"></span>
-        <span class="name">obsidian-notes</span>
-      </div>
-      <div class="meta">
-        <div><div class="k">提交</div><div class="v">3</div></div>
-        <div><div class="k">文件</div><div class="v">26</div></div>
-        <div><div class="k">体积</div><div class="v">1.1 MB</div></div>
-        <div><div class="k">最后同步</div><div class="v small">2026-11-01 17:48</div></div>
-      </div>
-      <div class="k note">Obsidian 核心笔记镜像</div>
+      <article class="row">
+        <div class="lead">
+          <h2>sync-dashboard</h2>
+          <p>本页面托管源（GitHub Pages）</p>
+        </div>
+        <dl class="figs">
+          <div><dt>提交</dt><dd>7</dd></div>
+          <div><dt>文件</dt><dd>3</dd></div>
+          <div><dt>体积</dt><dd>29.6<s>KB</s></dd></div>
+          <div><dt>最后同步</dt><dd class="tm">11-01 19:20</dd></div>
+        </dl>
+      </article>
     </section>
+    <section id="panel-servers" class="panel">
+      <section class="group">
+        <div class="ghead">
+          <h2>服务器 A</h2>
+          <code>120.220.73.186</code>
+          <span class="spec">2 核 2G · 29G</span>
+          <span class="cnt">7 个站点</span>
+        </div>
+        <div class="cols"><span>站点</span><span>功能</span><span>网址</span><span>占用</span></div>
+        
+      <div class="site">
+        <div class="s1"><b>闲鱼管家</b><i class="ok">运行中</i><em>闲鱼工作台</em></div>
+        <div class="s2">商品采集、上下架、改价，一站式操作面板</div>
+        <div class="s3"><a href="http://120.220.73.186:20789" target="_blank" rel="noopener">http://120.220.73.186:20789</a></div>
+        <div class="s4">177 MB</div>
+      </div>
+      <div class="site">
+        <div class="s1"><b>账号切换台</b><i class="ok">运行中</i><em>WorkBuddy 账号切换</em></div>
+        <div class="s2">六个 WorkBuddy 账号的快速切换</div>
+        <div class="s3"><a href="http://120.220.73.186:28095" target="_blank" rel="noopener">http://120.220.73.186:28095</a></div>
+        <div class="s4">44 KB</div>
+      </div>
+      <div class="site">
+        <div class="s1"><b>模型接口站</b><i class="ok">运行中</i><em>WorkBuddy2API</em></div>
+        <div class="s2">账号池包装成 OpenAI 兼容接口</div>
+        <div class="s3"><a href="http://120.220.73.186:28098" target="_blank" rel="noopener">http://120.220.73.186:28098</a></div>
+        <div class="s4">12 MB</div>
+      </div>
+      <div class="site">
+        <div class="s1"><b>采集中心</b><i class="ok">运行中</i><em>MediaCrawler</em></div>
+        <div class="s2">多平台内容批量采集抓取</div>
+        <div class="s3"><a href="http://120.220.73.186:28081" target="_blank" rel="noopener">http://120.220.73.186:28081</a></div>
+        <div class="s4">2.0 GB</div>
+      </div>
+      <div class="site">
+        <div class="s1"><b>订单中枢</b><i class="warn">仅内网</i><em>xianyu-admin</em></div>
+        <div class="s2">订单、商品、任务调度的核心后台</div>
+        <div class="s3"><a href="http://120.220.73.186:3000" target="_blank" rel="noopener">http://120.220.73.186:3000</a></div>
+        <div class="s4">450 MB</div>
+      </div>
+      <div class="site">
+        <div class="s1"><b>网络文件柜</b><i class="warn">仅内网</i><em>OpenList</em></div>
+        <div class="s2">服务器文件在线浏览与下载</div>
+        <div class="s3"><a href="http://120.220.73.186:5244" target="_blank" rel="noopener">http://120.220.73.186:5244</a></div>
+        <div class="s4">150 MB</div>
+      </div>
+      <div class="site">
+        <div class="s1"><b>无头浏览器</b><i class="idle">后台</i><em>Chrome</em></div>
+        <div class="s2">自动化抓取用的浏览器环境</div>
+        <div class="s3"><span class="nil">仅内网</span></div>
+        <div class="s4">446 MB</div>
+      </div>
+      </section>
 
-    <section class="card">
-      <div class="row">
-        <span class="dot ok"></span>
-        <span class="name">sync-dashboard</span>
+      <section class="group">
+        <div class="ghead">
+          <h2>服务器 B</h2>
+          <code>183.146.215.78</code>
+          <span class="spec">1 核 1G · 40G</span>
+          <span class="cnt">3 个站点</span>
+        </div>
+        <div class="cols"><span>站点</span><span>功能</span><span>网址</span><span>占用</span></div>
+        
+      <div class="site">
+        <div class="s1"><b>免费模型网关</b><i class="ok">运行中</i><em>Our Free Model</em></div>
+        <div class="s2">免费大模型聚合、转发与用量统计</div>
+        <div class="s3"><a href="http://183.146.215.78:18901" target="_blank" rel="noopener">http://183.146.215.78:18901</a></div>
+        <div class="s4">69 MB</div>
       </div>
-      <div class="meta">
-        <div><div class="k">提交</div><div class="v">6</div></div>
-        <div><div class="k">文件</div><div class="v">3</div></div>
-        <div><div class="k">体积</div><div class="v">26.2 KB</div></div>
-        <div><div class="k">最后同步</div><div class="v small">2026-11-01 19:03</div></div>
+      <div class="site">
+        <div class="s1"><b>自动下注器</b><i class="warn">仅内网</i><em>石头岛 bot</em></div>
+        <div class="s2">石头岛平台定时下注脚本</div>
+        <div class="s3"><span class="nil">仅内网</span></div>
+        <div class="s4">2 MB</div>
       </div>
-      <div class="k note">本看板页面的镜像</div>
-    </section></div>
-  <div id="panel-github" class="panel">
-    <section class="card">
-      <div class="row">
-        <span class="dot ok"></span>
-        <span class="name">workbuddy-archive</span>
+      <div class="site">
+        <div class="s1"><b>服务器控制台</b><i class="warn">未启动</i><em>宝塔面板</em></div>
+        <div class="s2">站点、数据库、文件的可视化运维</div>
+        <div class="s3"><a href="http://183.146.215.78:27976/5f6413e9" target="_blank" rel="noopener">http://183.146.215.78:27976/5f6413e9</a></div>
+        <div class="s4">—</div>
       </div>
-      <div class="meta">
-        <div><div class="k">提交</div><div class="v">20</div></div>
-        <div><div class="k">文件</div><div class="v">173</div></div>
-        <div><div class="k">体积</div><div class="v">155.3 MB</div></div>
-        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:49</div></div>
-      </div>
-      <div class="k note">同上，海外第二份</div>
+      </section>
     </section>
-
-    <section class="card">
-      <div class="row">
-        <span class="dot ok"></span>
-        <span class="name">sync-dashboard</span>
-      </div>
-      <div class="meta">
-        <div><div class="k">提交</div><div class="v">6</div></div>
-        <div><div class="k">文件</div><div class="v">3</div></div>
-        <div><div class="k">体积</div><div class="v">26.2 KB</div></div>
-        <div><div class="k">最后同步</div><div class="v small">2026-11-01 19:03</div></div>
-      </div>
-      <div class="k note">本看板页面（Pages 托管）</div>
-    </section></div>
-  <div id="panel-servers" class="panel">
-    <div class="svhead">
-      <span class="svname">服务器 A</span>
-      <span class="svip">120.220.73.186</span>
-      <span class="svspec">2核 2G · 29G 磁盘</span>
-      <span class="svcount">7 个站点</span>
-    </div>
-    <div class="svcols"><span>站点</span><span>功能</span><span>网址</span><span class="r">占用</span></div>
-    
-    <section class="site">
-      <div class="c1">
-        <span class="sname">闲鱼管家</span>
-        <span class="tag ok">运行中</span>
-        <span class="raw">闲鱼工作台</span>
-      </div>
-      <div class="c2 func">商品采集、上下架、改价，一站式操作面板</div>
-      <div class="c3 links"><a class="u" href="http://120.220.73.186:20789" target="_blank" rel="noopener">http://120.220.73.186:20789</a></div>
-      <div class="c4 sz">177 MB</div>
-    </section>
-
-    <section class="site">
-      <div class="c1">
-        <span class="sname">账号切换台</span>
-        <span class="tag ok">运行中</span>
-        <span class="raw">WorkBuddy 账号切换</span>
-      </div>
-      <div class="c2 func">6 个 WorkBuddy 账号的快速切换面板</div>
-      <div class="c3 links"><a class="u" href="http://120.220.73.186:28095" target="_blank" rel="noopener">http://120.220.73.186:28095</a></div>
-      <div class="c4 sz">44 KB</div>
-    </section>
-
-    <section class="site">
-      <div class="c1">
-        <span class="sname">模型接口站</span>
-        <span class="tag ok">运行中</span>
-        <span class="raw">WorkBuddy2API 控制台</span>
-      </div>
-      <div class="c2 func">把 WorkBuddy 账号池包装成 OpenAI 兼容接口</div>
-      <div class="c3 links"><a class="u" href="http://120.220.73.186:28098" target="_blank" rel="noopener">http://120.220.73.186:28098</a></div>
-      <div class="c4 sz">12 MB</div>
-    </section>
-
-    <section class="site">
-      <div class="c1">
-        <span class="sname">采集中心</span>
-        <span class="tag ok">运行中</span>
-        <span class="raw">MediaCrawler</span>
-      </div>
-      <div class="c2 func">多平台内容批量采集抓取工具</div>
-      <div class="c3 links"><a class="u" href="http://120.220.73.186:28081" target="_blank" rel="noopener">http://120.220.73.186:28081</a></div>
-      <div class="c4 sz">2.0 GB</div>
-    </section>
-
-    <section class="site">
-      <div class="c1">
-        <span class="sname">订单中枢</span>
-        <span class="tag warn">仅内网</span>
-        <span class="raw">xianyu-admin 主系统</span>
-      </div>
-      <div class="c2 func">订单、商品、任务调度一体的核心后台</div>
-      <div class="c3 links"><a class="u" href="http://120.220.73.186:3000" target="_blank" rel="noopener">http://120.220.73.186:3000</a></div>
-      <div class="c4 sz">450 MB</div>
-    </section>
-
-    <section class="site">
-      <div class="c1">
-        <span class="sname">网络文件柜</span>
-        <span class="tag warn">仅内网</span>
-        <span class="raw">OpenList</span>
-      </div>
-      <div class="c2 func">服务器文件在线浏览与下载</div>
-      <div class="c3 links"><a class="u" href="http://120.220.73.186:5244" target="_blank" rel="noopener">http://120.220.73.186:5244</a></div>
-      <div class="c4 sz">150 MB</div>
-    </section>
-
-    <section class="site">
-      <div class="c1">
-        <span class="sname">无头浏览器</span>
-        <span class="tag ok">后台</span>
-        <span class="raw">Chrome</span>
-      </div>
-      <div class="c2 func">自动化抓取用的浏览器运行环境</div>
-      <div class="c3 links"><span class="u muted">仅内网，外网无法访问</span></div>
-      <div class="c4 sz">446 MB</div>
-    </section>
-
-    <div class="svhead">
-      <span class="svname">服务器 B</span>
-      <span class="svip">183.146.215.78</span>
-      <span class="svspec">1核 1G · 40G 磁盘</span>
-      <span class="svcount">3 个站点</span>
-    </div>
-    <div class="svcols"><span>站点</span><span>功能</span><span>网址</span><span class="r">占用</span></div>
-    
-    <section class="site">
-      <div class="c1">
-        <span class="sname">免费模型网关</span>
-        <span class="tag ok">运行中</span>
-        <span class="raw">Our Free Model</span>
-      </div>
-      <div class="c2 func">免费大模型的聚合、转发与用量统计</div>
-      <div class="c3 links"><a class="u" href="http://183.146.215.78:18901" target="_blank" rel="noopener">http://183.146.215.78:18901</a></div>
-      <div class="c4 sz">69 MB</div>
-    </section>
-
-    <section class="site">
-      <div class="c1">
-        <span class="sname">自动下注器</span>
-        <span class="tag warn">仅内网</span>
-        <span class="raw">石头岛 bot</span>
-      </div>
-      <div class="c2 func">石头岛平台定时自动下注脚本</div>
-      <div class="c3 links"><span class="u muted">仅内网，外网无法访问</span></div>
-      <div class="c4 sz">2 MB</div>
-    </section>
-
-    <section class="site">
-      <div class="c1">
-        <span class="sname">服务器控制台</span>
-        <span class="tag warn">未启动</span>
-        <span class="raw">宝塔面板</span>
-      </div>
-      <div class="c2 func">站点、数据库、文件的可视化运维面板</div>
-      <div class="c3 links"><a class="u" href="http://183.146.215.78:27976/5f6413e9" target="_blank" rel="noopener">http://183.146.215.78:27976/5f6413e9</a></div>
-      <div class="c4 sz">—</div>
-    </section></div>
+  </main>
 
   <footer>
-    <span>自动同步：每小时执行一次</span>
-    <span>站点数据采集于 2026-11-01 19:19</span>
+    <span>GitCode · GitHub 双写</span>
+    <span>站点数据采集于 2026-11-01 19:30</span>
   </footer>
+
 </div>
 
 <script>
 var TABS = ['gitcode','github','servers'];
 function sw(p){
-  TABS.forEach(function(k){
-    var on = (k === p);
+  for (var i=0;i<TABS.length;i++){
+    var k = TABS[i], on = (k === p);
     document.getElementById('panel-' + k).classList.toggle('on', on);
     document.getElementById('tab-' + k).classList.toggle('on', on);
-  });
+  }
 }
 </script>
 </body>
