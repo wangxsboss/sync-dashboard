@@ -11,55 +11,74 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 REPOS = [
     {"path": r"D:\WorkBuddyArchive", "name": "workbuddy-archive", "platform": "gitcode",
-     "note": "WorkBuddy 全部对话归档", "group": "other", "repo": "https://gitcode.com/chaoshen59/workbuddy-archiveworkbuddy-archive"},
+     "title": "对话归档",
+     "note": "WorkBuddy 全部历史对话", "group": "other", "repo": "https://gitcode.com/chaoshen59/workbuddy-archiveworkbuddy-archive"},
     {"path": r"D:\ObsidianMirror", "name": "obsidian-notes", "platform": "gitcode",
-     "note": "Obsidian 核心笔记镜像", "group": "other", "repo": "https://gitcode.com/chaoshen59/obsidian-notes"},
+     "title": "笔记镜像",
+     "note": "Obsidian 核心笔记备份", "group": "other", "repo": "https://gitcode.com/chaoshen59/obsidian-notes"},
     {"path": r"D:\SyncDashboard", "name": "sync-dashboard", "platform": "gitcode",
-     "note": "本页面的源码镜像", "group": "other", "repo": "https://gitcode.com/chaoshen59/sync-dashboard"},
+     "title": "看板源码",
+     "note": "本页面自身的源码", "group": "other", "repo": "https://gitcode.com/chaoshen59/sync-dashboard"},
     {"path": r"D:\ServerMirror\server-a-code", "name": "server-a-code", "platform": "gitcode",
-     "note": "服务器 A 全部站点源码 + 数据库", "group": "other",
+     "title": "A 机整体备份",
+     "note": "旧版：服务器 A 全部站点打包", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/server-a-code"},
     {"path": r"D:\ServerMirror\server-b-code", "name": "server-b-code", "platform": "gitcode",
-     "note": "服务器 B 全部站点源码 + 数据库", "group": "other",
+     "title": "B 机整体备份",
+     "note": "旧版：服务器 B 全部站点打包", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/server-b-code"},
     {"path": r"D:\Repos\server-deploy", "name": "server-deploy", "platform": "gitcode",
-     "note": "总控：一条命令部署全部 8 个站点", "group": "other",
+     "title": "一键部署总控",
+     "note": "一条命令拉起全部 8 个站点", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/server-deploy"},
     {"path": r"D:\Repos\xianyu-system", "name": "xianyu-system", "platform": "gitcode",
-     "note": "闲鱼自动回复系统（订单中枢 + 闲鱼管家）· 73 表数据库",
+     "title": "闲鱼自动回复系统",
+     "note": "订单中枢 + 闲鱼管家 · 73 张表数据库",
      "repo": "https://gitcode.com/chaoshen59/xianyu-system"},
     {"path": r"D:\Repos\mediacrawler", "name": "mediacrawler", "platform": "gitcode",
-     "note": "采集中心 · 多平台内容采集 + WebUI",
+     "title": "采集中心",
+     "note": "多平台内容采集 + WebUI",
      "repo": "https://gitcode.com/chaoshen59/mediacrawler"},
     {"path": r"D:\Repos\wb2api", "name": "wb2api", "platform": "gitcode",
-     "note": "模型接口站 · 账号池调度 + OpenAI 兼容网关",
+     "title": "模型接口站",
+     "note": "账号池调度 + OpenAI 兼容网关",
      "repo": "https://gitcode.com/chaoshen59/wb2api"},
     {"path": r"D:\Repos\openlist", "name": "openlist", "platform": "gitcode",
-     "note": "网络文件柜 · 配置 + SQLite 数据",
+     "title": "网络文件柜",
+     "note": "配置 + SQLite 数据",
      "repo": "https://gitcode.com/chaoshen59/openlist"},
     {"path": r"D:\Repos\wb-switch", "name": "wb-switch", "platform": "gitcode",
-     "note": "账号切换台 · 多账号切换 WebUI",
+     "title": "账号切换台",
+     "note": "多账号切换 WebUI",
      "repo": "https://gitcode.com/chaoshen59/wb-switch"},
     {"path": r"D:\Repos\dsh-our-free-model", "name": "dsh-our-free-model", "platform": "gitcode",
-     "note": "免费模型网关 · 模型聚合与转发",
+     "title": "免费模型网关",
+     "note": "模型聚合与请求转发",
      "repo": "https://gitcode.com/chaoshen59/dsh-our-free-model"},
     {"path": r"D:\Repos\shitou-bot", "name": "shitou-bot", "platform": "gitcode",
-     "note": "自动下注器 · 石头岛下注脚本（无网页）", "group": "other",
+     "title": "自动下注器",
+     "note": "石头岛下注脚本 · 无网页", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/shitou-bot"},
     {"path": r"D:\Repos\odds", "name": "odds", "platform": "gitcode",
-     "note": "赔率统计 · 文件删除后从进程内存完整还原", "group": "other",
+     "title": "赔率统计",
+     "note": "文件误删后从进程内存完整还原", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/odds"},
     {"path": r"D:\WorkBuddyArchive", "name": "workbuddy-archive", "platform": "github",
-     "note": "海外第二份，防单点失效", "group": "other", "repo": "https://github.com/wangxsboss/workbuddy-archive"},
+     "title": "对话归档",
+     "note": "WorkBuddy 全部历史对话", "group": "other", "repo": "https://github.com/wangxsboss/workbuddy-archive"},
     {"path": r"D:\ObsidianMirror", "name": "obsidian-notes", "platform": "github",
-     "note": "笔记海外备份", "group": "other", "live": False, "repo": "https://github.com/wangxsboss/obsidian-notes"},
+     "title": "笔记镜像",
+     "note": "Obsidian 核心笔记备份", "group": "other", "live": False, "repo": "https://github.com/wangxsboss/obsidian-notes"},
     {"path": r"D:\SyncDashboard", "name": "sync-dashboard", "platform": "github",
-     "note": "本页面托管源（GitHub Pages）", "group": "other", "repo": "https://github.com/wangxsboss/sync-dashboard"},
+     "title": "看板源码",
+     "note": "本页面自身的源码", "group": "other", "repo": "https://github.com/wangxsboss/sync-dashboard"},
     {"path": r"D:\ServerMirror\server-a-code", "name": "server-a-code", "platform": "github",
-     "note": "A 站源码海外备份（待补推）", "group": "other", "live": False,
+     "title": "A 机整体备份",
+     "note": "旧版：服务器 A 全部站点打包", "group": "other", "live": False,
      "repo": "https://github.com/wangxsboss/server-a-code"},
     {"path": r"D:\ServerMirror\server-b-code", "name": "server-b-code", "platform": "github",
-     "note": "B 站源码海外备份（待补推）", "group": "other", "live": False,
+     "title": "B 机整体备份",
+     "note": "旧版：服务器 B 全部站点打包", "group": "other", "live": False,
      "repo": "https://github.com/wangxsboss/server-b-code"},
 ]
 
@@ -133,7 +152,7 @@ def collect(r):
     return {
         "name": r["name"], "platform": r["platform"], "note": r["note"],
         "repo": r.get("repo", ""), "live": r.get("live", True),
-        "group": r.get("group", "site"),
+        "group": r.get("group", "site"), "title": r.get("title", r["name"]),
         "commits": git(p, ["rev-list", "--count", "HEAD"]) or "0",
         "count": len([x for x in git(p, ["ls-files"]).splitlines() if x]),
         "num": num, "unit": unit,
@@ -180,11 +199,11 @@ def repo_card(d):
             <h3>%s</h3>
             %s
           </div>
-          <p class="desc">%s</p>
+          <p class="desc"><b class="rn">%s</b> · %s</p>
           <p class="meta">%s</p>
         </div>
         %s
-      </article>""" % (esc(d["name"]), pill, esc(d["note"]), meta, act)
+      </article>""" % (esc(d["title"]), pill, esc(d["name"]), esc(d["note"]), meta, act)
 
 
 def addr(u):
@@ -400,6 +419,8 @@ def build(items):
                 background:currentColor;margin-right:5px;vertical-align:1.5px;opacity:.9;}
 
   .desc{margin-top:9px;font-size:13.5px;color:var(--ink-3);line-height:1.65;}
+  .rn{font-family:var(--mono);font-weight:600;font-size:12.5px;color:var(--ink-2);
+      letter-spacing:-.1px;}
   .meta{margin-top:7px;font-size:12px;color:var(--ink-4);font-family:var(--mono);
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .meta i{font-style:normal;font-size:10.5px;margin-left:2px;}
