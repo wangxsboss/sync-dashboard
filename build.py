@@ -26,40 +26,30 @@ SERVERS = [
     {
         "host": "服务器 A", "ip": "120.220.73.186", "spec": "2 核 2G · 29G",
         "sites": [
-            {"name": "闲鱼管家", "desc": "商品抓取 · 自动上下架 · 批量改价 · 订单同步",
-             "func": "闲鱼买卖全流程的操作面板",
+            {"name": "闲鱼管家", "func": "闲鱼买卖全流程操作面板，负责商品抓取、自动上下架、批量改价与订单同步",
              "url": "http://120.220.73.186:20789", "size": "177 MB", "tag": "运行中"},
-            {"name": "账号切换台", "desc": "多账号切换 · 登录态管理 · Cookie 维护",
-             "func": "六个 WorkBuddy 账号的快速切换入口",
+            {"name": "账号切换台", "func": "六个 WorkBuddy 账号的快速切换入口，管理登录态与 Cookie 维护",
              "url": "http://120.220.73.186:28095", "size": "44 KB", "tag": "运行中"},
-            {"name": "模型接口站", "desc": "账号池调度 · OpenAI 兼容转发 · 用量统计",
-             "func": "把 WorkBuddy 账号池包装成标准接口",
+            {"name": "模型接口站", "func": "把 WorkBuddy 账号池包装成标准接口，负责账号调度、OpenAI 兼容转发与用量统计",
              "url": "http://120.220.73.186:28098", "size": "12 MB", "tag": "运行中"},
-            {"name": "采集中心", "desc": "多平台抓取 · 关键词采集 · 数据落库 · 结果导出",
-             "func": "内容数据批量采集与分析",
+            {"name": "采集中心", "func": "多平台内容采集工具，负责关键词抓取、数据落库与结果导出",
              "url": "http://120.220.73.186:28081", "size": "2.0 GB", "tag": "运行中"},
-            {"name": "订单中枢", "desc": "订单处理 · 商品管理 · 任务调度 · 发货记录",
-             "func": "整套业务的核心后台",
+            {"name": "订单中枢", "func": "整套业务的核心后台，负责订单处理、商品管理、任务调度与发货记录",
              "url": "http://120.220.73.186:3000", "size": "450 MB", "tag": "仅内网"},
-            {"name": "网络文件柜", "desc": "文件浏览 · 在线下载 · 目录挂载",
-             "func": "服务器文件的网盘式管理",
+            {"name": "网络文件柜", "func": "服务器文件的网盘式管理，支持在线浏览、下载与目录挂载",
              "url": "http://120.220.73.186:5244", "size": "150 MB", "tag": "仅内网"},
-            {"name": "无头浏览器", "desc": "登录鉴权 · 页面渲染 · 自动化点击",
-             "func": "自动化抓取的运行环境",
+            {"name": "无头浏览器", "func": "自动化抓取的运行环境，负责登录鉴权、页面渲染与模拟点击",
              "url": "", "size": "446 MB", "tag": "后台"},
         ],
     },
     {
         "host": "服务器 B", "ip": "183.146.215.78", "spec": "1 核 1G · 40G",
         "sites": [
-            {"name": "免费模型网关", "desc": "模型聚合 · 请求转发 · 签到保活 · 用量统计",
-             "func": "免费大模型的统一出口",
+            {"name": "免费模型网关", "func": "免费大模型的统一出口，负责模型聚合、请求转发、签到保活与用量统计",
              "url": "http://183.146.215.78:18901", "size": "69 MB", "tag": "运行中"},
-            {"name": "自动下注器", "desc": "定时下注 · 策略触发 · 状态轮询 · 结果回写",
-             "func": "石头岛自动下注与实时监控面板",
+            {"name": "自动下注器", "func": "石头岛平台的自动化脚本，负责定时下注、策略触发、状态轮询与结果回写",
              "url": "http://183.146.215.78:49655/", "size": "2 MB", "tag": "运行中"},
-            {"name": "服务器控制台", "desc": "站点管理 · 数据库 · 文件传输 · 证书签发",
-             "func": "可视化运维入口（服务未启动）",
+            {"name": "服务器控制台", "func": "可视化运维入口（服务未启动），涵盖站点、数据库、文件与证书管理",
              "url": "http://183.146.215.78:27976/5f6413e9", "size": "—", "tag": "未启动"},
         ],
     },
@@ -138,11 +128,11 @@ def site_row(s):
     cls = {"运行中": "ok", "仅内网": "warn", "未启动": "warn", "后台": "idle"}.get(s["tag"], "idle")
     return """
         <div class="site">
-          <div class="c1"><b>%s</b><span class="st %s">%s</span><em>%s</em></div>
+          <div class="c1"><b>%s</b><span class="st %s">%s</span></div>
           <div class="c2">%s</div>
           <div class="c3">%s</div>
           <div class="c4">%s</div>
-        </div>""" % (esc(s["name"]), cls, esc(s["tag"]), esc(s["desc"]),
+        </div>""" % (esc(s["name"]), cls, esc(s["tag"]),
                      esc(s["func"]), link, esc(s["size"]))
 
 
@@ -275,7 +265,7 @@ def build(items):
   .site:last-child{border-bottom:0;}
   .site:hover{background:var(--red-bg);}
 
-  .c1{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;min-width:0;}
+  .c1{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0;}
   .c1 b{font-size:12.5px;font-weight:600;white-space:nowrap;}
   .c1 em{font-style:normal;font-size:10.5px;color:var(--ink-3);flex-basis:100%;
          white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -286,7 +276,7 @@ def build(items):
   .st::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
               margin-right:4px;vertical-align:1px;background:currentColor;}
 
-  .c2{font-size:12px;color:var(--ink-2);min-width:0;}
+  .c2{font-size:12px;color:var(--ink-2);min-width:0;line-height:1.5;}
   .c3{font-size:11.5px;min-width:0;word-break:break-all;}
   .c3 a{color:var(--red-d);text-decoration:none;}
   .c3 a:hover{text-decoration:underline;}
