@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>同步看板 · Sync Dashboard</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#ffffff; --line:#e6e8ec;
+    --ink:#1f2329; --ink2:#5c6672; --ink3:#8f97a3;
+    --ok:#12b76a; --warn:#f79009; --bad:#f04438;
+    --accent:#2f6bff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:14px; line-height:1.6; padding:24px 16px 48px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+  h1{font-size:20px;font-weight:600;letter-spacing:.3px;}
+  .stamp{color:var(--ink3);font-size:12px;font-variant-numeric:tabular-nums;}
+  .sub{color:var(--ink2);font-size:13px;margin-top:2px;}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; margin-bottom:12px;
+  }
+  .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .name{font-weight:600;font-size:15px;letter-spacing:.2px;}
+  .plat{
+    font-size:12px;padding:1px 8px;border-radius:20px;
+    background:#eef2ff;color:#3b5bdb;border:1px solid #dbe3ff;
+  }
+  .plat.gh{background:#f3f4f6;color:#374151;border-color:#e5e7eb;}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+  .dot.ok{background:var(--ok);box-shadow:0 0 0 3px rgba(18,183,106,.14);}
+  .dot.bad{background:var(--bad);box-shadow:0 0 0 3px rgba(240,68,56,.14);}
+  .meta{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+    gap:12px;margin-top:14px;
+  }
+  .k{color:var(--ink3);font-size:12px;}
+  .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.2px;}
+  .v small{font-size:12px;font-weight:400;color:var(--ink3);margin-left:2px;}
+  footer{
+    margin-top:20px;padding-top:16px;border-top:1px solid var(--line);
+    color:var(--ink3);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  .badge{
+    display:inline-block;font-size:11px;padding:1px 7px;border-radius:4px;
+    background:#ecfdf3;color:#067647;border:1px solid #d1fadf;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>同步看板</h1>
+      <div class="sub">GitCode · GitHub 仓库同步状态</div>
+    </div>
+    <div class="stamp">更新于 <span id="ts">—</span></div>
+  </header>
+
+  <div id="list"></div>
+
+  <footer>
+    <span>自动同步：每小时执行一次</span>
+    <span class="badge">全部正常</span>
+  </footer>
+</div>
+
+<script>
+const DATA = [
+  {
+    name: "workbuddy-archive",
+    platform: "GitCode",
+    cls: "",
+    ok: true,
+    commits: 18,
+    files: 169,
+    size: "145 MB",
+    updated: "2026-11-01 17:33",
+    note: "WorkBuddy 全部对话归档"
+  },
+  {
+    name: "workbuddy-archive",
+    platform: "GitHub",
+    cls: "gh",
+    ok: true,
+    commits: 18,
+    files: 169,
+    size: "145 MB",
+    updated: "2026-11-01 17:33",
+    note: "同上，海外第二份"
+  },
+  {
+    name: "obsidian-notes",
+    platform: "GitCode",
+    cls: "",
+    ok: true,
+    commits: 2,
+    files: 26,
+    size: "1.2 MB",
+    updated: "2026-11-01 17:33",
+    note: "Obsidian 核心笔记镜像"
+  }
+];
+
+const list = document.getElementById("list");
+list.innerHTML = DATA.map(d => `
+  <div class="card">
+    <div class="row">
+      <span class="dot ${d.ok ? "ok" : "bad"}"></span>
+      <span class="name">${d.name}</span>
+      <span class="plat ${d.cls}">${d.platform}</span>
+    </div>
+    <div class="meta">
+      <div><div class="k">提交</div><div class="v">${d.commits}</div></div>
+      <div><div class="k">文件</div><div class="v">${d.files}</div></div>
+      <div><div class="k">体积</div><div class="v">${d.size}</div></div>
+      <div><div class="k">最后同步</div><div class="v" style="font-size:13px">${d.updated}</div></div>
+    </div>
+    <div class="k" style="margin-top:10px">${d.note}</div>
+  </div>
+`).join("");
+
+document.getElementById("ts").textContent = new Date().toLocaleString("zh-CN", {hour12:false});
+</script>
+</body>
+</html>
