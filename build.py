@@ -64,9 +64,6 @@ def esc(s):
 def build(items):
     cards = []
     for d in items:
-        rows = "\n".join(
-            '        <li>%s</li>' % esc(f) for f in d["files"]
-        ) or '        <li class="empty">（空仓库）</li>'
         cards.append("""
   <section class="card">
     <div class="row">
@@ -81,16 +78,10 @@ def build(items):
       <div><div class="k">最后同步</div><div class="v small">%(updated)s</div></div>
     </div>
     <div class="k note">%(note)s</div>
-    <details>
-      <summary>查看文件清单（%(count)s 个）</summary>
-      <ul class="files">
-%(rows)s
-      </ul>
-    </details>
   </section>""" % {
             "name": esc(d["name"]), "label": esc(d["label"]), "cls": d["cls"],
             "commits": d["commits"], "count": d["count"], "size": d["size"],
-            "updated": esc(d["updated"]), "note": esc(d["note"]), "rows": rows,
+            "updated": esc(d["updated"]), "note": esc(d["note"]),
         })
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
