@@ -159,13 +159,22 @@ def repo_card(d):
       </article>""" % (esc(d["name"]), pill, esc(d["note"]), meta, act)
 
 
+def addr(u):
+    """从网址里取出纯 IP:端口，去掉 http:// 和后面的路径"""
+    if not u:
+        return ""
+    a = u.replace("https://", "").replace("http://", "").strip()
+    return a.split("/")[0]
+
+
 def site_card(s, status=None):
     status = status or {}
     info = status.get(s["name"]) or {}
+    ip_port = addr(s["url"]) or "仅内网"
     if info.get("time"):
-        meta = "更新 %s | 最近改动 %s | 占用 %s" % (info["time"], info.get("file") or "—", s["size"])
+        meta = "更新 %s | %s | 占用 %s" % (info["time"], ip_port, s["size"])
     else:
-        meta = "未探测到更新记录 | 占用 %s" % s["size"]
+        meta = "未探测到更新记录 | %s | 占用 %s" % (ip_port, s["size"])
     cls = {"运行中": "green", "仅内网": "orange", "打不开": "red", "未启动": "orange", "后台": "gray"}.get(s["tag"], "gray")
     if s["tag"] == "运行中":
         act = btn(s["url"], "打开")
@@ -271,21 +280,18 @@ def build(items):
     background-attachment:fixed;
     color:var(--ink);
     font-family:var(--sans);font-size:14px;line-height:1.6;
-    padding:28px 18px 56px;-webkit-font-smoothing:antialiased;
+    padding:12px 18px 48px;-webkit-font-smoothing:antialiased;
   }
   .page{max-width:960px;margin:0 auto;}
 
-  /* 顶栏 */
-  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
-       flex-wrap:wrap;margin-bottom:20px;padding:0 4px;}
-  .top h1{font-size:22px;font-weight:600;letter-spacing:.2px;}
-  .top h1 s{text-decoration:none;color:var(--blue);margin-right:6px;}
-  .top p{color:var(--ink-3);font-size:13px;margin-top:4px;}
+  /* 顶栏：标签 + 时间 */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:16px;
+       flex-wrap:wrap;margin-bottom:10px;}
   .stamp{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);text-align:right;line-height:1.7;}
   .stamp b{color:var(--ink-2);font-weight:600;}
 
   /* 标签 */
-  .tabs{display:inline-flex;background:#dce2eb;border-radius:12px;padding:4px;gap:4px;margin-bottom:22px;
+  .tabs{display:inline-flex;background:#dce2eb;border-radius:12px;padding:4px;gap:4px;
         box-shadow:inset 0 1px 2px rgba(16,24,40,.05);}
   .tabs button{
     appearance:none;border:0;background:transparent;font-family:inherit;
@@ -297,7 +303,7 @@ def build(items):
   .tabs button u{text-decoration:none;font-family:var(--mono);font-size:11px;
                  color:var(--ink-4);margin-left:6px;font-weight:500;}
   .tabs button.on u{color:var(--blue);opacity:.85;}
-  .hint{margin:-12px 0 20px 6px;font-size:12px;color:var(--ink-4);}
+  .hint{margin:0 0 16px 6px;font-size:12px;color:var(--ink-4);}
 
   /* 面板 */
   .panel{display:none;}
@@ -374,17 +380,12 @@ def build(items):
 <div class="page">
 
   <div class="top">
-    <div>
-      <h1><s>/</s>同步看板</h1>
-      <p>对话归档 · 笔记镜像 · 服务器站点</p>
+    <div class="tabs">
+      <button id="tab-servers" class="on" onclick="sw('servers')">服务器<u>%(N3)s</u></button>
+      <button id="tab-gitcode" onclick="sw('gitcode')">GitCode<u>%(N1)s</u></button>
+      <button id="tab-github" onclick="sw('github')">GitHub<u>%(N2)s</u></button>
     </div>
-    <div class="stamp">更新 <b>%(NOW)s</b><br>每 10 分钟自动刷新</div>
-  </div>
-
-  <div class="tabs">
-    <button id="tab-servers" class="on" onclick="sw('servers')">服务器<u>%(N3)s</u></button>
-    <button id="tab-gitcode" onclick="sw('gitcode')">GitCode<u>%(N1)s</u></button>
-    <button id="tab-github" onclick="sw('github')">GitHub<u>%(N2)s</u></button>
+    <div class="stamp">更新 <b>%(NOW)s</b> · 每 10 分钟刷新</div>
   </div>
   <p class="hint">%(HINT)s</p>
 
