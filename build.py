@@ -356,7 +356,7 @@ def build(items):
     font-family:var(--sans);font-size:14px;line-height:1.6;
     padding:12px 18px 48px;-webkit-font-smoothing:antialiased;
   }
-  .page{max-width:960px;margin:0 auto;}
+  .page{max-width:800px;margin:0 auto;}
 
   /* 顶栏：标签 + 时间 */
   .top{display:flex;align-items:center;justify-content:space-between;gap:16px;
