@@ -229,7 +229,7 @@ def build(items):
   /* 仓库行 */
   .rows{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
   .row{display:flex;align-items:center;justify-content:space-between;gap:16px;
-       padding:11px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap;
+       padding:16px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap;
        transition:background .15s;}
   .row:last-child{border-bottom:0;}
   .row:hover{background:var(--red-bg);}
@@ -260,13 +260,13 @@ def build(items):
   .cols span:last-child{text-align:right;}
 
   .site{display:grid;grid-template-columns:158px minmax(150px,1fr) 210px 62px;
-        gap:14px;align-items:center;padding:8px 14px;
+        gap:14px;align-items:center;padding:15px 14px;
         border-bottom:1px solid #f0f2f3;transition:background .15s;}
   .site:last-child{border-bottom:0;}
   .site:hover{background:var(--red-bg);}
 
   .c1{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0;}
-  .c1 b{font-size:12.5px;font-weight:600;white-space:nowrap;}
+  .c1 b{font-size:13px;font-weight:600;white-space:nowrap;}
   .c1 em{font-style:normal;font-size:10.5px;color:var(--ink-3);flex-basis:100%;
          white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .st{font-size:10px;font-weight:500;white-space:nowrap;}
@@ -276,7 +276,7 @@ def build(items):
   .st::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
               margin-right:4px;vertical-align:1px;background:currentColor;}
 
-  .c2{font-size:12px;color:var(--ink-2);min-width:0;line-height:1.5;}
+  .c2{font-size:12px;color:var(--ink-2);min-width:0;line-height:1.6;}
   .c3{font-size:11.5px;min-width:0;word-break:break-all;}
   .c3 a{color:var(--red-d);text-decoration:none;}
   .c3 a:hover{text-decoration:underline;}
@@ -310,18 +310,18 @@ def build(items):
   </div>
 
   <div class="tabs">
-    <button id="tab-gitcode" class="on" onclick="sw('gitcode')">GitCode<u>%(N1)s</u></button>
+    <button id="tab-servers" class="on" onclick="sw('servers')">服务器<u>%(N3)s</u></button>
+    <button id="tab-gitcode" onclick="sw('gitcode')">GitCode<u>%(N1)s</u></button>
     <button id="tab-github" onclick="sw('github')">GitHub<u>%(N2)s</u></button>
-    <button id="tab-servers" onclick="sw('servers')">服务器<u>%(N3)s</u></button>
   </div>
 
   <main>
-    <section id="panel-gitcode" class="panel on"><div class="rows">%(P1)s
+    <section id="panel-servers" class="panel on">%(P3)s
+    </section>
+    <section id="panel-gitcode" class="panel"><div class="rows">%(P1)s
     </div></section>
     <section id="panel-github" class="panel"><div class="rows">%(P2)s
     </div></section>
-    <section id="panel-servers" class="panel">%(P3)s
-    </section>
   </main>
 
   <footer>
