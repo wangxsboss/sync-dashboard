@@ -50,7 +50,7 @@ SERVERS = [
             {"name": "自动下注器", "tags": "定时下注 | 策略触发 | 状态轮询 | 结果回写",
              "url": "http://183.146.215.78:49655/", "size": "2 MB", "tag": "运行中"},
             {"name": "服务器控制台", "tags": "站点管理 | 数据库 | 文件传输 | 证书签发",
-             "url": "http://183.146.215.78:27976/5f6413e9", "size": "—", "tag": "未启动"},
+             "url": "http://183.146.215.78:27976/5f6413e9", "size": "—", "tag": "打不开"},
         ],
     },
 ]
@@ -103,10 +103,15 @@ def esc(s):
     return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def btn(url, label="打开"):
-    if url:
-        return '<a class="btn" href="%s" target="_blank" rel="noopener">%s</a>' % (esc(url), label)
-    return '<span class="btn off">仅内网</span>'
+def btn(url, label="打开", note="", enabled=True):
+    if url and enabled:
+        a = '<a class="btn" href="%s" target="_blank" rel="noopener">%s</a>' % (esc(url), label)
+    elif url:
+        a = '<span class="btn off">%s</span>' % note
+    else:
+        a = '<span class="btn off">%s</span>' % (note or "仅内网")
+    u = '<span class="url">%s</span>' % esc(url) if url else ""
+    return '<div class="act">%s%s</div>' % (a, u)
 
 
 def repo_card(d):
@@ -124,7 +129,7 @@ def repo_card(d):
         %s
       </article>""" % (esc(d["name"]), PLAT_NAME[d["platform"]], esc(d["note"]),
                        d["commits"], d["count"], d["num"], unit, esc(d["updated"]),
-                       btn(d["repo"], "查看"))
+                       btn(d["repo"], "打开仓库"))
 
 
 def site_card(s, status=None):
@@ -134,7 +139,13 @@ def site_card(s, status=None):
         meta = "更新 %s | 最近改动 %s | 占用 %s" % (info["time"], info.get("file") or "—", s["size"])
     else:
         meta = "未探测到更新记录 | 占用 %s" % s["size"]
-    cls = {"运行中": "green", "仅内网": "orange", "未启动": "orange", "后台": "gray"}.get(s["tag"], "gray")
+    cls = {"运行中": "green", "仅内网": "orange", "打不开": "red", "未启动": "orange", "后台": "gray"}.get(s["tag"], "gray")
+    if s["tag"] == "运行中":
+        act = btn(s["url"], "打开")
+    elif not s["url"]:
+        act = btn("", note="仅内网")
+    else:
+        act = btn(s["url"], note=s["tag"], enabled=False)
     return """
       <article class="card">
         <div class="left">
@@ -146,7 +157,7 @@ def site_card(s, status=None):
           <p class="meta">%s</p>
         </div>
         %s
-      </article>""" % (esc(s["name"]), cls, esc(s["tag"]), esc(s["tags"]), meta, btn(s["url"]))
+      </article>""" % (esc(s["name"]), cls, esc(s["tag"]), esc(s["tags"]), meta, act)
 
 
 def server_panel(status=None):
@@ -211,6 +222,8 @@ def build(items):
     --green-bg:#e8f7f0;
     --orange:#d97706;
     --orange-bg:#fff4e6;
+    --red:#d54941;
+    --red-bg:#fdeceb;
     --gray-bg:#f1f3f5;
     --sans:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
     --mono:ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
@@ -244,6 +257,7 @@ def build(items):
   .tabs button u{text-decoration:none;font-family:var(--mono);font-size:11px;
                  color:var(--ink-4);margin-left:6px;font-weight:500;}
   .tabs button.on u{color:var(--blue);opacity:.85;}
+  .hint{margin:-12px 0 20px 6px;font-size:12px;color:var(--ink-4);}
 
   /* 面板 */
   .panel{display:none;}
@@ -276,6 +290,7 @@ def build(items):
   .pill.blue{color:var(--blue);background:var(--blue-bg);}
   .pill.green{color:var(--green);background:var(--green-bg);}
   .pill.orange{color:var(--orange);background:var(--orange-bg);}
+  .pill.red{color:var(--red);background:var(--red-bg);}
   .pill.gray{color:var(--ink-3);background:var(--gray-bg);}
   .pill::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
                 background:currentColor;margin-right:5px;vertical-align:1.5px;opacity:.9;}
@@ -285,10 +300,15 @@ def build(items):
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .meta i{font-style:normal;font-size:10.5px;margin-left:2px;}
 
+  .act{flex:0 0 auto;width:230px;display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
+  .act .btn{width:100%;}
+  .url{font-family:var(--mono);font-size:10px;color:var(--ink-4);line-height:1.45;
+       text-align:right;word-break:break-all;max-width:100%;letter-spacing:-.1px;}
+
   .btn{
     flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
-    min-width:84px;height:38px;padding:0 20px;border-radius:11px;
-    background:var(--blue-bg);color:var(--blue);font-size:13.5px;font-weight:500;
+    min-width:84px;height:36px;padding:0 18px;border-radius:11px;
+    background:var(--blue-bg);color:var(--blue);font-size:13px;font-weight:500;
     text-decoration:none;transition:background .15s,color .15s;
   }
   .btn:hover{background:var(--blue);color:#fff;}
@@ -301,6 +321,8 @@ def build(items):
   @media (max-width:700px){
     body{padding:20px 12px 40px;}
     .card{flex-direction:column;align-items:stretch;gap:14px;padding:18px;border-radius:14px;}
+    .act{width:100%;align-items:stretch;}
+    .url{text-align:left;}
     .btn{width:100%;height:40px;}
     .meta{white-space:normal;}
     .top h1{font-size:19px;}
@@ -323,6 +345,7 @@ def build(items):
     <button id="tab-gitcode" onclick="sw('gitcode')">GitCode<u>%(N1)s</u></button>
     <button id="tab-github" onclick="sw('github')">GitHub<u>%(N2)s</u></button>
   </div>
+  <p class="hint">服务器 = 站点运行情况 · GitCode / GitHub = 源码仓库，两边不混</p>
 
   <main>
     <section id="panel-servers" class="panel on">%(P3)s

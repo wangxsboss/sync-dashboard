@@ -22,6 +22,8 @@
     --green-bg:#e8f7f0;
     --orange:#d97706;
     --orange-bg:#fff4e6;
+    --red:#d54941;
+    --red-bg:#fdeceb;
     --gray-bg:#f1f3f5;
     --sans:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
     --mono:ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
@@ -55,6 +57,7 @@
   .tabs button u{text-decoration:none;font-family:var(--mono);font-size:11px;
                  color:var(--ink-4);margin-left:6px;font-weight:500;}
   .tabs button.on u{color:var(--blue);opacity:.85;}
+  .hint{margin:-12px 0 20px 6px;font-size:12px;color:var(--ink-4);}
 
   /* 面板 */
   .panel{display:none;}
@@ -87,6 +90,7 @@
   .pill.blue{color:var(--blue);background:var(--blue-bg);}
   .pill.green{color:var(--green);background:var(--green-bg);}
   .pill.orange{color:var(--orange);background:var(--orange-bg);}
+  .pill.red{color:var(--red);background:var(--red-bg);}
   .pill.gray{color:var(--ink-3);background:var(--gray-bg);}
   .pill::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
                 background:currentColor;margin-right:5px;vertical-align:1.5px;opacity:.9;}
@@ -96,10 +100,15 @@
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .meta i{font-style:normal;font-size:10.5px;margin-left:2px;}
 
+  .act{flex:0 0 auto;width:230px;display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
+  .act .btn{width:100%;}
+  .url{font-family:var(--mono);font-size:10px;color:var(--ink-4);line-height:1.45;
+       text-align:right;word-break:break-all;max-width:100%;letter-spacing:-.1px;}
+
   .btn{
     flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
-    min-width:84px;height:38px;padding:0 20px;border-radius:11px;
-    background:var(--blue-bg);color:var(--blue);font-size:13.5px;font-weight:500;
+    min-width:84px;height:36px;padding:0 18px;border-radius:11px;
+    background:var(--blue-bg);color:var(--blue);font-size:13px;font-weight:500;
     text-decoration:none;transition:background .15s,color .15s;
   }
   .btn:hover{background:var(--blue);color:#fff;}
@@ -112,6 +121,8 @@
   @media (max-width:700px){
     body{padding:20px 12px 40px;}
     .card{flex-direction:column;align-items:stretch;gap:14px;padding:18px;border-radius:14px;}
+    .act{width:100%;align-items:stretch;}
+    .url{text-align:left;}
     .btn{width:100%;height:40px;}
     .meta{white-space:normal;}
     .top h1{font-size:19px;}
@@ -126,7 +137,7 @@
       <h1><s>/</s>同步看板</h1>
       <p>对话归档 · 笔记镜像 · 服务器站点</p>
     </div>
-    <div class="stamp">更新 <b>2026-11-01 21:41</b><br>每 10 分钟自动刷新</div>
+    <div class="stamp">更新 <b>2026-11-01 21:45</b><br>每 10 分钟自动刷新</div>
   </div>
 
   <div class="tabs">
@@ -134,6 +145,7 @@
     <button id="tab-gitcode" onclick="sw('gitcode')">GitCode<u>3</u></button>
     <button id="tab-github" onclick="sw('github')">GitHub<u>2</u></button>
   </div>
+  <p class="hint">服务器 = 站点运行情况 · GitCode / GitHub = 源码仓库，两边不混</p>
 
   <main>
     <section id="panel-servers" class="panel on">
@@ -154,7 +166,7 @@
           <p class="desc">商品抓取 | 自动上下架 | 批量改价 | 订单同步</p>
           <p class="meta">更新 11-01 10:22 | 最近改动 wbapp.py | 占用 177 MB</p>
         </div>
-        <a class="btn" href="http://120.220.73.186:20789" target="_blank" rel="noopener">打开</a>
+        <div class="act"><a class="btn" href="http://120.220.73.186:20789" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:20789</span></div>
       </article>
       <article class="card">
         <div class="left">
@@ -165,7 +177,7 @@
           <p class="desc">多账号切换 | 登录态管理 | Cookie 维护</p>
           <p class="meta">更新 10-29 17:32 | 最近改动 workbuddy-switch-usage.html | 占用 44 KB</p>
         </div>
-        <a class="btn" href="http://120.220.73.186:28095" target="_blank" rel="noopener">打开</a>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28095" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28095</span></div>
       </article>
       <article class="card">
         <div class="left">
@@ -176,7 +188,7 @@
           <p class="desc">账号池调度 | OpenAI 兼容转发 | 用量统计</p>
           <p class="meta">更新 11-01 21:41 | 最近改动 data/state.json | 占用 12 MB</p>
         </div>
-        <a class="btn" href="http://120.220.73.186:28098" target="_blank" rel="noopener">打开</a>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28098" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28098</span></div>
       </article>
       <article class="card">
         <div class="left">
@@ -187,7 +199,7 @@
           <p class="desc">多平台抓取 | 关键词采集 | 数据落库 | 结果导出</p>
           <p class="meta">更新 10-30 19:20 | 最近改动 api/webui/results.html | 占用 2.0 GB</p>
         </div>
-        <a class="btn" href="http://120.220.73.186:28081" target="_blank" rel="noopener">打开</a>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28081" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28081</span></div>
       </article>
       <article class="card">
         <div class="left">
@@ -198,7 +210,7 @@
           <p class="desc">订单处理 | 商品管理 | 任务调度 | 发货记录</p>
           <p class="meta">更新 10-31 16:06 | 最近改动 backend-web/static/uploads/products/fav_1086173735070_fbe41504486a4115917b5e669a4ebb0a.jpg | 占用 450 MB</p>
         </div>
-        <a class="btn" href="http://120.220.73.186:3000" target="_blank" rel="noopener">打开</a>
+        <div class="act"><span class="btn off">仅内网</span><span class="url">http://120.220.73.186:3000</span></div>
       </article>
       <article class="card">
         <div class="left">
@@ -209,7 +221,7 @@
           <p class="desc">文件浏览 | 在线下载 | 目录挂载</p>
           <p class="meta">更新 11-01 21:38 | 最近改动 static/mc-player.js | 占用 150 MB</p>
         </div>
-        <a class="btn" href="http://120.220.73.186:5244" target="_blank" rel="noopener">打开</a>
+        <div class="act"><span class="btn off">仅内网</span><span class="url">http://120.220.73.186:5244</span></div>
       </article>
       <article class="card">
         <div class="left">
@@ -220,7 +232,7 @@
           <p class="desc">登录鉴权 | 页面渲染 | 自动化点击</p>
           <p class="meta">更新 10-20 04:07 | 最近改动 chrome/vk_swiftshader_icd.json | 占用 446 MB</p>
         </div>
-        <span class="btn off">仅内网</span>
+        <div class="act"><span class="btn off">仅内网</span></div>
       </article>
       </section>
 
@@ -241,7 +253,7 @@
           <p class="desc">模型聚合 | 请求转发 | 签到保活 | 用量统计</p>
           <p class="meta">更新 10-21 10:31 | 最近改动 packages/standalone/channels/business.mjs | 占用 69 MB</p>
         </div>
-        <a class="btn" href="http://183.146.215.78:18901" target="_blank" rel="noopener">打开</a>
+        <div class="act"><a class="btn" href="http://183.146.215.78:18901" target="_blank" rel="noopener">打开</a><span class="url">http://183.146.215.78:18901</span></div>
       </article>
       <article class="card">
         <div class="left">
@@ -252,18 +264,18 @@
           <p class="desc">定时下注 | 策略触发 | 状态轮询 | 结果回写</p>
           <p class="meta">更新 10-31 13:11 | 最近改动 config.json | 占用 2 MB</p>
         </div>
-        <a class="btn" href="http://183.146.215.78:49655/" target="_blank" rel="noopener">打开</a>
+        <div class="act"><a class="btn" href="http://183.146.215.78:49655/" target="_blank" rel="noopener">打开</a><span class="url">http://183.146.215.78:49655/</span></div>
       </article>
       <article class="card">
         <div class="left">
           <div class="hd">
             <h3>服务器控制台</h3>
-            <span class="pill orange">未启动</span>
+            <span class="pill red">打不开</span>
           </div>
           <p class="desc">站点管理 | 数据库 | 文件传输 | 证书签发</p>
           <p class="meta">更新 11-01 21:41 | 最近改动 data/session/2029240f6d1128be89ddc32729463129 | 占用 —</p>
         </div>
-        <a class="btn" href="http://183.146.215.78:27976/5f6413e9" target="_blank" rel="noopener">打开</a>
+        <div class="act"><span class="btn off">打不开</span><span class="url">http://183.146.215.78:27976/5f6413e9</span></div>
       </article>
       </section>
     </section>
@@ -278,7 +290,7 @@
           <p class="desc">WorkBuddy 全部对话归档</p>
           <p class="meta">提交 23 | 文件 179 | 体积 160.4<i>MB</i> | 最后同步 11-01 21:33</p>
         </div>
-        <a class="btn" href="https://gitcode.com/chaoshen59/workbuddy-archive" target="_blank" rel="noopener">查看</a>
+        <div class="act"><a class="btn" href="https://gitcode.com/chaoshen59/workbuddy-archive" target="_blank" rel="noopener">打开仓库</a><span class="url">https://gitcode.com/chaoshen59/workbuddy-archive</span></div>
       </article>
 
       <article class="card">
@@ -290,7 +302,7 @@
           <p class="desc">Obsidian 核心笔记镜像</p>
           <p class="meta">提交 3 | 文件 26 | 体积 1.1<i>MB</i> | 最后同步 11-01 17:48</p>
         </div>
-        <a class="btn" href="https://gitcode.com/chaoshen59/obsidian-notes" target="_blank" rel="noopener">查看</a>
+        <div class="act"><a class="btn" href="https://gitcode.com/chaoshen59/obsidian-notes" target="_blank" rel="noopener">打开仓库</a><span class="url">https://gitcode.com/chaoshen59/obsidian-notes</span></div>
       </article>
 
       <article class="card">
@@ -300,9 +312,9 @@
             <span class="pill blue">GitCode</span>
           </div>
           <p class="desc">本页面的源码镜像</p>
-          <p class="meta">提交 19 | 文件 6 | 体积 44.0<i>KB</i> | 最后同步 11-01 21:35</p>
+          <p class="meta">提交 20 | 文件 6 | 体积 45.8<i>KB</i> | 最后同步 11-01 21:41</p>
         </div>
-        <a class="btn" href="https://gitcode.com/chaoshen59/sync-dashboard" target="_blank" rel="noopener">查看</a>
+        <div class="act"><a class="btn" href="https://gitcode.com/chaoshen59/sync-dashboard" target="_blank" rel="noopener">打开仓库</a><span class="url">https://gitcode.com/chaoshen59/sync-dashboard</span></div>
       </article>
     </section>
     <section id="panel-github" class="panel">
@@ -316,7 +328,7 @@
           <p class="desc">海外第二份，防单点失效</p>
           <p class="meta">提交 23 | 文件 179 | 体积 160.4<i>MB</i> | 最后同步 11-01 21:33</p>
         </div>
-        <a class="btn" href="https://github.com/wangxsboss/workbuddy-archive" target="_blank" rel="noopener">查看</a>
+        <div class="act"><a class="btn" href="https://github.com/wangxsboss/workbuddy-archive" target="_blank" rel="noopener">打开仓库</a><span class="url">https://github.com/wangxsboss/workbuddy-archive</span></div>
       </article>
 
       <article class="card">
@@ -326,16 +338,16 @@
             <span class="pill blue">GitHub</span>
           </div>
           <p class="desc">本页面托管源（GitHub Pages）</p>
-          <p class="meta">提交 19 | 文件 6 | 体积 44.0<i>KB</i> | 最后同步 11-01 21:35</p>
+          <p class="meta">提交 20 | 文件 6 | 体积 45.8<i>KB</i> | 最后同步 11-01 21:41</p>
         </div>
-        <a class="btn" href="https://github.com/wangxsboss/sync-dashboard" target="_blank" rel="noopener">查看</a>
+        <div class="act"><a class="btn" href="https://github.com/wangxsboss/sync-dashboard" target="_blank" rel="noopener">打开仓库</a><span class="url">https://github.com/wangxsboss/sync-dashboard</span></div>
       </article>
     </section>
   </main>
 
   <footer>
     <span>GitCode · GitHub 双写</span>
-    <span>数据采集于 2026-11-01 21:41</span>
+    <span>数据采集于 2026-11-01 21:45</span>
   </footer>
 
 </div>
