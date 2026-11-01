@@ -11,19 +11,19 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 REPOS = [
     {"path": r"D:\WorkBuddyArchive", "name": "workbuddy-archive", "platform": "gitcode",
-     "note": "WorkBuddy 全部对话归档", "repo": "https://gitcode.com/chaoshen59/workbuddy-archiveworkbuddy-archive"},
+     "note": "WorkBuddy 全部对话归档", "group": "other", "repo": "https://gitcode.com/chaoshen59/workbuddy-archiveworkbuddy-archive"},
     {"path": r"D:\ObsidianMirror", "name": "obsidian-notes", "platform": "gitcode",
-     "note": "Obsidian 核心笔记镜像", "repo": "https://gitcode.com/chaoshen59/obsidian-notes"},
+     "note": "Obsidian 核心笔记镜像", "group": "other", "repo": "https://gitcode.com/chaoshen59/obsidian-notes"},
     {"path": r"D:\SyncDashboard", "name": "sync-dashboard", "platform": "gitcode",
-     "note": "本页面的源码镜像", "repo": "https://gitcode.com/chaoshen59/sync-dashboard"},
+     "note": "本页面的源码镜像", "group": "other", "repo": "https://gitcode.com/chaoshen59/sync-dashboard"},
     {"path": r"D:\ServerMirror\server-a-code", "name": "server-a-code", "platform": "gitcode",
-     "note": "服务器 A 全部站点源码 + 数据库",
+     "note": "服务器 A 全部站点源码 + 数据库", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/server-a-code"},
     {"path": r"D:\ServerMirror\server-b-code", "name": "server-b-code", "platform": "gitcode",
-     "note": "服务器 B 全部站点源码 + 数据库",
+     "note": "服务器 B 全部站点源码 + 数据库", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/server-b-code"},
     {"path": r"D:\Repos\server-deploy", "name": "server-deploy", "platform": "gitcode",
-     "note": "总控：一条命令部署全部 8 个站点",
+     "note": "总控：一条命令部署全部 8 个站点", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/server-deploy"},
     {"path": r"D:\Repos\xianyu-system", "name": "xianyu-system", "platform": "gitcode",
      "note": "闲鱼自动回复系统（订单中枢 + 闲鱼管家）· 73 表数据库",
@@ -44,22 +44,22 @@ REPOS = [
      "note": "免费模型网关 · 模型聚合与转发",
      "repo": "https://gitcode.com/chaoshen59/dsh-our-free-model"},
     {"path": r"D:\Repos\shitou-bot", "name": "shitou-bot", "platform": "gitcode",
-     "note": "自动下注器 · 石头岛下注脚本",
+     "note": "自动下注器 · 石头岛下注脚本（无网页）", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/shitou-bot"},
     {"path": r"D:\Repos\odds", "name": "odds", "platform": "gitcode",
-     "note": "赔率统计 · 文件删除后从进程内存完整还原",
+     "note": "赔率统计 · 文件删除后从进程内存完整还原", "group": "other",
      "repo": "https://gitcode.com/chaoshen59/odds"},
     {"path": r"D:\WorkBuddyArchive", "name": "workbuddy-archive", "platform": "github",
-     "note": "海外第二份，防单点失效", "repo": "https://github.com/wangxsboss/workbuddy-archive"},
+     "note": "海外第二份，防单点失效", "group": "other", "repo": "https://github.com/wangxsboss/workbuddy-archive"},
     {"path": r"D:\ObsidianMirror", "name": "obsidian-notes", "platform": "github",
-     "note": "笔记海外备份", "live": False, "repo": "https://github.com/wangxsboss/obsidian-notes"},
+     "note": "笔记海外备份", "group": "other", "live": False, "repo": "https://github.com/wangxsboss/obsidian-notes"},
     {"path": r"D:\SyncDashboard", "name": "sync-dashboard", "platform": "github",
-     "note": "本页面托管源（GitHub Pages）", "repo": "https://github.com/wangxsboss/sync-dashboard"},
+     "note": "本页面托管源（GitHub Pages）", "group": "other", "repo": "https://github.com/wangxsboss/sync-dashboard"},
     {"path": r"D:\ServerMirror\server-a-code", "name": "server-a-code", "platform": "github",
-     "note": "A 站源码海外备份（待补推）", "live": False,
+     "note": "A 站源码海外备份（待补推）", "group": "other", "live": False,
      "repo": "https://github.com/wangxsboss/server-a-code"},
     {"path": r"D:\ServerMirror\server-b-code", "name": "server-b-code", "platform": "github",
-     "note": "B 站源码海外备份（待补推）", "live": False,
+     "note": "B 站源码海外备份（待补推）", "group": "other", "live": False,
      "repo": "https://github.com/wangxsboss/server-b-code"},
 ]
 
@@ -133,6 +133,7 @@ def collect(r):
     return {
         "name": r["name"], "platform": r["platform"], "note": r["note"],
         "repo": r.get("repo", ""), "live": r.get("live", True),
+        "group": r.get("group", "site"),
         "commits": git(p, ["rev-list", "--count", "HEAD"]) or "0",
         "count": len([x for x in git(p, ["ls-files"]).splitlines() if x]),
         "num": num, "unit": unit,
@@ -240,6 +241,33 @@ def server_panel(status=None):
     return "\n".join(out)
 
 
+GROUPS = [
+    ("site", "网站", "有网页访问入口的站点"),
+    ("other", "其他", "后台脚本 · 总控工具 · 备份仓库"),
+]
+
+
+def group_block(title, hint, cards):
+    return """
+      <section class="block">
+        <div class="ghead">
+          <h2>%s</h2>
+          <span class="spec">%s</span>
+          <span class="cnt">%d 个</span>
+        </div>
+        %s
+      </section>""" % (esc(title), esc(hint), len(cards), "".join(cards))
+
+
+def render_grouped(sub):
+    out = []
+    for key, title, hint in GROUPS:
+        grp = [x for x in sub if x.get("group", "site") == key]
+        if grp:
+            out.append(group_block(title, hint, [repo_card(x) for x in grp]))
+    return "\n".join(out)
+
+
 def load_status():
     import json
     fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site-status.json")
@@ -255,7 +283,7 @@ def build(items):
     panels, counts = {}, {}
     for plat in ("gitcode", "github"):
         sub = [x for x in items if x["platform"] == plat]
-        panels[plat] = "\n".join(repo_card(x) for x in sub)
+        panels[plat] = render_grouped(sub)
         counts[plat] = len(sub)
 
     site_total = sum(len(sv["sites"]) for sv in SERVERS)
@@ -331,6 +359,8 @@ def build(items):
                  color:var(--ink-4);margin-left:6px;font-weight:500;}
   .tabs button.on u{color:var(--blue);opacity:.85;}
   .hint{margin:0 0 16px 6px;font-size:12px;color:var(--ink-4);}
+  .gh-note{margin:0 0 16px;padding:10px 14px;background:#fdf3e3;border:1px solid #f0dfc0;
+           border-radius:10px;font-size:12.5px;color:#7a5a1e;line-height:1.6;}
 
   /* 面板 */
   .panel{display:none;}
@@ -423,6 +453,7 @@ def build(items):
 %(P1)s
     </section>
     <section id="panel-github" class="panel">
+      <p class="gh-note">GitHub 侧目前只有备份类仓库。站点源码全部在 GitCode——因为 github.com 网页访问受限，新仓库无法创建。</p>
 %(P2)s
     </section>
   </main>
