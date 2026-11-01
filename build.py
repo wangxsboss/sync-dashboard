@@ -97,6 +97,8 @@ def build(items):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
 <title>同步看板 Sync Dashboard</title>
 <style>
   :root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--ink:#1f2329;--ink2:#5c6672;
