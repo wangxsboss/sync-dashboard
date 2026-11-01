@@ -3,38 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>同步看板 · Sync Dashboard</title>
+<title>同步看板 Sync Dashboard</title>
 <style>
-  :root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--ink:#1f2329;--ink2:#5c6672;--ink3:#8f97a3;--ok:#12b76a;}
+  :root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--ink:#1f2329;--ink2:#5c6672;
+        --ink3:#8f97a3;--ok:#12b76a;}
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  body{background:var(--bg);color:var(--ink);
+       font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
        font-size:14px;line-height:1.6;padding:24px 16px 48px;-webkit-font-smoothing:antialiased;}
   .wrap{max-width:780px;margin:0 auto;}
-  header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+         flex-wrap:wrap;margin-bottom:16px;}
   h1{font-size:20px;font-weight:600;letter-spacing:.3px;}
   .sub{color:var(--ink2);font-size:13px;margin-top:2px;}
   .stamp{color:var(--ink3);font-size:12px;font-variant-numeric:tabular-nums;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:12px;}
+
+  .tabs{display:flex;background:#eceef2;border-radius:10px;padding:4px;margin-bottom:16px;}
+  .tabs button{
+    flex:1;border:0;background:transparent;color:var(--ink2);
+    font-size:14px;font-weight:600;padding:9px 12px;border-radius:8px;
+    cursor:pointer;transition:all .16s ease;font-family:inherit;
+  }
+  .tabs button:hover{color:var(--ink);}
+  .tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,24,40,.10);}
+  .tabs .n{font-weight:400;color:var(--ink3);font-size:12px;margin-left:5px;}
+
+  .panel{display:none;}
+  .panel.on{display:block;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+        padding:16px 18px;margin-bottom:12px;}
   .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   .name{font-weight:600;font-size:15px;}
-  .plat{font-size:12px;padding:1px 8px;border-radius:20px;background:#eef2ff;color:#3b5bdb;border:1px solid #dbe3ff;}
-  .plat.gh{background:#f3f4f6;color:#374151;border-color:#e5e7eb;}
-  .dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--ok);box-shadow:0 0 0 3px rgba(18,183,106,.14);}
-  .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:12px;margin-top:14px;}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--ok);
+       box-shadow:0 0 0 3px rgba(18,183,106,.14);}
+  .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
+        gap:12px;margin-top:14px;}
   .k{color:var(--ink3);font-size:12px;}
   .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;}
   .v.small{font-size:13px;font-weight:500;}
   .note{margin-top:10px;}
-  details{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;}
-  summary{cursor:pointer;color:var(--ink2);font-size:13px;user-select:none;outline:none;}
-  summary:hover{color:var(--ink);}
-  .files{margin-top:10px;max-height:280px;overflow:auto;list-style:none;
-         font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;color:var(--ink2);}
-  .files li{padding:3px 6px;border-radius:4px;word-break:break-all;}
-  .files li:nth-child(odd){background:#fafbfc;}
-  .files li.empty{color:var(--ink3);}
-  footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);color:var(--ink3);
-         font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+
+  footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);
+         color:var(--ink3);font-size:12px;display:flex;justify-content:space-between;
+         gap:12px;flex-wrap:wrap;}
 </style>
 </head>
 <body>
@@ -42,59 +54,101 @@
   <header>
     <div>
       <h1>同步看板</h1>
-      <div class="sub">GitCode · GitHub 仓库同步状态</div>
+      <div class="sub">仓库同步状态</div>
     </div>
-    <div class="stamp">更新于 2026-11-01 18:30</div>
+    <div class="stamp">更新于 2026-11-01 18:42</div>
   </header>
 
-  <section class="card">
-    <div class="row">
-      <span class="dot ok"></span>
-      <span class="name">workbuddy-archive</span>
-      <span class="plat ">GitCode</span>
-    </div>
-    <div class="meta">
-      <div><div class="k">提交</div><div class="v">19</div></div>
-      <div><div class="k">文件</div><div class="v">171</div></div>
-      <div><div class="k">体积</div><div class="v">153.5 MB</div></div>
-      <div><div class="k">最后同步</div><div class="v small">2026-11-01 17:48</div></div>
-    </div>
-    <div class="k note">WorkBuddy 全部对话归档</div>
-  </section>
+  <div class="tabs">
+    <button id="tab-gitcode" class="on" onclick="sw('gitcode')">GitCode<span class="n">3</span></button>
+    <button id="tab-github" onclick="sw('github')">GitHub<span class="n">2</span></button>
+  </div>
 
-  <section class="card">
-    <div class="row">
-      <span class="dot ok"></span>
-      <span class="name">workbuddy-archive</span>
-      <span class="plat gh">GitHub</span>
-    </div>
-    <div class="meta">
-      <div><div class="k">提交</div><div class="v">19</div></div>
-      <div><div class="k">文件</div><div class="v">171</div></div>
-      <div><div class="k">体积</div><div class="v">153.5 MB</div></div>
-      <div><div class="k">最后同步</div><div class="v small">2026-11-01 17:48</div></div>
-    </div>
-    <div class="k note">同上，海外第二份</div>
-  </section>
+  <div id="panel-gitcode" class="panel on">
+    <section class="card">
+      <div class="row">
+        <span class="dot ok"></span>
+        <span class="name">workbuddy-archive</span>
+      </div>
+      <div class="meta">
+        <div><div class="k">提交</div><div class="v">19</div></div>
+        <div><div class="k">文件</div><div class="v">171</div></div>
+        <div><div class="k">体积</div><div class="v">153.5 MB</div></div>
+        <div><div class="k">最后同步</div><div class="v small">2026-11-01 17:48</div></div>
+      </div>
+      <div class="k note">WorkBuddy 全部对话归档</div>
+    </section>
 
-  <section class="card">
-    <div class="row">
-      <span class="dot ok"></span>
-      <span class="name">obsidian-notes</span>
-      <span class="plat ">GitCode</span>
-    </div>
-    <div class="meta">
-      <div><div class="k">提交</div><div class="v">3</div></div>
-      <div><div class="k">文件</div><div class="v">26</div></div>
-      <div><div class="k">体积</div><div class="v">1.1 MB</div></div>
-      <div><div class="k">最后同步</div><div class="v small">2026-11-01 17:48</div></div>
-    </div>
-    <div class="k note">Obsidian 核心笔记镜像</div>
-  </section>
+    <section class="card">
+      <div class="row">
+        <span class="dot ok"></span>
+        <span class="name">obsidian-notes</span>
+      </div>
+      <div class="meta">
+        <div><div class="k">提交</div><div class="v">3</div></div>
+        <div><div class="k">文件</div><div class="v">26</div></div>
+        <div><div class="k">体积</div><div class="v">1.1 MB</div></div>
+        <div><div class="k">最后同步</div><div class="v small">2026-11-01 17:48</div></div>
+      </div>
+      <div class="k note">Obsidian 核心笔记镜像</div>
+    </section>
+
+    <section class="card">
+      <div class="row">
+        <span class="dot ok"></span>
+        <span class="name">sync-dashboard</span>
+      </div>
+      <div class="meta">
+        <div><div class="k">提交</div><div class="v">3</div></div>
+        <div><div class="k">文件</div><div class="v">2</div></div>
+        <div><div class="k">体积</div><div class="v">11.5 KB</div></div>
+        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:30</div></div>
+      </div>
+      <div class="k note">本看板页面的镜像</div>
+    </section></div>
+  <div id="panel-github" class="panel">
+    <section class="card">
+      <div class="row">
+        <span class="dot ok"></span>
+        <span class="name">workbuddy-archive</span>
+      </div>
+      <div class="meta">
+        <div><div class="k">提交</div><div class="v">19</div></div>
+        <div><div class="k">文件</div><div class="v">171</div></div>
+        <div><div class="k">体积</div><div class="v">153.5 MB</div></div>
+        <div><div class="k">最后同步</div><div class="v small">2026-11-01 17:48</div></div>
+      </div>
+      <div class="k note">同上，海外第二份</div>
+    </section>
+
+    <section class="card">
+      <div class="row">
+        <span class="dot ok"></span>
+        <span class="name">sync-dashboard</span>
+      </div>
+      <div class="meta">
+        <div><div class="k">提交</div><div class="v">3</div></div>
+        <div><div class="k">文件</div><div class="v">2</div></div>
+        <div><div class="k">体积</div><div class="v">11.5 KB</div></div>
+        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:30</div></div>
+      </div>
+      <div class="k note">本看板页面（Pages 托管）</div>
+    </section></div>
+
   <footer>
     <span>自动同步：每小时执行一次</span>
-    <span>共 368 个文件</span>
+    <span>全部正常</span>
   </footer>
 </div>
+
+<script>
+function sw(p){
+  var a = p === 'gitcode';
+  document.getElementById('panel-gitcode').classList.toggle('on', a);
+  document.getElementById('panel-github').classList.toggle('on', !a);
+  document.getElementById('tab-gitcode').classList.toggle('on', a);
+  document.getElementById('tab-github').classList.toggle('on', !a);
+}
+</script>
 </body>
 </html>
