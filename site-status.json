@@ -8,8 +8,8 @@
   "file": "workbuddy-switch-usage.html"
  },
  "模型接口站": {
-  "time": "11-01 22:51",
-  "file": "data/state.json"
+  "time": "11-01 23:01",
+  "file": "data/request-logs/requests-2026-11-01.jsonl"
  },
  "采集中心": {
   "time": "10-30 19:20",
@@ -36,7 +36,7 @@
   "file": "config.json"
  },
  "服务器控制台": {
-  "time": "11-01 22:51",
+  "time": "11-01 23:01",
   "file": "data/session/2029240f6d1128be89ddc32729463129"
  }
 }
