@@ -193,25 +193,25 @@ def build(items):
 <title>同步看板 · Sync Dashboard</title>
 <style>
   :root{
-    --bg:#ebedee;
+    --bg:#ffffff;
     --panel:#ffffff;
-    --panel-2:#fcfdfd;
-    --line:#e3e7e9;
-    --line-2:#d6dbde;
-    --ink:#171b1e;
-    --ink-2:#444c51;
-    --ink-3:#7c858a;
-    --red:#cc3b23;
-    --red-d:#b9331d;
-    --red-bg:#fdf0ec;
-    --ok:#1a7f52;
-    --warn:#a4670a;
+    --panel-2:#fafcff;
+    --line:#e5e5e5;
+    --line-2:#d9d9d9;
+    --ink:#262626;
+    --ink-2:#595959;
+    --ink-3:#8c8c8c;
+    --red:#0066ff;
+    --red-d:#0052cc;
+    --red-bg:#e5efff;
+    --ok:#0e9f6e;
+    --warn:#dc9850;
     --sans:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
     --mono:ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{
-    background:var(--bg);color:var(--ink);
+    background:linear-gradient(180deg,#ffffff 0%,#fafcff 100%);color:var(--ink);
     font-family:var(--sans);font-size:12.5px;line-height:1.55;
     padding:20px 16px 40px;-webkit-font-smoothing:antialiased;
   }
