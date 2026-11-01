@@ -120,7 +120,13 @@ def repo_row(d):
                        d["num"], unit, esc(d["updated"]))
 
 
-def site_row(s):
+def site_row(s, status=None):
+    status = status or {}
+    info = status.get(s["name"]) or {}
+    if info.get("time"):
+        st_txt = "更新 %s · 最近改动 %s" % (info["time"], info.get("file") or "—")
+    else:
+        st_txt = "未探测到更新记录"
     if s["url"]:
         link = '<a href="%s" target="_blank" rel="noopener">%s</a>' % (s["url"], esc(s["url"]))
     else:
@@ -128,18 +134,18 @@ def site_row(s):
     cls = {"运行中": "ok", "仅内网": "warn", "未启动": "warn", "后台": "idle"}.get(s["tag"], "idle")
     return """
         <div class="site">
-          <div class="c1"><b>%s</b><span class="st %s">%s</span></div>
+          <div class="c1"><b>%s</b><span class="st %s">%s</span><em>%s</em></div>
           <div class="c2">%s</div>
           <div class="c3">%s</div>
           <div class="c4">%s</div>
-        </div>""" % (esc(s["name"]), cls, esc(s["tag"]),
+        </div>""" % (esc(s["name"]), cls, esc(s["tag"]), st_txt,
                      esc(s["func"]), link, esc(s["size"]))
 
 
-def server_panel():
+def server_panel(status=None):
     out = []
     for sv in SERVERS:
-        rows = "".join(site_row(s) for s in sv["sites"])
+        rows = "".join(site_row(s, status) for s in sv["sites"])
         out.append("""
       <section class="group">
         <div class="ghead">
@@ -155,7 +161,18 @@ def server_panel():
     return "\n".join(out)
 
 
+def load_status():
+    import json
+    fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site-status.json")
+    try:
+        with open(fp, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
 def build(items):
+    STATUS = load_status()
     panels, counts = {}, {}
     for plat in ("gitcode", "github"):
         sub = [x for x in items if x["platform"] == plat]
@@ -268,6 +285,8 @@ def build(items):
   .c1{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0;}
   .c1 b{font-size:13px;font-weight:600;white-space:nowrap;}
   .c1 em{font-style:normal;font-size:10.5px;color:var(--ink-3);flex-basis:100%;
+         margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .c1 em{font-style:normal;font-size:10.5px;color:var(--ink-3);flex-basis:100%;
          white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .st{font-size:10px;font-weight:500;white-space:nowrap;}
   .st.ok{color:var(--ok);}
@@ -347,7 +366,7 @@ function sw(p){
     return (html.replace("%(NOW)s", now)
                 .replace("%(P1)s", panels["gitcode"])
                 .replace("%(P2)s", panels["github"])
-                .replace("%(P3)s", server_panel())
+                .replace("%(P3)s", server_panel(STATUS))
                 .replace("%(N1)s", str(counts["gitcode"]))
                 .replace("%(N2)s", str(counts["github"]))
                 .replace("%(N3)s", str(site_total)))

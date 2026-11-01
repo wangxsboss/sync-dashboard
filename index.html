@@ -101,6 +101,8 @@
   .c1{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0;}
   .c1 b{font-size:13px;font-weight:600;white-space:nowrap;}
   .c1 em{font-style:normal;font-size:10.5px;color:var(--ink-3);flex-basis:100%;
+         margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .c1 em{font-style:normal;font-size:10.5px;color:var(--ink-3);flex-basis:100%;
          white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .st{font-size:10px;font-weight:500;white-space:nowrap;}
   .st.ok{color:var(--ok);}
@@ -139,7 +141,7 @@
       <h1><s>/</s>同步看板</h1>
       <p>对话归档 · 笔记镜像 · 服务器站点</p>
     </div>
-    <div class="stamp">更新 <b>2026-11-01 20:53</b> · 每 60 分钟自动同步</div>
+    <div class="stamp">更新 <b>2026-11-01 20:59</b> · 每 60 分钟自动同步</div>
   </div>
 
   <div class="tabs">
@@ -160,43 +162,43 @@
         <div class="cols"><span>站点</span><span>功能</span><span>网址</span><span>占用</span></div>
 
         <div class="site">
-          <div class="c1"><b>闲鱼管家</b><span class="st ok">运行中</span></div>
+          <div class="c1"><b>闲鱼管家</b><span class="st ok">运行中</span><em>更新 11-01 10:22 · 最近改动 wbapp.py</em></div>
           <div class="c2">闲鱼买卖全流程操作面板，负责商品抓取、自动上下架、批量改价与订单同步</div>
           <div class="c3"><a href="http://120.220.73.186:20789" target="_blank" rel="noopener">http://120.220.73.186:20789</a></div>
           <div class="c4">177 MB</div>
         </div>
         <div class="site">
-          <div class="c1"><b>账号切换台</b><span class="st ok">运行中</span></div>
+          <div class="c1"><b>账号切换台</b><span class="st ok">运行中</span><em>更新 10-29 17:32 · 最近改动 workbuddy-switch-usage.html</em></div>
           <div class="c2">六个 WorkBuddy 账号的快速切换入口，管理登录态与 Cookie 维护</div>
           <div class="c3"><a href="http://120.220.73.186:28095" target="_blank" rel="noopener">http://120.220.73.186:28095</a></div>
           <div class="c4">44 KB</div>
         </div>
         <div class="site">
-          <div class="c1"><b>模型接口站</b><span class="st ok">运行中</span></div>
+          <div class="c1"><b>模型接口站</b><span class="st ok">运行中</span><em>更新 11-01 20:58 · 最近改动 data/state.json</em></div>
           <div class="c2">把 WorkBuddy 账号池包装成标准接口，负责账号调度、OpenAI 兼容转发与用量统计</div>
           <div class="c3"><a href="http://120.220.73.186:28098" target="_blank" rel="noopener">http://120.220.73.186:28098</a></div>
           <div class="c4">12 MB</div>
         </div>
         <div class="site">
-          <div class="c1"><b>采集中心</b><span class="st ok">运行中</span></div>
+          <div class="c1"><b>采集中心</b><span class="st ok">运行中</span><em>更新 10-30 19:20 · 最近改动 api/webui/results.html</em></div>
           <div class="c2">多平台内容采集工具，负责关键词抓取、数据落库与结果导出</div>
           <div class="c3"><a href="http://120.220.73.186:28081" target="_blank" rel="noopener">http://120.220.73.186:28081</a></div>
           <div class="c4">2.0 GB</div>
         </div>
         <div class="site">
-          <div class="c1"><b>订单中枢</b><span class="st warn">仅内网</span></div>
+          <div class="c1"><b>订单中枢</b><span class="st warn">仅内网</span><em>更新 10-31 16:06 · 最近改动 backend-web/static/uploads/products/fav_1086173735070_fbe41504486a4115917b5e669a4ebb0a.jpg</em></div>
           <div class="c2">整套业务的核心后台，负责订单处理、商品管理、任务调度与发货记录</div>
           <div class="c3"><a href="http://120.220.73.186:3000" target="_blank" rel="noopener">http://120.220.73.186:3000</a></div>
           <div class="c4">450 MB</div>
         </div>
         <div class="site">
-          <div class="c1"><b>网络文件柜</b><span class="st warn">仅内网</span></div>
+          <div class="c1"><b>网络文件柜</b><span class="st warn">仅内网</span><em>更新 11-01 20:47 · 最近改动 static/shelf/covers.json</em></div>
           <div class="c2">服务器文件的网盘式管理，支持在线浏览、下载与目录挂载</div>
           <div class="c3"><a href="http://120.220.73.186:5244" target="_blank" rel="noopener">http://120.220.73.186:5244</a></div>
           <div class="c4">150 MB</div>
         </div>
         <div class="site">
-          <div class="c1"><b>无头浏览器</b><span class="st idle">后台</span></div>
+          <div class="c1"><b>无头浏览器</b><span class="st idle">后台</span><em>更新 10-20 04:07 · 最近改动 chrome/vk_swiftshader_icd.json</em></div>
           <div class="c2">自动化抓取的运行环境，负责登录鉴权、页面渲染与模拟点击</div>
           <div class="c3"><span class="nil">仅内网</span></div>
           <div class="c4">446 MB</div>
@@ -213,19 +215,19 @@
         <div class="cols"><span>站点</span><span>功能</span><span>网址</span><span>占用</span></div>
 
         <div class="site">
-          <div class="c1"><b>免费模型网关</b><span class="st ok">运行中</span></div>
+          <div class="c1"><b>免费模型网关</b><span class="st ok">运行中</span><em>更新 10-21 10:31 · 最近改动 packages/standalone/channels/business.mjs</em></div>
           <div class="c2">免费大模型的统一出口，负责模型聚合、请求转发、签到保活与用量统计</div>
           <div class="c3"><a href="http://183.146.215.78:18901" target="_blank" rel="noopener">http://183.146.215.78:18901</a></div>
           <div class="c4">69 MB</div>
         </div>
         <div class="site">
-          <div class="c1"><b>自动下注器</b><span class="st ok">运行中</span></div>
+          <div class="c1"><b>自动下注器</b><span class="st ok">运行中</span><em>更新 10-31 13:11 · 最近改动 config.json</em></div>
           <div class="c2">石头岛平台的自动化脚本，负责定时下注、策略触发、状态轮询与结果回写</div>
           <div class="c3"><a href="http://183.146.215.78:49655/" target="_blank" rel="noopener">http://183.146.215.78:49655/</a></div>
           <div class="c4">2 MB</div>
         </div>
         <div class="site">
-          <div class="c1"><b>服务器控制台</b><span class="st warn">未启动</span></div>
+          <div class="c1"><b>服务器控制台</b><span class="st warn">未启动</span><em>更新 11-01 20:58 · 最近改动 data/session/2029240f6d1128be89ddc32729463129</em></div>
           <div class="c2">可视化运维入口（服务未启动），涵盖站点、数据库、文件与证书管理</div>
           <div class="c3"><a href="http://183.146.215.78:27976/5f6413e9" target="_blank" rel="noopener">http://183.146.215.78:27976/5f6413e9</a></div>
           <div class="c4">—</div>
@@ -265,10 +267,10 @@
           <span>本页面的源码镜像</span>
         </div>
         <div class="figs">
-          <div><em>提交</em><strong>11</strong></div>
+          <div><em>提交</em><strong>12</strong></div>
           <div><em>文件</em><strong>3</strong></div>
-          <div><em>体积</em><strong>29.3<i>KB</i></strong></div>
-          <div><em>最后同步</em><strong class="tm">11-01 20:49</strong></div>
+          <div><em>体积</em><strong>36.4<i>KB</i></strong></div>
+          <div><em>最后同步</em><strong class="tm">11-01 20:53</strong></div>
         </div>
       </article>
     </div></section>
@@ -292,10 +294,10 @@
           <span>本页面托管源（GitHub Pages）</span>
         </div>
         <div class="figs">
-          <div><em>提交</em><strong>11</strong></div>
+          <div><em>提交</em><strong>12</strong></div>
           <div><em>文件</em><strong>3</strong></div>
-          <div><em>体积</em><strong>29.3<i>KB</i></strong></div>
-          <div><em>最后同步</em><strong class="tm">11-01 20:49</strong></div>
+          <div><em>体积</em><strong>36.4<i>KB</i></strong></div>
+          <div><em>最后同步</em><strong class="tm">11-01 20:53</strong></div>
         </div>
       </article>
     </div></section>
@@ -303,7 +305,7 @@
 
   <footer>
     <span>GitCode · GitHub 双写</span>
-    <span>站点数据采集于 2026-11-01 20:53</span>
+    <span>站点数据采集于 2026-11-01 20:59</span>
   </footer>
 
 </div>
