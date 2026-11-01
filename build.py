@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-"""生成同步看板 index.html —— 纸质台账风格，三标签（GitCode / GitHub / 服务器）"""
+"""生成同步看板 index.html —— 紧凑面板风格（红 #cc3b23 / 灰白底 / 12px 字）
+三标签：GitCode / GitHub / 服务器
+"""
 import os
 import subprocess
 import sys
@@ -24,30 +26,40 @@ SERVERS = [
     {
         "host": "服务器 A", "ip": "120.220.73.186", "spec": "2 核 2G · 29G",
         "sites": [
-            {"name": "闲鱼管家", "raw": "闲鱼工作台", "func": "商品采集、上下架、改价，一站式操作面板",
+            {"name": "闲鱼管家", "desc": "商品抓取 · 自动上下架 · 批量改价 · 订单同步",
+             "func": "闲鱼买卖全流程的操作面板",
              "url": "http://120.220.73.186:20789", "size": "177 MB", "tag": "运行中"},
-            {"name": "账号切换台", "raw": "WorkBuddy 账号切换", "func": "六个 WorkBuddy 账号的快速切换",
+            {"name": "账号切换台", "desc": "多账号切换 · 登录态管理 · Cookie 维护",
+             "func": "六个 WorkBuddy 账号的快速切换入口",
              "url": "http://120.220.73.186:28095", "size": "44 KB", "tag": "运行中"},
-            {"name": "模型接口站", "raw": "WorkBuddy2API", "func": "账号池包装成 OpenAI 兼容接口",
+            {"name": "模型接口站", "desc": "账号池调度 · OpenAI 兼容转发 · 用量统计",
+             "func": "把 WorkBuddy 账号池包装成标准接口",
              "url": "http://120.220.73.186:28098", "size": "12 MB", "tag": "运行中"},
-            {"name": "采集中心", "raw": "MediaCrawler", "func": "多平台内容批量采集抓取",
+            {"name": "采集中心", "desc": "多平台抓取 · 关键词采集 · 数据落库 · 结果导出",
+             "func": "内容数据批量采集与分析",
              "url": "http://120.220.73.186:28081", "size": "2.0 GB", "tag": "运行中"},
-            {"name": "订单中枢", "raw": "xianyu-admin", "func": "订单、商品、任务调度的核心后台",
+            {"name": "订单中枢", "desc": "订单处理 · 商品管理 · 任务调度 · 发货记录",
+             "func": "整套业务的核心后台",
              "url": "http://120.220.73.186:3000", "size": "450 MB", "tag": "仅内网"},
-            {"name": "网络文件柜", "raw": "OpenList", "func": "服务器文件在线浏览与下载",
+            {"name": "网络文件柜", "desc": "文件浏览 · 在线下载 · 目录挂载",
+             "func": "服务器文件的网盘式管理",
              "url": "http://120.220.73.186:5244", "size": "150 MB", "tag": "仅内网"},
-            {"name": "无头浏览器", "raw": "Chrome", "func": "自动化抓取用的浏览器环境",
+            {"name": "无头浏览器", "desc": "登录鉴权 · 页面渲染 · 自动化点击",
+             "func": "自动化抓取的运行环境",
              "url": "", "size": "446 MB", "tag": "后台"},
         ],
     },
     {
         "host": "服务器 B", "ip": "183.146.215.78", "spec": "1 核 1G · 40G",
         "sites": [
-            {"name": "免费模型网关", "raw": "Our Free Model", "func": "免费大模型聚合、转发与用量统计",
+            {"name": "免费模型网关", "desc": "模型聚合 · 请求转发 · 签到保活 · 用量统计",
+             "func": "免费大模型的统一出口",
              "url": "http://183.146.215.78:18901", "size": "69 MB", "tag": "运行中"},
-            {"name": "自动下注器", "raw": "石头岛 bot", "func": "石头岛平台定时下注脚本",
+            {"name": "自动下注器", "desc": "定时下注 · 策略触发 · 状态轮询 · 结果回写",
+             "func": "石头岛平台的自动化脚本",
              "url": "", "size": "2 MB", "tag": "仅内网"},
-            {"name": "服务器控制台", "raw": "宝塔面板", "func": "站点、数据库、文件的可视化运维",
+            {"name": "服务器控制台", "desc": "站点管理 · 数据库 · 文件传输 · 证书签发",
+             "func": "可视化运维入口（服务未启动）",
              "url": "http://183.146.215.78:27976/5f6413e9", "size": "—", "tag": "未启动"},
         ],
     },
@@ -101,19 +113,19 @@ def esc(s):
 
 
 def repo_row(d):
-    unit = '<s>%s</s>' % d["unit"] if d["unit"] else ""
+    unit = '<i>%s</i>' % d["unit"] if d["unit"] else ""
     return """
       <article class="row">
         <div class="lead">
-          <h2>%s</h2>
-          <p>%s</p>
+          <b>%s</b>
+          <span>%s</span>
         </div>
-        <dl class="figs">
-          <div><dt>提交</dt><dd>%s</dd></div>
-          <div><dt>文件</dt><dd>%s</dd></div>
-          <div><dt>体积</dt><dd>%s%s</dd></div>
-          <div><dt>最后同步</dt><dd class="tm">%s</dd></div>
-        </dl>
+        <div class="figs">
+          <div><em>提交</em><strong>%s</strong></div>
+          <div><em>文件</em><strong>%s</strong></div>
+          <div><em>体积</em><strong>%s%s</strong></div>
+          <div><em>最后同步</em><strong class="tm">%s</strong></div>
+        </div>
       </article>""" % (esc(d["name"]), esc(d["note"]), d["commits"], d["count"],
                        d["num"], unit, esc(d["updated"]))
 
@@ -123,15 +135,15 @@ def site_row(s):
         link = '<a href="%s" target="_blank" rel="noopener">%s</a>' % (s["url"], esc(s["url"]))
     else:
         link = '<span class="nil">仅内网</span>'
-    cls = "warn" if s["tag"] in ("仅内网", "未启动") else ("idle" if s["tag"] == "后台" else "ok")
+    cls = {"运行中": "ok", "仅内网": "warn", "未启动": "warn", "后台": "idle"}.get(s["tag"], "idle")
     return """
-      <div class="site">
-        <div class="s1"><b>%s</b><i class="%s">%s</i><em>%s</em></div>
-        <div class="s2">%s</div>
-        <div class="s3">%s</div>
-        <div class="s4">%s</div>
-      </div>""" % (esc(s["name"]), cls, esc(s["tag"]), esc(s["raw"]),
-                   esc(s["func"]), link, esc(s["size"]))
+        <div class="site">
+          <div class="c1"><b>%s</b><span class="st %s">%s</span><em>%s</em></div>
+          <div class="c2">%s</div>
+          <div class="c3">%s</div>
+          <div class="c4">%s</div>
+        </div>""" % (esc(s["name"]), cls, esc(s["tag"]), esc(s["desc"]),
+                     esc(s["func"]), link, esc(s["size"]))
 
 
 def server_panel():
@@ -141,13 +153,13 @@ def server_panel():
         out.append("""
       <section class="group">
         <div class="ghead">
-          <h2>%s</h2>
+          <b>%s</b>
           <code>%s</code>
           <span class="spec">%s</span>
           <span class="cnt">%d 个站点</span>
         </div>
         <div class="cols"><span>站点</span><span>功能</span><span>网址</span><span>占用</span></div>
-        %s
+%s
       </section>""" % (esc(sv["host"]), esc(sv["ip"]), esc(sv["spec"]),
                         len(sv["sites"]), rows))
     return "\n".join(out)
@@ -171,208 +183,153 @@ def build(items):
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="googlebot" content="noindex, nofollow">
 <meta name="color-scheme" content="light">
-<title>同步台账 · Sync Ledger</title>
+<title>同步看板 · Sync Dashboard</title>
 <style>
   :root{
-    --paper:#f6f3ec;
-    --paper:#oklch(96.8% 0.008 85);
-    --ink:#171614;
-    --ink:#oklch(22% 0.008 80);
-    --ink-2:#5a564d;
-    --ink-3:#918b7e;
-    --rule:#ddd6c8;
-    --rule-soft:#eae4d8;
-    --accent:#b23a1c;
-    --accent:#oklch(50% 0.14 35);
-    --ok:#1c6b4f;
-    --warn:#9a6a12;
-
-    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:36px; --s7:56px;
-
-    --sans:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    --mono:ui-monospace,"Cascadia Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --bg:#ebedee;
+    --panel:#ffffff;
+    --panel-2:#fcfdfd;
+    --line:#e3e7e9;
+    --line-2:#d6dbde;
+    --ink:#171b1e;
+    --ink-2:#444c51;
+    --ink-3:#7c858a;
+    --red:#cc3b23;
+    --red-d:#b9331d;
+    --red-bg:#fdf0ec;
+    --ok:#1a7f52;
+    --warn:#a4670a;
+    --sans:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
+    --mono:ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html{-webkit-text-size-adjust:100%;}
   body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--sans);
-    font-size:14px;line-height:1.55;
-    padding:clamp(20px,4vw,56px) clamp(16px,4vw,40px) 72px;
-    -webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
+    background:var(--bg);color:var(--ink);
+    font-family:var(--sans);font-size:12.5px;line-height:1.55;
+    padding:20px 16px 40px;-webkit-font-smoothing:antialiased;
   }
-  .page{max-width:940px;margin:0 auto;}
+  .page{max-width:1000px;margin:0 auto;}
 
-  /* ---------- 报头 ---------- */
-  header{
-    display:flex;align-items:flex-start;justify-content:space-between;
-    gap:var(--s5);flex-wrap:wrap;
-    padding-bottom:var(--s5);border-bottom:2px solid var(--ink);
-  }
-  .kicker{
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--accent);margin-bottom:var(--s2);
-  }
-  h1{
-    font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-.02em;
-    line-height:1.1;
-  }
-  .lede{color:var(--ink-2);font-size:13px;margin-top:var(--s2);max-width:46ch;}
-  .stamp{
-    text-align:right;font-family:var(--mono);font-size:11px;color:var(--ink-3);
-    line-height:1.7;white-space:nowrap;
-  }
-  .stamp b{display:block;color:var(--ink);font-weight:600;font-size:12.5px;}
+  /* 顶栏 */
+  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+       flex-wrap:wrap;margin-bottom:14px;}
+  .top h1{font-size:16px;font-weight:600;letter-spacing:.2px;}
+  .top h1 s{text-decoration:none;color:var(--red);margin-right:6px;}
+  .top p{color:var(--ink-3);font-size:11.5px;margin-top:3px;}
+  .stamp{font-family:var(--mono);font-size:11px;color:var(--ink-3);text-align:right;}
+  .stamp b{color:var(--ink-2);font-weight:600;}
 
-  /* ---------- 标签页 ---------- */
-  .tabs{display:flex;gap:var(--s5);margin-top:var(--s5);border-bottom:1px solid var(--rule);}
+  /* 标签 */
+  .tabs{display:inline-flex;background:#e1e5e7;border-radius:7px;padding:2px;gap:2px;margin-bottom:14px;}
   .tabs button{
-    appearance:none;background:none;border:0;border-bottom:2px solid transparent;
-    font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.02em;
-    color:var(--ink-3);padding:0 0 10px;margin-bottom:-1px;cursor:pointer;
-    transition:color .18s cubic-bezier(.16,1,.3,1),border-color .18s cubic-bezier(.16,1,.3,1);
+    appearance:none;border:0;background:transparent;font-family:inherit;
+    font-size:12px;font-weight:600;color:var(--ink-3);padding:5px 14px;border-radius:5px;
+    cursor:pointer;transition:background .15s,color .15s;
   }
   .tabs button:hover{color:var(--ink-2);}
-  .tabs button.on{color:var(--ink);border-bottom-color:var(--accent);}
-  .tabs button span{
-    font-family:var(--mono);font-size:10.5px;font-weight:500;color:var(--ink-3);
-    margin-left:5px;vertical-align:top;
-  }
+  .tabs button.on{background:#fff;color:var(--red);box-shadow:0 1px 2px rgba(23,27,30,.10);}
+  .tabs button u{text-decoration:none;font-family:var(--mono);font-size:10.5px;
+                 color:var(--ink-3);margin-left:4px;font-weight:500;}
+  .tabs button.on u{color:var(--red);opacity:.75;}
 
-  /* ---------- 面板 ---------- */
-  .panel{display:none;padding-top:var(--s2);}
-  .panel.on{display:block;animation:fade .28s cubic-bezier(.16,1,.3,1) both;}
-  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+  /* 面板 */
+  .panel{display:none;}
+  .panel.on{display:block;}
 
-  /* ---------- 仓库行 ---------- */
-  .row{
-    display:flex;align-items:center;justify-content:space-between;gap:var(--s5);
-    padding:var(--s4) 0;border-bottom:1px solid var(--rule-soft);flex-wrap:wrap;
-  }
+  /* 仓库行 */
+  .rows{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:16px;
+       padding:11px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap;
+       transition:background .15s;}
   .row:last-child{border-bottom:0;}
-  .lead h2{font-size:16px;font-weight:650;letter-spacing:-.01em;}
-  .lead p{font-size:12.5px;color:var(--ink-3);margin-top:2px;}
-  .figs{display:flex;gap:clamp(18px,3vw,34px);}
+  .row:hover{background:var(--red-bg);}
+  .lead b{font-size:13px;font-weight:600;display:block;}
+  .lead span{font-size:11.5px;color:var(--ink-3);}
+  .figs{display:flex;gap:22px;}
   .figs div{text-align:right;}
-  .figs dt{
-    font-size:10px;letter-spacing:.11em;color:var(--ink-3);
-    text-transform:uppercase;margin-bottom:1px;
-  }
-  .figs dd{
-    font-family:var(--mono);font-size:16px;font-weight:600;
-    font-variant-numeric:tabular-nums;letter-spacing:-.01em;
-  }
-  .figs dd s{text-decoration:none;font-size:11px;color:var(--ink-3);margin-left:3px;font-weight:500;}
-  .figs dd.tm{font-size:12.5px;font-weight:500;color:var(--ink-2);}
+  .figs em{display:block;font-style:normal;font-size:10px;color:var(--ink-3);
+           letter-spacing:.04em;margin-bottom:1px;}
+  .figs strong{font-family:var(--mono);font-size:13.5px;font-weight:600;
+               font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+  .figs strong i{font-style:normal;font-size:10px;color:var(--ink-3);margin-left:2px;font-weight:500;}
+  .figs strong.tm{font-size:11.5px;font-weight:500;color:var(--ink-2);}
 
-  /* ---------- 服务器分组 ---------- */
-  .group{margin-top:var(--s7);}
-  .group:first-child{margin-top:var(--s5);}
-  .ghead{
-    display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap;
-    padding-bottom:var(--s2);border-bottom:1px solid var(--ink);
-  }
-  .ghead h2{font-size:15px;font-weight:700;letter-spacing:.02em;}
-  .ghead code{
-    font-family:var(--mono);font-size:12px;color:var(--ink-2);
-    background:none;padding:0;
-  }
-  .ghead .spec{font-size:11.5px;color:var(--ink-3);}
+  /* 服务器分组 */
+  .group{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+         overflow:hidden;margin-bottom:12px;}
+  .ghead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+         padding:9px 14px;background:var(--panel-2);border-bottom:1px solid var(--line);}
+  .ghead b{font-size:12.5px;font-weight:600;}
+  .ghead code{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);}
+  .ghead .spec{font-size:11px;color:var(--ink-3);}
   .ghead .cnt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);}
 
-  .cols{
-    display:grid;grid-template-columns:148px minmax(140px,1fr) 196px 62px;
-    gap:var(--s4);padding:var(--s2) var(--s2) var(--s1);
-    font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);
-  }
+  .cols{display:grid;grid-template-columns:158px minmax(150px,1fr) 210px 62px;
+        gap:14px;padding:6px 14px 5px;font-size:10px;color:var(--ink-3);letter-spacing:.04em;
+        border-bottom:1px solid var(--line);}
   .cols span:last-child{text-align:right;}
 
-  .site{
-    display:grid;grid-template-columns:148px minmax(140px,1fr) 196px 62px;
-    gap:var(--s4);align-items:center;
-    padding:11px var(--s2);border-bottom:1px solid var(--rule-soft);
-    border-left:2px solid transparent;
-    transition:background .18s cubic-bezier(.16,1,.3,1),border-color .18s cubic-bezier(.16,1,.3,1);
-  }
-  .site:hover{background:rgba(178,58,28,.035);border-left-color:var(--accent);}
+  .site{display:grid;grid-template-columns:158px minmax(150px,1fr) 210px 62px;
+        gap:14px;align-items:center;padding:8px 14px;
+        border-bottom:1px solid #f0f2f3;transition:background .15s;}
   .site:last-child{border-bottom:0;}
+  .site:hover{background:var(--red-bg);}
 
-  .s1{display:flex;flex-direction:column;gap:1px;min-width:0;}
-  .s1 b{font-size:13.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .s1 i{
-    font-style:normal;font-size:10px;letter-spacing:.06em;
-    padding:0;line-height:1.5;
-  }
-  .s1 i.ok{color:var(--ok);}
-  .s1 i.warn{color:var(--warn);}
-  .s1 i.idle{color:var(--ink-3);}
-  .s1 em{
-    font-style:normal;font-size:10.5px;color:var(--ink-3);
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  }
-  .s2{font-size:12.5px;color:var(--ink-2);min-width:0;}
-  .s3{font-size:11.5px;min-width:0;word-break:break-all;}
-  .s3 a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--rule);}
-  .s3 a:hover{color:var(--accent);border-bottom-color:var(--accent);}
-  .nil{color:var(--ink-3);font-style:italic;}
-  .s4{
-    font-family:var(--mono);font-size:12px;color:var(--ink-2);
-    text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;
-  }
+  .c1{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;min-width:0;}
+  .c1 b{font-size:12.5px;font-weight:600;white-space:nowrap;}
+  .c1 em{font-style:normal;font-size:10.5px;color:var(--ink-3);flex-basis:100%;
+         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .st{font-size:10px;font-weight:500;white-space:nowrap;}
+  .st.ok{color:var(--ok);}
+  .st.warn{color:var(--warn);}
+  .st.idle{color:var(--ink-3);}
+  .st::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
+              margin-right:4px;vertical-align:1px;background:currentColor;}
 
-  /* ---------- 页脚 ---------- */
-  footer{
-    display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;
-    margin-top:var(--s7);padding-top:var(--s3);border-top:1px solid var(--rule);
-    font-size:11.5px;color:var(--ink-3);font-family:var(--mono);
-  }
+  .c2{font-size:12px;color:var(--ink-2);min-width:0;}
+  .c3{font-size:11.5px;min-width:0;word-break:break-all;}
+  .c3 a{color:var(--red-d);text-decoration:none;}
+  .c3 a:hover{text-decoration:underline;}
+  .nil{color:var(--ink-3);}
+  .c4{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);
+      text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
 
-  @media (max-width:680px){
-    header{gap:var(--s3);}
-    .stamp{text-align:left;white-space:normal;}
-    .tabs{gap:var(--s4);}
-    .row{flex-direction:column;align-items:flex-start;gap:var(--s3);}
-    .figs{width:100%;justify-content:space-between;gap:var(--s2);}
+  footer{margin-top:18px;display:flex;justify-content:space-between;gap:12px;
+         flex-wrap:wrap;font-size:11px;color:var(--ink-3);font-family:var(--mono);}
+
+  @media (max-width:700px){
+    .row{flex-direction:column;align-items:flex-start;gap:8px;}
+    .figs{width:100%;justify-content:space-between;gap:8px;}
     .figs div{text-align:left;}
     .cols{display:none;}
-    .site{grid-template-columns:1fr;gap:3px;padding:13px var(--s2);border-left:0;
-          border-bottom:1px solid var(--rule);}
-    .site:hover{border-left:0;}
-    .s4{text-align:left;}
-    .s1{flex-direction:row;align-items:baseline;gap:var(--s2);flex-wrap:wrap;}
-    .s1 em{flex-basis:100%;}
+    .site{grid-template-columns:1fr;gap:4px;padding:10px 14px;}
+    .c4{text-align:left;}
+    .c1 em{flex-basis:auto;}
   }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <header>
+  <div class="top">
     <div>
-      <div class="kicker">Sync Ledger</div>
-      <h1>同步台账</h1>
-      <p class="lede">对话归档、笔记镜像与两台服务器站点的运行记录。</p>
+      <h1><s>/</s>同步看板</h1>
+      <p>对话归档 · 笔记镜像 · 服务器站点</p>
     </div>
-    <div class="stamp">
-      最近更新
-      <b>%(NOW)s</b>
-      每 60 分钟自动同步
-    </div>
-  </header>
+    <div class="stamp">更新 <b>%(NOW)s</b> · 每 60 分钟自动同步</div>
+  </div>
 
-  <nav class="tabs">
-    <button id="tab-gitcode" class="on" onclick="sw('gitcode')">GitCode<span>%(N1)s</span></button>
-    <button id="tab-github" onclick="sw('github')">GitHub<span>%(N2)s</span></button>
-    <button id="tab-servers" onclick="sw('servers')">服务器<span>%(N3)s</span></button>
-  </nav>
+  <div class="tabs">
+    <button id="tab-gitcode" class="on" onclick="sw('gitcode')">GitCode<u>%(N1)s</u></button>
+    <button id="tab-github" onclick="sw('github')">GitHub<u>%(N2)s</u></button>
+    <button id="tab-servers" onclick="sw('servers')">服务器<u>%(N3)s</u></button>
+  </div>
 
   <main>
-    <section id="panel-gitcode" class="panel on">%(P1)s
-    </section>
-    <section id="panel-github" class="panel">%(P2)s
-    </section>
+    <section id="panel-gitcode" class="panel on"><div class="rows">%(P1)s
+    </div></section>
+    <section id="panel-github" class="panel"><div class="rows">%(P2)s
+    </div></section>
     <section id="panel-servers" class="panel">%(P3)s
     </section>
   </main>
