@@ -11,15 +11,29 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 REPOS = [
     {"path": r"D:\WorkBuddyArchive", "name": "workbuddy-archive", "platform": "gitcode",
-     "note": "WorkBuddy 全部对话归档", "repo": "https://gitcode.com/chaoshen59/workbuddy-archive"},
+     "note": "WorkBuddy 全部对话归档", "repo": "https://gitcode.com/chaoshen59/workbuddy-archiveworkbuddy-archive"},
     {"path": r"D:\ObsidianMirror", "name": "obsidian-notes", "platform": "gitcode",
      "note": "Obsidian 核心笔记镜像", "repo": "https://gitcode.com/chaoshen59/obsidian-notes"},
     {"path": r"D:\SyncDashboard", "name": "sync-dashboard", "platform": "gitcode",
      "note": "本页面的源码镜像", "repo": "https://gitcode.com/chaoshen59/sync-dashboard"},
+    {"path": r"D:\ServerMirror\server-a-code", "name": "server-a-code", "platform": "gitcode",
+     "note": "服务器 A 全部站点源码 + 数据库",
+     "repo": "https://gitcode.com/chaoshen59/server-a-code"},
+    {"path": r"D:\ServerMirror\server-b-code", "name": "server-b-code", "platform": "gitcode",
+     "note": "服务器 B 全部站点源码 + 数据库",
+     "repo": "https://gitcode.com/chaoshen59/server-b-code"},
     {"path": r"D:\WorkBuddyArchive", "name": "workbuddy-archive", "platform": "github",
      "note": "海外第二份，防单点失效", "repo": "https://github.com/wangxsboss/workbuddy-archive"},
+    {"path": r"D:\ObsidianMirror", "name": "obsidian-notes", "platform": "github",
+     "note": "笔记海外备份", "live": False, "repo": "https://github.com/wangxsboss/obsidian-notes"},
     {"path": r"D:\SyncDashboard", "name": "sync-dashboard", "platform": "github",
      "note": "本页面托管源（GitHub Pages）", "repo": "https://github.com/wangxsboss/sync-dashboard"},
+    {"path": r"D:\ServerMirror\server-a-code", "name": "server-a-code", "platform": "github",
+     "note": "A 站源码海外备份（待补推）", "live": False,
+     "repo": "https://github.com/wangxsboss/server-a-code"},
+    {"path": r"D:\ServerMirror\server-b-code", "name": "server-b-code", "platform": "github",
+     "note": "B 站源码海外备份（待补推）", "live": False,
+     "repo": "https://github.com/wangxsboss/server-b-code"},
 ]
 
 SERVERS = [
@@ -91,7 +105,7 @@ def collect(r):
     num, unit = (sz.split("|") + [""])[:2] if "|" in sz else (sz, "")
     return {
         "name": r["name"], "platform": r["platform"], "note": r["note"],
-        "repo": r.get("repo", ""),
+        "repo": r.get("repo", ""), "live": r.get("live", True),
         "commits": git(p, ["rev-list", "--count", "HEAD"]) or "0",
         "count": len([x for x in git(p, ["ls-files"]).splitlines() if x]),
         "num": num, "unit": unit,
@@ -116,20 +130,33 @@ def btn(url, label="打开", note="", enabled=True):
 
 def repo_card(d):
     unit = '<i>%s</i>' % d["unit"] if d["unit"] else ""
+    live = d.get("live", True)
+    if live:
+        pill = '<span class="pill blue">%s</span>' % PLAT_NAME[d["platform"]]
+        act = btn(d["repo"], "打开仓库")
+    else:
+        pill = ('<span class="pill gray">%s</span>'
+                '<span class="pill orange">未推送</span>') % PLAT_NAME[d["platform"]]
+        act = ('<div class="act"><span class="btn off">待补推</span>'
+               '<span class="url">%s</span></div>') % esc(d["repo"])
+    if live:
+        meta = "提交 %s | 文件 %s | 体积 %s%s | 最后同步 %s" % (
+            d["commits"], d["count"], d["num"], unit, esc(d["updated"]))
+    else:
+        meta = "本地副本就绪 · 提交 %s | 文件 %s | 体积 %s%s" % (
+            d["commits"], d["count"], d["num"], unit)
     return """
       <article class="card">
         <div class="left">
           <div class="hd">
             <h3>%s</h3>
-            <span class="pill blue">%s</span>
+            %s
           </div>
           <p class="desc">%s</p>
-          <p class="meta">提交 %s | 文件 %s | 体积 %s%s | 最后同步 %s</p>
+          <p class="meta">%s</p>
         </div>
         %s
-      </article>""" % (esc(d["name"]), PLAT_NAME[d["platform"]], esc(d["note"]),
-                       d["commits"], d["count"], d["num"], unit, esc(d["updated"]),
-                       btn(d["repo"], "打开仓库"))
+      </article>""" % (esc(d["name"]), pill, esc(d["note"]), meta, act)
 
 
 def site_card(s, status=None):
@@ -198,6 +225,15 @@ def build(items):
     site_total = sum(len(sv["sites"]) for sv in SERVERS)
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
 
+    g_all = [x for x in items if x["platform"] == "github"]
+    g_live = [x for x in g_all if x.get("live", True)]
+    if len(g_live) < len(g_all):
+        hint = ("服务器 = 站点运行情况 · GitCode = %d 个源码仓库 · "
+                "GitHub = %d 个已推送，另有 %d 个待补推"
+                % (counts["gitcode"], len(g_live), len(g_all) - len(g_live)))
+    else:
+        hint = "服务器 = 站点运行情况 · GitCode / GitHub = 源码仓库，两边不混"
+
     html = """<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -209,28 +245,31 @@ def build(items):
 <title>同步看板 · Sync Dashboard</title>
 <style>
   :root{
-    --bg:#f7f8fa;
+    --bg:#e6eaf1;
     --card:#ffffff;
-    --line:#ebedf0;
-    --ink:#1f2329;
-    --ink-2:#5a6472;
-    --ink-3:#8a919f;
-    --ink-4:#a8afb8;
-    --blue:#1c6eff;
-    --blue-bg:#e8f1ff;
-    --green:#0e9f6e;
-    --green-bg:#e8f7f0;
-    --orange:#d97706;
-    --orange-bg:#fff4e6;
-    --red:#d54941;
-    --red-bg:#fdeceb;
-    --gray-bg:#f1f3f5;
+    --line:#d7dee8;
+    --ink:#101419;
+    --ink-2:#3f4855;
+    --ink-3:#5c6675;
+    --ink-4:#838c9b;
+    --blue:#0a4fc4;
+    --blue-bg:#dde9fb;
+    --green:#077a55;
+    --green-bg:#d9f2e7;
+    --orange:#b25c05;
+    --orange-bg:#fcead2;
+    --red:#b62f27;
+    --red-bg:#fadfdc;
+    --gray-bg:#e8ecf2;
     --sans:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
     --mono:ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{
-    background:var(--bg);color:var(--ink);
+    background:var(--bg);
+    background-image:linear-gradient(180deg,#dfe5ef 0%,#e9edf3 360px,#eef1f6 100%);
+    background-attachment:fixed;
+    color:var(--ink);
     font-family:var(--sans);font-size:14px;line-height:1.6;
     padding:28px 18px 56px;-webkit-font-smoothing:antialiased;
   }
@@ -246,14 +285,15 @@ def build(items):
   .stamp b{color:var(--ink-2);font-weight:600;}
 
   /* 标签 */
-  .tabs{display:inline-flex;background:#eef1f5;border-radius:12px;padding:4px;gap:4px;margin-bottom:22px;}
+  .tabs{display:inline-flex;background:#dce2eb;border-radius:12px;padding:4px;gap:4px;margin-bottom:22px;
+        box-shadow:inset 0 1px 2px rgba(16,24,40,.05);}
   .tabs button{
     appearance:none;border:0;background:transparent;font-family:inherit;
     font-size:13px;font-weight:500;color:var(--ink-3);padding:7px 18px;border-radius:9px;
     cursor:pointer;transition:background .15s,color .15s;
   }
   .tabs button:hover{color:var(--ink-2);}
-  .tabs button.on{background:#fff;color:var(--blue);font-weight:600;box-shadow:0 1px 3px rgba(31,35,41,.08);}
+  .tabs button.on{background:#fff;color:var(--blue);font-weight:600;box-shadow:0 1px 3px rgba(16,24,40,.14);}
   .tabs button u{text-decoration:none;font-family:var(--mono);font-size:11px;
                  color:var(--ink-4);margin-left:6px;font-weight:500;}
   .tabs button.on u{color:var(--blue);opacity:.85;}
@@ -276,11 +316,12 @@ def build(items):
   .card{
     display:flex;align-items:center;gap:20px;
     background:var(--card);border:1px solid var(--line);border-radius:16px;
-    padding:20px 22px;margin-bottom:14px;
+    padding:19px 22px;margin-bottom:13px;
+    box-shadow:0 1px 2px rgba(16,24,40,.05);
     transition:border-color .15s,box-shadow .15s,transform .15s;
   }
   .card:last-child{margin-bottom:0;}
-  .card:hover{border-color:#dde2ea;box-shadow:0 4px 16px rgba(31,35,41,.06);}
+  .card:hover{border-color:#c2ccda;box-shadow:0 4px 16px rgba(16,24,40,.09);}
   .left{flex:1;min-width:0;}
 
   .hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
@@ -300,30 +341,30 @@ def build(items):
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .meta i{font-style:normal;font-size:10.5px;margin-left:2px;}
 
-  .act{flex:0 0 auto;width:230px;display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
-  .act .btn{width:100%;}
+  .act{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+       max-width:250px;}
   .url{font-family:var(--mono);font-size:10px;color:var(--ink-4);line-height:1.45;
-       text-align:right;word-break:break-all;max-width:100%;letter-spacing:-.1px;}
+       text-align:right;word-break:break-all;max-width:250px;letter-spacing:-.1px;}
 
   .btn{
     flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
-    min-width:84px;height:36px;padding:0 18px;border-radius:11px;
-    background:var(--blue-bg);color:var(--blue);font-size:13px;font-weight:500;
-    text-decoration:none;transition:background .15s,color .15s;
+    min-width:66px;height:30px;padding:0 14px;border-radius:9px;
+    background:var(--blue-bg);color:var(--blue);font-size:12.5px;font-weight:500;
+    text-decoration:none;border:1px solid #c6d8f6;
+    transition:background .15s,color .15s,border-color .15s;
   }
-  .btn:hover{background:var(--blue);color:#fff;}
-  .btn.off{background:var(--gray-bg);color:var(--ink-4);cursor:default;}
-  .btn.off:hover{background:var(--gray-bg);color:var(--ink-4);}
+  .btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+  .btn.off{background:var(--gray-bg);color:var(--ink-4);cursor:default;border-color:#dbe1ea;}
+  .btn.off:hover{background:var(--gray-bg);color:var(--ink-4);border-color:#dbe1ea;}
 
   footer{margin-top:26px;padding:0 6px;display:flex;justify-content:space-between;gap:12px;
          flex-wrap:wrap;font-size:11.5px;color:var(--ink-4);font-family:var(--mono);}
 
   @media (max-width:700px){
     body{padding:20px 12px 40px;}
-    .card{flex-direction:column;align-items:stretch;gap:14px;padding:18px;border-radius:14px;}
-    .act{width:100%;align-items:stretch;}
-    .url{text-align:left;}
-    .btn{width:100%;height:40px;}
+    .card{flex-direction:column;align-items:stretch;gap:12px;padding:17px;border-radius:14px;}
+    .act{max-width:100%;align-items:flex-start;}
+    .url{text-align:left;max-width:100%;}
     .meta{white-space:normal;}
     .top h1{font-size:19px;}
   }
@@ -345,7 +386,7 @@ def build(items):
     <button id="tab-gitcode" onclick="sw('gitcode')">GitCode<u>%(N1)s</u></button>
     <button id="tab-github" onclick="sw('github')">GitHub<u>%(N2)s</u></button>
   </div>
-  <p class="hint">服务器 = 站点运行情况 · GitCode / GitHub = 源码仓库，两边不混</p>
+  <p class="hint">%(HINT)s</p>
 
   <main>
     <section id="panel-servers" class="panel on">%(P3)s
@@ -390,6 +431,7 @@ function sw(p){
 </html>
 """
     return (html.replace("%(NOW)s", now)
+                .replace("%(HINT)s", hint)
                 .replace("%(P1)s", panels["gitcode"])
                 .replace("%(P2)s", panels["github"])
                 .replace("%(P3)s", server_panel(STATUS))
