@@ -13,7 +13,7 @@
   body{background:var(--bg);color:var(--ink);
        font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
        font-size:14px;line-height:1.6;padding:24px 16px 48px;-webkit-font-smoothing:antialiased;}
-  .wrap{max-width:780px;margin:0 auto;}
+  .wrap{max-width:880px;margin:0 auto;}
   header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
          flex-wrap:wrap;margin-bottom:16px;}
   h1{font-size:20px;font-weight:600;letter-spacing:.3px;}
@@ -53,19 +53,34 @@
   .svip{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--ink2);}
   .svspec{font-size:12px;color:var(--ink3);}
   .svcount{margin-left:auto;font-size:12px;color:var(--ink3);}
+  .svcols{display:grid;grid-template-columns:132px minmax(150px,1fr) minmax(170px,220px) 72px;
+          gap:14px;padding:0 14px 6px;font-size:11px;color:var(--ink3);letter-spacing:.3px;}
+  .svcols .r{text-align:right;}
+  @media (max-width:640px){ .svcols{display:none;} }
 
-  .site{padding:14px 16px;}
-  .sname{font-weight:600;font-size:15px;}
-  .tag{font-size:11px;padding:1px 8px;border-radius:20px;border:1px solid;}
+  .site{display:grid;grid-template-columns:132px minmax(150px,1fr) minmax(170px,220px) 72px;
+        gap:10px 14px;align-items:center;background:var(--card);border:1px solid var(--line);
+        border-radius:9px;padding:11px 14px;margin-bottom:8px;transition:border-color .15s,box-shadow .15s;}
+  .site:hover{border-color:#d5dae2;box-shadow:0 2px 8px rgba(16,24,40,.06);}
+  .c1{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .sname{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .raw{font-size:11px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tag{align-self:flex-start;font-size:10.5px;padding:0 7px;border-radius:20px;border:1px solid;line-height:1.7;}
   .tag.ok{background:#ecfdf3;color:#067647;border-color:#d1fadf;}
   .tag.warn{background:#fffaeb;color:#b54708;border-color:#fedf89;}
-  .raw{margin-top:4px;}
-  .func{margin-top:8px;font-size:13.5px;color:var(--ink);}
-  .links{margin-top:8px;font-size:12.5px;word-break:break-all;}
+  .c2.func{font-size:13px;color:var(--ink2);min-width:0;}
+  .c3.links{font-size:12px;min-width:0;word-break:break-all;}
   .u{color:var(--link);text-decoration:none;}
   .u:hover{text-decoration:underline;}
   .muted{color:var(--ink3);}
-  .sz{font-weight:600;font-variant-numeric:tabular-nums;}
+  .c4.sz{font-size:12.5px;font-weight:600;color:var(--ink2);
+         font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
+
+  @media (max-width:640px){
+    .site{grid-template-columns:1fr;gap:5px;padding:12px 14px;}
+    .c4.sz{text-align:left;}
+    .svcount{margin-left:0;}
+  }
 
   footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);
          color:var(--ink3);font-size:12px;display:flex;justify-content:space-between;
@@ -79,7 +94,7 @@
       <h1>同步看板</h1>
       <div class="sub">仓库同步 · 服务器站点</div>
     </div>
-    <div class="stamp">更新于 2026-11-01 19:02</div>
+    <div class="stamp">更新于 2026-11-01 19:19</div>
   </header>
 
   <div class="tabs">
@@ -123,10 +138,10 @@
         <span class="name">sync-dashboard</span>
       </div>
       <div class="meta">
-        <div><div class="k">提交</div><div class="v">5</div></div>
+        <div><div class="k">提交</div><div class="v">6</div></div>
         <div><div class="k">文件</div><div class="v">3</div></div>
-        <div><div class="k">体积</div><div class="v">18.4 KB</div></div>
-        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:56</div></div>
+        <div><div class="k">体积</div><div class="v">26.2 KB</div></div>
+        <div><div class="k">最后同步</div><div class="v small">2026-11-01 19:03</div></div>
       </div>
       <div class="k note">本看板页面的镜像</div>
     </section></div>
@@ -151,10 +166,10 @@
         <span class="name">sync-dashboard</span>
       </div>
       <div class="meta">
-        <div><div class="k">提交</div><div class="v">5</div></div>
+        <div><div class="k">提交</div><div class="v">6</div></div>
         <div><div class="k">文件</div><div class="v">3</div></div>
-        <div><div class="k">体积</div><div class="v">18.4 KB</div></div>
-        <div><div class="k">最后同步</div><div class="v small">2026-11-01 18:56</div></div>
+        <div><div class="k">体积</div><div class="v">26.2 KB</div></div>
+        <div><div class="k">最后同步</div><div class="v small">2026-11-01 19:03</div></div>
       </div>
       <div class="k note">本看板页面（Pages 托管）</div>
     </section></div>
@@ -165,82 +180,83 @@
       <span class="svspec">2核 2G · 29G 磁盘</span>
       <span class="svcount">7 个站点</span>
     </div>
+    <div class="svcols"><span>站点</span><span>功能</span><span>网址</span><span class="r">占用</span></div>
     
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">闲鱼管家</span>
         <span class="tag ok">运行中</span>
+        <span class="raw">闲鱼工作台</span>
       </div>
-      <div class="k raw">原名：闲鱼工作台</div>
-      <div class="func">商品采集、上下架、改价，一站式操作面板</div>
-      <div class="links"><a class="u" href="http://120.220.73.186:20789" target="_blank" rel="noopener">http://120.220.73.186:20789</a></div>
-      <div class="k">占用 <b class="sz">177 MB</b></div>
+      <div class="c2 func">商品采集、上下架、改价，一站式操作面板</div>
+      <div class="c3 links"><a class="u" href="http://120.220.73.186:20789" target="_blank" rel="noopener">http://120.220.73.186:20789</a></div>
+      <div class="c4 sz">177 MB</div>
     </section>
 
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">账号切换台</span>
         <span class="tag ok">运行中</span>
+        <span class="raw">WorkBuddy 账号切换</span>
       </div>
-      <div class="k raw">原名：WorkBuddy 账号切换</div>
-      <div class="func">6 个 WorkBuddy 账号的快速切换面板</div>
-      <div class="links"><a class="u" href="http://120.220.73.186:28095" target="_blank" rel="noopener">http://120.220.73.186:28095</a></div>
-      <div class="k">占用 <b class="sz">44 KB</b></div>
+      <div class="c2 func">6 个 WorkBuddy 账号的快速切换面板</div>
+      <div class="c3 links"><a class="u" href="http://120.220.73.186:28095" target="_blank" rel="noopener">http://120.220.73.186:28095</a></div>
+      <div class="c4 sz">44 KB</div>
     </section>
 
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">模型接口站</span>
         <span class="tag ok">运行中</span>
+        <span class="raw">WorkBuddy2API 控制台</span>
       </div>
-      <div class="k raw">原名：WorkBuddy2API 控制台</div>
-      <div class="func">把 WorkBuddy 账号池包装成 OpenAI 兼容接口</div>
-      <div class="links"><a class="u" href="http://120.220.73.186:28098" target="_blank" rel="noopener">http://120.220.73.186:28098</a></div>
-      <div class="k">占用 <b class="sz">12 MB</b></div>
+      <div class="c2 func">把 WorkBuddy 账号池包装成 OpenAI 兼容接口</div>
+      <div class="c3 links"><a class="u" href="http://120.220.73.186:28098" target="_blank" rel="noopener">http://120.220.73.186:28098</a></div>
+      <div class="c4 sz">12 MB</div>
     </section>
 
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">采集中心</span>
         <span class="tag ok">运行中</span>
+        <span class="raw">MediaCrawler</span>
       </div>
-      <div class="k raw">原名：MediaCrawler</div>
-      <div class="func">多平台内容批量采集抓取工具</div>
-      <div class="links"><a class="u" href="http://120.220.73.186:28081" target="_blank" rel="noopener">http://120.220.73.186:28081</a></div>
-      <div class="k">占用 <b class="sz">2.0 GB</b></div>
+      <div class="c2 func">多平台内容批量采集抓取工具</div>
+      <div class="c3 links"><a class="u" href="http://120.220.73.186:28081" target="_blank" rel="noopener">http://120.220.73.186:28081</a></div>
+      <div class="c4 sz">2.0 GB</div>
     </section>
 
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">订单中枢</span>
         <span class="tag warn">仅内网</span>
+        <span class="raw">xianyu-admin 主系统</span>
       </div>
-      <div class="k raw">原名：xianyu-admin 主系统</div>
-      <div class="func">订单、商品、任务调度一体的核心后台</div>
-      <div class="links"><a class="u" href="http://120.220.73.186:3000" target="_blank" rel="noopener">http://120.220.73.186:3000</a></div>
-      <div class="k">占用 <b class="sz">450 MB</b></div>
+      <div class="c2 func">订单、商品、任务调度一体的核心后台</div>
+      <div class="c3 links"><a class="u" href="http://120.220.73.186:3000" target="_blank" rel="noopener">http://120.220.73.186:3000</a></div>
+      <div class="c4 sz">450 MB</div>
     </section>
 
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">网络文件柜</span>
         <span class="tag warn">仅内网</span>
+        <span class="raw">OpenList</span>
       </div>
-      <div class="k raw">原名：OpenList</div>
-      <div class="func">服务器文件在线浏览与下载</div>
-      <div class="links"><a class="u" href="http://120.220.73.186:5244" target="_blank" rel="noopener">http://120.220.73.186:5244</a></div>
-      <div class="k">占用 <b class="sz">150 MB</b></div>
+      <div class="c2 func">服务器文件在线浏览与下载</div>
+      <div class="c3 links"><a class="u" href="http://120.220.73.186:5244" target="_blank" rel="noopener">http://120.220.73.186:5244</a></div>
+      <div class="c4 sz">150 MB</div>
     </section>
 
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">无头浏览器</span>
         <span class="tag ok">后台</span>
+        <span class="raw">Chrome</span>
       </div>
-      <div class="k raw">原名：Chrome</div>
-      <div class="func">自动化抓取用的浏览器运行环境</div>
-      <div class="links"><span class="u muted">仅内网，外网无法访问</span></div>
-      <div class="k">占用 <b class="sz">446 MB</b></div>
+      <div class="c2 func">自动化抓取用的浏览器运行环境</div>
+      <div class="c3 links"><span class="u muted">仅内网，外网无法访问</span></div>
+      <div class="c4 sz">446 MB</div>
     </section>
 
     <div class="svhead">
@@ -249,43 +265,44 @@
       <span class="svspec">1核 1G · 40G 磁盘</span>
       <span class="svcount">3 个站点</span>
     </div>
+    <div class="svcols"><span>站点</span><span>功能</span><span>网址</span><span class="r">占用</span></div>
     
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">免费模型网关</span>
         <span class="tag ok">运行中</span>
+        <span class="raw">Our Free Model</span>
       </div>
-      <div class="k raw">原名：Our Free Model</div>
-      <div class="func">免费大模型的聚合、转发与用量统计</div>
-      <div class="links"><a class="u" href="http://183.146.215.78:18901" target="_blank" rel="noopener">http://183.146.215.78:18901</a></div>
-      <div class="k">占用 <b class="sz">69 MB</b></div>
+      <div class="c2 func">免费大模型的聚合、转发与用量统计</div>
+      <div class="c3 links"><a class="u" href="http://183.146.215.78:18901" target="_blank" rel="noopener">http://183.146.215.78:18901</a></div>
+      <div class="c4 sz">69 MB</div>
     </section>
 
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">自动下注器</span>
         <span class="tag warn">仅内网</span>
+        <span class="raw">石头岛 bot</span>
       </div>
-      <div class="k raw">原名：石头岛 bot</div>
-      <div class="func">石头岛平台定时自动下注脚本</div>
-      <div class="links"><span class="u muted">仅内网，外网无法访问</span></div>
-      <div class="k">占用 <b class="sz">2 MB</b></div>
+      <div class="c2 func">石头岛平台定时自动下注脚本</div>
+      <div class="c3 links"><span class="u muted">仅内网，外网无法访问</span></div>
+      <div class="c4 sz">2 MB</div>
     </section>
 
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">服务器控制台</span>
         <span class="tag warn">未启动</span>
+        <span class="raw">宝塔面板</span>
       </div>
-      <div class="k raw">原名：宝塔面板</div>
-      <div class="func">站点、数据库、文件的可视化运维面板</div>
-      <div class="links"><a class="u" href="http://183.146.215.78:27976/5f6413e9" target="_blank" rel="noopener">http://183.146.215.78:27976/5f6413e9</a></div>
-      <div class="k">占用 <b class="sz">—</b></div>
+      <div class="c2 func">站点、数据库、文件的可视化运维面板</div>
+      <div class="c3 links"><a class="u" href="http://183.146.215.78:27976/5f6413e9" target="_blank" rel="noopener">http://183.146.215.78:27976/5f6413e9</a></div>
+      <div class="c4 sz">—</div>
     </section></div>
 
   <footer>
     <span>自动同步：每小时执行一次</span>
-    <span>站点数据采集于 2026-11-01 19:02</span>
+    <span>站点数据采集于 2026-11-01 19:19</span>
   </footer>
 </div>
 

@@ -128,15 +128,15 @@ def site_card(s):
         url = '<span class="u muted">仅内网，外网无法访问</span>'
     tag_cls = "warn" if s["tag"] in ("未启动", "仅内网") else "ok"
     return """
-    <section class="card site">
-      <div class="row">
+    <section class="site">
+      <div class="c1">
         <span class="sname">%s</span>
         <span class="tag %s">%s</span>
+        <span class="raw">%s</span>
       </div>
-      <div class="k raw">原名：%s</div>
-      <div class="func">%s</div>
-      <div class="links">%s</div>
-      <div class="k">占用 <b class="sz">%s</b></div>
+      <div class="c2 func">%s</div>
+      <div class="c3 links">%s</div>
+      <div class="c4 sz">%s</div>
     </section>""" % (esc(s["name"]), tag_cls, esc(s["tag"]), esc(s["raw"]),
                       esc(s["func"]), url, esc(s["size"]))
 
@@ -152,6 +152,7 @@ def server_panel():
       <span class="svspec">%s</span>
       <span class="svcount">%d 个站点</span>
     </div>
+    <div class="svcols"><span>站点</span><span>功能</span><span>网址</span><span class="r">占用</span></div>
     %s""" % (esc(sv["host"]), esc(sv["ip"]), esc(sv["spec"]), len(sv["sites"]), cards))
     return "\n".join(out)
 
@@ -181,7 +182,7 @@ def build(items):
   body{background:var(--bg);color:var(--ink);
        font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
        font-size:14px;line-height:1.6;padding:24px 16px 48px;-webkit-font-smoothing:antialiased;}
-  .wrap{max-width:780px;margin:0 auto;}
+  .wrap{max-width:880px;margin:0 auto;}
   header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
          flex-wrap:wrap;margin-bottom:16px;}
   h1{font-size:20px;font-weight:600;letter-spacing:.3px;}
@@ -221,19 +222,34 @@ def build(items):
   .svip{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--ink2);}
   .svspec{font-size:12px;color:var(--ink3);}
   .svcount{margin-left:auto;font-size:12px;color:var(--ink3);}
+  .svcols{display:grid;grid-template-columns:132px minmax(150px,1fr) minmax(170px,220px) 72px;
+          gap:14px;padding:0 14px 6px;font-size:11px;color:var(--ink3);letter-spacing:.3px;}
+  .svcols .r{text-align:right;}
+  @media (max-width:640px){ .svcols{display:none;} }
 
-  .site{padding:14px 16px;}
-  .sname{font-weight:600;font-size:15px;}
-  .tag{font-size:11px;padding:1px 8px;border-radius:20px;border:1px solid;}
+  .site{display:grid;grid-template-columns:132px minmax(150px,1fr) minmax(170px,220px) 72px;
+        gap:10px 14px;align-items:center;background:var(--card);border:1px solid var(--line);
+        border-radius:9px;padding:11px 14px;margin-bottom:8px;transition:border-color .15s,box-shadow .15s;}
+  .site:hover{border-color:#d5dae2;box-shadow:0 2px 8px rgba(16,24,40,.06);}
+  .c1{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .sname{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .raw{font-size:11px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tag{align-self:flex-start;font-size:10.5px;padding:0 7px;border-radius:20px;border:1px solid;line-height:1.7;}
   .tag.ok{background:#ecfdf3;color:#067647;border-color:#d1fadf;}
   .tag.warn{background:#fffaeb;color:#b54708;border-color:#fedf89;}
-  .raw{margin-top:4px;}
-  .func{margin-top:8px;font-size:13.5px;color:var(--ink);}
-  .links{margin-top:8px;font-size:12.5px;word-break:break-all;}
+  .c2.func{font-size:13px;color:var(--ink2);min-width:0;}
+  .c3.links{font-size:12px;min-width:0;word-break:break-all;}
   .u{color:var(--link);text-decoration:none;}
   .u:hover{text-decoration:underline;}
   .muted{color:var(--ink3);}
-  .sz{font-weight:600;font-variant-numeric:tabular-nums;}
+  .c4.sz{font-size:12.5px;font-weight:600;color:var(--ink2);
+         font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
+
+  @media (max-width:640px){
+    .site{grid-template-columns:1fr;gap:5px;padding:12px 14px;}
+    .c4.sz{text-align:left;}
+    .svcount{margin-left:0;}
+  }
 
   footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);
          color:var(--ink3);font-size:12px;display:flex;justify-content:space-between;
