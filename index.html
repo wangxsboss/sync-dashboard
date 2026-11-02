@@ -63,10 +63,6 @@
           display:inline-flex;align-items:center;gap:5px;}
   .tabs a:hover{color:var(--blue);background:rgba(255,255,255,.65);}
   .tabs a b{font-weight:600;}
-  .quick{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;}
-  .quick a{font-size:12.5px;padding:6px 13px;border-radius:9px;background:#fff;border:1px solid var(--line);
-           color:var(--ink-2);text-decoration:none;white-space:nowrap;transition:.15s;}
-  .quick a:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg);}
   .tabs a.on{background:#fff;color:var(--blue);font-weight:600;box-shadow:0 1px 3px rgba(16,24,40,.14);}
   .tabs a u{text-decoration:none;font-family:var(--mono);font-size:11px;color:var(--ink-4);
             margin-left:6px;font-weight:500;}
@@ -103,6 +99,17 @@
   .cards .act{flex-direction:row;align-items:center;justify-content:space-between;
               max-width:100%;width:100%;}
   .cards .url{text-align:left;max-width:100%;}
+  .srvline{font-size:12px;color:var(--ink-4);margin:0 0 11px 6px;letter-spacing:.2px;}
+  .cards .card .meta{white-space:normal;overflow:visible;}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;}
+  .btn.ghost{background:#fff;color:var(--ink-2);border-color:var(--line);}
+  .btn.ghost:hover{background:var(--gray-bg);color:var(--ink);border-color:#c2ccda;}
+  .cards .card.wide{grid-column:1/-1;}
+  pre.log{display:none;margin:10px 0 0;padding:10px 12px;background:#0f172a;color:#cbd5e1;
+          border-radius:8px;font-size:11px;line-height:1.55;max-height:240px;overflow:auto;
+          font-family:var(--mono);white-space:pre-wrap;}
+  pre.log.show{display:block;}
+  button.btn{font-family:inherit;cursor:pointer;}
   .card:hover{border-color:#c2ccda;box-shadow:0 4px 16px rgba(16,24,40,.09);}
   .left{flex:1;min-width:0;}
 
@@ -162,22 +169,16 @@
     <div class="tabs">
       <a id="tab-servers" class="on" href="?tab=servers">服务器<u>9</u></a>
       <a id="tab-gitcode" href="?tab=gitcode">GitCode<u>13</u></a>
-      <a href="http://120.220.73.186:28098/autopanel/panel" title="进入自动化控制台">控制台 ›</a>
       <a href="https://wangxsboss.github.io/sync-dashboard/" target="_blank" rel="noopener" title="GitHub 网页版看板">GitHub看板</a>
     </div>
-    <div class="stamp">更新 <b>2026-11-02 16:22</b> · 每 10 分钟刷新</div>
+    <div class="stamp">更新 <b>2026-11-02 16:28</b> · 每 10 分钟刷新</div>
   </div>
   <p class="hint">服务器 = 站点运行情况 · GitCode = 13 个源码仓库备份</p>
-  <div class="quick"><a href="http://120.220.73.186:20789" target="_blank" rel="noopener">闲鱼管家</a><a href="http://120.220.73.186:28095" target="_blank" rel="noopener">账号切换台</a><a href="http://120.220.73.186:28098" target="_blank" rel="noopener">模型接口站</a><a href="http://120.220.73.186:28081" target="_blank" rel="noopener">采集中心</a><a href="http://120.220.73.186:3000" target="_blank" rel="noopener">订单中枢</a><a href="http://120.220.73.186:28099/dashboard" target="_blank" rel="noopener">闲鱼后台管理</a><a href="http://120.220.73.186:28180" target="_blank" rel="noopener">网络文件柜</a><a href="http://120.220.73.186:18901" target="_blank" rel="noopener">免费模型网关</a><a href="http://120.220.73.186:28956/" target="_blank" rel="noopener">自动下注器</a></div>
 
   <main>
     <span id="servers"></span><section id="panel-servers" class="panel on">
       <section class="block">
-        <div class="ghead">
-          <h2>服务器 A</h2>
-          <span class="spec">2 核 2G · 29G</span>
-          <span class="cnt">9 个站点</span>
-        </div>
+        <div class="srvline">服务器 A · 2 核 2G · 29G · 9 个站点 · 到期 2026-11-27（剩 25 天）</div>
         <div class="cards">
       <article class="card">
         <div class="left">
@@ -186,9 +187,9 @@
             <span class="pill green">运行中</span>
           </div>
           <p class="desc">商品抓取 | 自动上下架 | 批量改价 | 订单同步</p>
-          <p class="meta">更新 11-01 10:22 | 最近改动 wbapp.py</p>
+          <p class="meta">更新 11-01 10:22 | 端口 20789 | 最近改动 wbapp.py</p>
         </div>
-        <div class="act"><a class="btn" href="http://120.220.73.186:20789" target="_blank" rel="noopener">打开</a><span class="url">端口 20789</span></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:20789" target="_blank" rel="noopener">打开</a></div>
       </article>
       <article class="card">
         <div class="left">
@@ -197,9 +198,9 @@
             <span class="pill green">运行中</span>
           </div>
           <p class="desc">多账号切换 | 登录态管理 | Cookie 维护</p>
-          <p class="meta">更新 11-02 15:22 | 最近改动 .wb-switch/credit_usage_snapshots.json</p>
+          <p class="meta">更新 11-02 15:22 | 端口 28095 | 最近改动 .wb-switch/credit_usage_snapshots.json</p>
         </div>
-        <div class="act"><a class="btn" href="http://120.220.73.186:28095" target="_blank" rel="noopener">打开</a><span class="url">端口 28095</span></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28095" target="_blank" rel="noopener">打开</a></div>
       </article>
       <article class="card">
         <div class="left">
@@ -208,9 +209,9 @@
             <span class="pill green">运行中</span>
           </div>
           <p class="desc">账号池调度 | OpenAI 兼容转发 | 用量统计</p>
-          <p class="meta">更新 11-01 22:00 | 最近改动 auths/workbuddy-b8b74289-3ec1-493e-b1d6-0cb6a12c539d.json</p>
+          <p class="meta">更新 11-01 22:00 | 端口 28098 | 最近改动 auths/workbuddy-b8b74289-3ec1-493e-b1d6-0cb6a12c539d.json</p>
         </div>
-        <div class="act"><a class="btn" href="http://120.220.73.186:28098" target="_blank" rel="noopener">打开</a><span class="url">端口 28098</span></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28098" target="_blank" rel="noopener">打开</a></div>
       </article>
       <article class="card">
         <div class="left">
@@ -219,9 +220,9 @@
             <span class="pill green">运行中</span>
           </div>
           <p class="desc">多平台抓取 | 关键词采集 | 数据落库 | 结果导出</p>
-          <p class="meta">更新 10-30 19:20 | 最近改动 api/webui/results.html</p>
+          <p class="meta">更新 10-30 19:20 | 端口 28081 | 最近改动 api/webui/results.html</p>
         </div>
-        <div class="act"><a class="btn" href="http://120.220.73.186:28081" target="_blank" rel="noopener">打开</a><span class="url">端口 28081</span></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28081" target="_blank" rel="noopener">打开</a></div>
       </article>
       <article class="card">
         <div class="left">
@@ -230,9 +231,9 @@
             <span class="pill orange">仅内网</span>
           </div>
           <p class="desc">订单处理 | 商品管理 | 任务调度 | 发货记录</p>
-          <p class="meta">更新 11-02 14:29 | 最近改动 .env</p>
+          <p class="meta">更新 11-02 14:29 | 端口 3000 | 最近改动 .env</p>
         </div>
-        <div class="act"><span class="btn off">仅内网</span><span class="url">端口 3000</span></div>
+        <div class="act"><span class="btn off">仅内网</span></div>
       </article>
       <article class="card">
         <div class="left">
@@ -241,9 +242,9 @@
             <span class="pill green">运行中</span>
           </div>
           <p class="desc">自动回复配置 | 账号管理 | 规则设置</p>
-          <p class="meta">更新 11-02 14:29 | 最近改动 .env</p>
+          <p class="meta">更新 11-02 14:29 | 端口 28099 | 最近改动 .env</p>
         </div>
-        <div class="act"><a class="btn" href="http://120.220.73.186:28099/dashboard" target="_blank" rel="noopener">打开</a><span class="url">端口 28099</span></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28099/dashboard" target="_blank" rel="noopener">打开</a></div>
       </article>
       <article class="card">
         <div class="left">
@@ -252,9 +253,9 @@
             <span class="pill green">运行中</span>
           </div>
           <p class="desc">文件浏览 | 在线下载 | 目录挂载 | 网盘聚合</p>
-          <p class="meta">更新 11-02 15:03 | 最近改动 static/shelf/covers.json</p>
+          <p class="meta">更新 11-02 16:26 | 端口 28180 | 最近改动 static/shelf/covers.json</p>
         </div>
-        <div class="act"><a class="btn" href="http://120.220.73.186:28180" target="_blank" rel="noopener">打开</a><span class="url">端口 28180</span></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28180" target="_blank" rel="noopener">打开</a></div>
       </article>
       <article class="card">
         <div class="left">
@@ -263,9 +264,9 @@
             <span class="pill green">运行中</span>
           </div>
           <p class="desc">模型聚合 | 请求转发 | 签到保活 | 用量统计</p>
-          <p class="meta">更新 10-21 10:31 | 最近改动 packages/standalone/channels/business.mjs</p>
+          <p class="meta">更新 10-21 10:31 | 端口 18901 | 最近改动 packages/standalone/channels/business.mjs</p>
         </div>
-        <div class="act"><a class="btn" href="http://120.220.73.186:18901" target="_blank" rel="noopener">打开</a><span class="url">端口 18901</span></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:18901" target="_blank" rel="noopener">打开</a></div>
       </article>
       <article class="card">
         <div class="left">
@@ -274,9 +275,43 @@
             <span class="pill green">运行中</span>
           </div>
           <p class="desc">定时下注 | 策略触发 | 状态轮询 | 结果回写</p>
-          <p class="meta">更新 10-31 13:11 | 最近改动 config.json</p>
+          <p class="meta">更新 10-31 13:11 | 端口 28956 | 最近改动 config.json</p>
         </div>
-        <div class="act"><a class="btn" href="http://120.220.73.186:28956/" target="_blank" rel="noopener">打开</a><span class="url">端口 28956</span></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28956/" target="_blank" rel="noopener">打开</a></div>
+      </article></div>
+      </section>
+      <section class="block" id="tasksblock">
+        <div class="srvline">自动化任务 · 全部跑在服务器上，不依赖你的电脑</div>
+        <div class="cards" id="taskcards">
+      <article class="card" data-id="code-sync">
+        <div class="hd"><h3>站点代码同步</h3><span class="pill green">成功</span><span class="pill gray">每 10 分钟</span></div>
+        <p class="desc">把 8 个站点的最新代码与数据库快照推回 GitCode</p>
+        <p class="meta">上次运行 <b>2026-11-02 08:20:06</b> · 耗时 <b>4 秒</b> · ID <b>code-sync</b></p>
+        <div class="row">
+          <button class="btn" onclick="runTask('code-sync')">立即运行</button>
+          <button class="btn ghost" onclick="tlog('code-sync')">查看日志</button>
+        </div>
+        <pre class="log" id="log-code-sync"></pre>
+      </article>
+      <article class="card" data-id="dashboard">
+        <div class="hd"><h3>看板生成与推送</h3><span class="pill green">成功</span><span class="pill gray">每 10 分钟</span></div>
+        <p class="desc">重新生成本页并推送到 GitHub Pages</p>
+        <p class="meta">上次运行 <b>2026-11-02 08:20:04</b> · 耗时 <b>2 秒</b> · ID <b>dashboard</b></p>
+        <div class="row">
+          <button class="btn" onclick="runTask('dashboard')">立即运行</button>
+          <button class="btn ghost" onclick="tlog('dashboard')">查看日志</button>
+        </div>
+        <pre class="log" id="log-dashboard"></pre>
+      </article>
+      <article class="card" data-id="archive">
+        <div class="hd"><h3>旧版整体备份</h3><span class="pill green">成功</span><span class="pill gray">每天 04:30</span></div>
+        <p class="desc">A 机全站打包推 server-a-code（旧方案）</p>
+        <p class="meta">上次运行 <b>2026-11-02 04:30:07</b> · 耗时 <b>5 秒</b> · ID <b>archive</b></p>
+        <div class="row">
+          <button class="btn" onclick="runTask('archive')">立即运行</button>
+          <button class="btn ghost" onclick="tlog('archive')">查看日志</button>
+        </div>
+        <pre class="log" id="log-archive"></pre>
       </article></div>
       </section>
     </section>
@@ -426,7 +461,7 @@
             <span class="pill blue">GitCode</span>
           </div>
           <p class="desc"><b class="rn">sync-dashboard</b> · 本页面自身的源码</p>
-          <p class="meta">提交 163 | 文件 7 | 体积 50.7<i>KB</i> | 最后同步 11-02 08:22</p>
+          <p class="meta">提交 164 | 文件 7 | 体积 50.6<i>KB</i> | 最后同步 11-02 08:22</p>
         </div>
         <div class="act"><a class="btn" href="https://gitcode.com/chaoshen59/sync-dashboard" target="_blank" rel="noopener">打开仓库</a><span class="url">https://gitcode.com/chaoshen59/sync-dashboard</span></div>
       </article>
@@ -447,7 +482,7 @@
 
   <footer>
     <span>GitCode 同步</span>
-    <span>数据采集于 2026-11-02 16:22</span>
+    <span>数据采集于 2026-11-02 16:28</span>
   </footer>
 
 </div>
@@ -470,6 +505,65 @@ var TABS = ['servers','gitcode'];
     location.replace(location.pathname + '?tab=' + p + '&v=' + Date.now());
   }, 5 * 60 * 1000);
 })();
+
+/* ================= 自动化任务 ================= */
+var TASK_API = 'api/tasks';
+function tp(t){
+  if (t.running) return '<span class="pill blue">运行中</span>';
+  if (t.rc === 0) return '<span class="pill green">成功</span>';
+  if (t.rc === null || t.rc === undefined || t.rc === '') return '<span class="pill gray">未运行</span>';
+  return '<span class="pill red">失败</span>';
+}
+function tcard(t){
+  var when = t.finished || t.started || '—';
+  var dur = t.duration ? t.duration + ' 秒' : '—';
+  return '<article class="card" data-id="' + t.id + '">' +
+    '<div class="hd"><h3>' + t.name + '</h3>' + tp(t) +
+    '<span class="pill gray">' + t.cron + '</span></div>' +
+    '<p class="desc">' + t.desc + '</p>' +
+    '<p class="meta">上次运行 <b>' + when + '</b> · 耗时 <b>' + dur + '</b> · ID <b>' + t.id + '</b></p>' +
+    '<div class="row"><button class="btn" onclick="runTask(\'' + t.id + '\')"' +
+    (t.running ? ' disabled' : '') + '>' + (t.running ? '运行中…' : '立即运行') + '</button>' +
+    '<button class="btn ghost" onclick="tlog(\'' + t.id + '\')">查看日志</button></div>' +
+    '<pre class="log" id="log-' + t.id + '"></pre></article>';
+}
+async function loadTasks(){
+  var box = document.getElementById('taskcards');
+  if (!box) return;
+  try {
+    var r = await fetch(TASK_API + '?t=' + Date.now());
+    if (!r.ok) return;
+    var arr = await r.json();
+    box.innerHTML = arr.map(tcard).join('');
+  } catch (e) {}
+}
+async function runTask(id){
+  try {
+    var r = await fetch('api/run?id=' + id, {method: 'POST'});
+    var j = await r.json();
+    if (!j.ok) alert(j.msg);
+  } catch (e) { alert('触发失败：' + e); }
+  setTimeout(loadTasks, 800);
+}
+async function tlog(id){
+  var pre = document.getElementById('log-' + id);
+  if (!pre) return;
+  var card = pre.closest('.card');
+  if (pre.classList.contains('show')) {
+    pre.classList.remove('show');
+    card.classList.remove('wide');
+    return;
+  }
+  card.classList.add('wide');
+  pre.textContent = '加载中…';
+  pre.classList.add('show');
+  try {
+    var r = await fetch('api/log?id=' + id + '&lines=60&t=' + Date.now());
+    pre.textContent = await r.text();
+  } catch (e) { pre.textContent = '加载失败：' + e; }
+}
+loadTasks();
+setInterval(loadTasks, 60000);
 </script>
 </body>
 </html>
