@@ -58,6 +58,11 @@
   .tabs button u{text-decoration:none;font-family:var(--mono);font-size:11px;
                  color:var(--ink-4);margin-left:6px;font-weight:500;}
   .tabs button.on u{color:var(--blue);opacity:.85;}
+  .tabs a{text-decoration:none;font-size:13px;font-weight:500;color:var(--ink-3);
+          padding:7px 18px;border-radius:9px;transition:background .15s,color .15s;
+          display:inline-flex;align-items:center;gap:5px;}
+  .tabs a:hover{color:var(--blue);background:rgba(255,255,255,.65);}
+  .tabs a b{font-weight:600;}
   .hint{margin:0 0 16px 6px;font-size:12px;color:var(--ink-4);}
   .gh-note{margin:0 0 16px;padding:10px 14px;background:#fdf3e3;border:1px solid #f0dfc0;
            border-radius:10px;font-size:12.5px;color:#7a5a1e;line-height:1.6;}
@@ -143,8 +148,9 @@
       <button id="tab-servers" class="on" onclick="sw('servers')">服务器<u>10</u></button>
       <button id="tab-gitcode" onclick="sw('gitcode')">GitCode<u>13</u></button>
       <button id="tab-github" onclick="sw('github')">GitHub<u>1</u></button>
+      <a href="http://120.220.73.186:28098/autopanel/panel" title="进入自动化控制台"><b>控制台</b> ›</a>
     </div>
-    <div class="stamp">更新 <b>2026-11-02 04:30</b> · 每 10 分钟刷新</div>
+    <div class="stamp">更新 <b>2026-11-02 04:36</b> · 每 10 分钟刷新</div>
   </div>
   <p class="hint">服务器 = 站点运行情况 · GitCode / GitHub = 源码仓库，两边不混</p>
 
@@ -220,7 +226,7 @@
             <span class="pill orange">仅内网</span>
           </div>
           <p class="desc">文件浏览 | 在线下载 | 目录挂载</p>
-          <p class="meta">更新 11-02 03:20 | 120.220.73.186 | 最近改动 static/shelf/covers.json</p>
+          <p class="meta">更新 11-02 04:34 | 120.220.73.186 | 最近改动 static/shelf/covers.json</p>
         </div>
         <div class="act"><span class="btn off">仅内网</span><span class="url">http://120.220.73.186:5244</span></div>
       </article>
@@ -274,7 +280,7 @@
             <span class="pill red">打不开</span>
           </div>
           <p class="desc">站点管理 | 数据库 | 文件传输 | 证书签发</p>
-          <p class="meta">更新 11-02 04:29 | 183.146.215.78 | 最近改动 data/session/2029240f6d1128be89ddc32729463129</p>
+          <p class="meta">更新 11-02 04:36 | 183.146.215.78 | 最近改动 data/session/2029240f6d1128be89ddc32729463129</p>
         </div>
         <div class="act"><span class="btn off">打不开</span><span class="url">http://183.146.215.78:27976/5f6413e9</span></div>
       </article>
@@ -296,7 +302,7 @@
             <span class="pill blue">GitCode</span>
           </div>
           <p class="desc"><b class="rn">xianyu-system</b> · 订单中枢 + 闲鱼管家 · 73 张表数据库</p>
-          <p class="meta">提交 82 | 文件 2030 | 体积 62.1<i>MB</i> | 最后同步 11-02 04:20</p>
+          <p class="meta">提交 83 | 文件 2030 | 体积 62.1<i>MB</i> | 最后同步 11-02 04:30</p>
         </div>
         <div class="act"><a class="btn" href="https://gitcode.com/chaoshen59/xianyu-system" target="_blank" rel="noopener">打开仓库</a><span class="url">https://gitcode.com/chaoshen59/xianyu-system</span></div>
       </article>
@@ -318,7 +324,7 @@
             <span class="pill blue">GitCode</span>
           </div>
           <p class="desc"><b class="rn">wb2api</b> · 账号池调度 + OpenAI 兼容网关</p>
-          <p class="meta">提交 30 | 文件 28 | 体积 10.7<i>MB</i> | 最后同步 11-02 04:20</p>
+          <p class="meta">提交 31 | 文件 28 | 体积 10.7<i>MB</i> | 最后同步 11-02 04:30</p>
         </div>
         <div class="act"><a class="btn" href="https://gitcode.com/chaoshen59/wb2api" target="_blank" rel="noopener">打开仓库</a><span class="url">https://gitcode.com/chaoshen59/wb2api</span></div>
       </article>
@@ -426,7 +432,7 @@
             <span class="pill blue">GitCode</span>
           </div>
           <p class="desc"><b class="rn">sync-dashboard</b> · 本页面自身的源码</p>
-          <p class="meta">提交 121 | 文件 7 | 体积 50.3<i>KB</i> | 最后同步 11-02 04:20</p>
+          <p class="meta">提交 122 | 文件 7 | 体积 50.3<i>KB</i> | 最后同步 11-02 04:30</p>
         </div>
         <div class="act"><a class="btn" href="https://gitcode.com/chaoshen59/sync-dashboard" target="_blank" rel="noopener">打开仓库</a><span class="url">https://gitcode.com/chaoshen59/sync-dashboard</span></div>
       </article>
@@ -437,7 +443,7 @@
             <span class="pill blue">GitCode</span>
           </div>
           <p class="desc"><b class="rn">server-a-code</b> · 旧版：服务器 A 全部站点打包</p>
-          <p class="meta">提交 1 | 文件 1899 | 体积 69.6<i>MB</i> | 最后同步 11-01 12:44</p>
+          <p class="meta">提交 2 | 文件 2861 | 体积 85.3<i>MB</i> | 最后同步 11-02 04:30</p>
         </div>
         <div class="act"><a class="btn" href="https://gitcode.com/chaoshen59/server-a-code" target="_blank" rel="noopener">打开仓库</a><span class="url">https://gitcode.com/chaoshen59/server-a-code</span></div>
       </article>
@@ -460,7 +466,7 @@
             <span class="pill blue">GitHub</span>
           </div>
           <p class="desc"><b class="rn">sync-dashboard</b> · 本页面托管源（GitHub Pages）</p>
-          <p class="meta">提交 121 | 文件 7 | 体积 50.3<i>KB</i> | 最后同步 11-02 04:20</p>
+          <p class="meta">提交 122 | 文件 7 | 体积 50.3<i>KB</i> | 最后同步 11-02 04:30</p>
         </div>
         <div class="act"><a class="btn" href="https://github.com/wangxsboss/sync-dashboard" target="_blank" rel="noopener">打开仓库</a><span class="url">https://github.com/wangxsboss/sync-dashboard</span></div>
       </article>
@@ -470,7 +476,7 @@
 
   <footer>
     <span>GitCode · GitHub 双写</span>
-    <span>数据采集于 2026-11-02 04:30</span>
+    <span>数据采集于 2026-11-02 04:36</span>
   </footer>
 
 </div>
