@@ -166,6 +166,42 @@
     .meta{white-space:normal;}
     .top h1{font-size:19px;}
   }
+  /* ===== 账号密码版新增 ===== */
+  .lockbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;
+           border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:18px;
+           box-shadow:0 1px 2px rgba(16,24,40,.05);}
+  .lk-ico{font-size:14px;}
+  .lk-txt{font-size:12.5px;color:var(--ink-3);}
+  .lk-txt.ok{color:var(--green);}
+  #lkIn{flex:1;min-width:140px;max-width:220px;height:31px;padding:0 11px;border-radius:9px;
+        border:1px solid var(--line);background:#f7f9fc;font-family:var(--mono);font-size:12.5px;
+        color:var(--ink);outline:none;}
+  #lkIn:focus{border-color:var(--blue);background:#fff;}
+  .lk-btn{height:31px;padding:0 14px;border-radius:9px;border:1px solid #c6d8f6;
+          background:var(--blue-bg);color:var(--blue);font-size:12.5px;font-weight:500;
+          font-family:inherit;cursor:pointer;}
+  .lk-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+  .lk-btn.ghost{background:#fff;color:var(--ink-3);border-color:var(--line);}
+  .lk-btn.ghost:hover{background:var(--gray-bg);color:var(--ink-2);border-color:#c2ccda;}
+  .lk-msg{font-size:12px;color:var(--red);}
+
+  .ssh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#fff;
+       border:1px solid var(--line);border-radius:12px;padding:11px 17px;margin-bottom:13px;
+       font-size:12.5px;color:var(--ink-2);box-shadow:0 1px 2px rgba(16,24,40,.04);}
+  .ssh b{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.4px;
+         color:var(--ink-4);text-transform:uppercase;}
+  .ssh code{font-family:var(--mono);font-size:12px;background:var(--gray-bg);
+            padding:1px 7px;border-radius:5px;color:var(--ink-2);}
+
+  .auth{margin-top:8px;font-size:12.5px;color:var(--ink-2);display:flex;
+        align-items:center;gap:7px;flex-wrap:wrap;line-height:1.9;}
+  .pw{font-family:var(--mono);font-size:12px;background:#f4f6fa;border:1px dashed #c9d3e2;
+      border-radius:5px;padding:0 8px;cursor:pointer;color:var(--ink-2);
+      user-select:all;transition:all .12s;letter-spacing:.5px;}
+  .pw:hover{border-color:var(--blue);color:var(--blue);background:#fff;}
+  .pw.on{background:#fff8e6;border-style:solid;border-color:#e8c26a;color:#7a5a1e;letter-spacing:0;}
+
+
 </style>
 </head>
 <body>
@@ -173,7 +209,7 @@
 
   <div class="top">
     <div class="tabs">
-      <a id="tab-servers" class="on" href="?tab=servers">服务器<u>9</u></a>
+      <a id="tab-servers" class="on" href="?tab=servers">服务器<u>5</u></a>
       <a id="tab-gitcode" href="?tab=gitcode">GitCode<u>10</u></a>
       <a href="https://wangxsboss.github.io/sync-dashboard/" target="_blank" rel="noopener" title="GitHub 网页版看板">GitHub看板</a>
       <a id="srvlink" href="http://120.220.73.186:28098/autopanel/?tab=servers" title="回到服务器上的看板">服务器版 ›</a>
@@ -184,135 +220,265 @@
 
   <main>
     <span id="servers"></span><section id="panel-servers" class="panel on">
+
+      <div class="lockbar">
+        <span class="lk-ico">&#128274;</span>
+        <span class="lk-txt" id="lkTxt">密码已隐藏</span>
+        <input id="lkIn" type="password" placeholder="输入口令解锁" autocomplete="off"
+               onkeydown="if(event.key==='Enter')unlock()">
+        <button class="lk-btn" onclick="unlock()">解锁</button>
+        <button class="lk-btn ghost" onclick="lockAll()">重新隐藏</button>
+        <span class="lk-msg" id="lkMsg"></span>
+      </div>
+
       <section class="block">
-        <div class="srvline">服务器 A · 2 核 2G · 29G · 9 个站点 · 到期 2026-11-27（剩 24 天）</div>
-        <div class="cards">
+        <div class="ghead">
+          <h2>服务器 A</h2>
+          <code>120.220.73.186</code>
+          <span class="spec">2核2G · 幻话云 NAT</span>
+          <span class="cnt">10 个项目</span>
+        </div>
+        <div class="ssh"><b>SSH</b> root / <span class="pw" data-b="bWFtZENTSVQ2MDAz">••••••</span> &nbsp;·&nbsp; 端口 <code>10092</code> &nbsp;·&nbsp; 内网机，端口需在云控制台加转发</div>
       <article class="card">
         <div class="left">
-          <div class="hd">
-            <h3>闲鱼管家</h3>
-            <span class="pill green">运行中</span>
-          </div>
-          <p class="desc">商品抓取 | 自动上下架 | 批量改价 | 订单同步</p>
-          <p class="meta">最近改动 wbapp.py</p>
+          <div class="hd"><h3>总控台</h3><span class="pill green">运行中</span></div>
+          <p class="desc">12 张卡片 · 编辑模式 · 折叠分组 · 站点状态</p>
+          <p class="auth">免密登录 · 编辑口令 <span class="pw" data-b="ZHNoXzlmM2E3YzIxZTViMDRkNjg=">••••••</span></p>
         </div>
-        <div class="act split"><span class="url">更新 11-01 10:22 | 端口 20789</span><a class="btn" href="http://120.220.73.186:20789" target="_blank" rel="noopener">打开</a></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28097" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28097</span></div>
       </article>
       <article class="card">
         <div class="left">
-          <div class="hd">
-            <h3>账号切换台</h3>
-            <span class="pill green">运行中</span>
-          </div>
-          <p class="desc">多账号切换 | 登录态管理 | Cookie 维护</p>
-          <p class="meta">最近改动 .wb-switch/credit_usage_snapshots.json</p>
+          <div class="hd"><h3>闲鱼工作台</h3><span class="pill green">运行中</span></div>
+          <p class="desc">商品抓取 · 自动上下架 · 批量改价 · 订单同步</p>
+          <p class="auth">页面免密 · 接口 token <span class="pw" data-b="NGVhdUZ5Vm5iQ1NUUkFHYVgxZXZsdw==">••••••</span></p>
         </div>
-        <div class="act split"><span class="url">更新 11-03 11:27 | 端口 28095</span><a class="btn" href="http://120.220.73.186:28095" target="_blank" rel="noopener">打开</a></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:20789" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:20789</span></div>
       </article>
       <article class="card">
         <div class="left">
-          <div class="hd">
-            <h3>模型接口站</h3>
-            <span class="pill green">运行中</span>
-          </div>
-          <p class="desc">账号池调度 | OpenAI 兼容转发 | 用量统计</p>
-          <p class="meta">最近改动 auths/workbuddy-b8b74289-3ec1-493e-b1d6-0cb6a12c539d.json</p>
+          <div class="hd"><h3>闲鱼后台 xianyu-admin</h3><span class="pill green">运行中</span></div>
+          <p class="desc">自动回复 · 账号管理 · 规则配置</p>
+          <p class="auth">页面免密 · 直接打开</p>
         </div>
-        <div class="act split"><span class="url">更新 11-02 22:00 | 端口 28098</span><a class="btn" href="http://120.220.73.186:28098" target="_blank" rel="noopener">打开</a></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28099/dashboard" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28099/dashboard</span></div>
       </article>
       <article class="card">
         <div class="left">
-          <div class="hd">
-            <h3>采集中心</h3>
-            <span class="pill green">运行中</span>
-          </div>
-          <p class="desc">多平台抓取 | 关键词采集 | 数据落库 | 结果导出</p>
-          <p class="meta">最近改动 api/webui/results.html</p>
+          <div class="hd"><h3>账号切换台</h3><span class="pill green">运行中</span></div>
+          <p class="desc">多账号切换 · 登录态维护 · Cookie 管理</p>
+          <p class="auth">免密直接打开</p>
         </div>
-        <div class="act split"><span class="url">更新 10-30 19:20 | 端口 28081</span><a class="btn" href="http://120.220.73.186:28081" target="_blank" rel="noopener">打开</a></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28095" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28095</span></div>
       </article>
       <article class="card">
         <div class="left">
-          <div class="hd">
-            <h3>订单中枢</h3>
-            <span class="pill orange">仅内网</span>
-          </div>
-          <p class="desc">订单处理 | 商品管理 | 任务调度 | 发货记录</p>
-          <p class="meta">最近改动 .env</p>
+          <div class="hd"><h3>模型接口站 wb2api</h3><span class="pill green">运行中</span></div>
+          <p class="desc">账号池调度 · OpenAI 兼容网关 · 用量统计</p>
+          <p class="auth">控制台免密 · 接口密钥 <span class="pw" data-b="c2std2IyYXBpLTk5Yjk4MjY1NmJiNWJmZDkwMTY0YTVmM2Q2MmVhNTIwNDk0NGY1MWI=">••••••</span></p>
         </div>
-        <div class="act split"><span class="url">更新 11-02 14:29 | 端口 3000</span><span class="btn off">仅内网</span></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28098" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28098</span></div>
       </article>
       <article class="card">
         <div class="left">
-          <div class="hd">
-            <h3>闲鱼后台管理</h3>
-            <span class="pill green">运行中</span>
-          </div>
-          <p class="desc">自动回复配置 | 账号管理 | 规则设置</p>
-          <p class="meta">最近改动 .env</p>
+          <div class="hd"><h3>采集中心 MediaCrawler</h3><span class="pill green">运行中</span></div>
+          <p class="desc">多平台抓取 · 关键词采集 · 数据落库</p>
+          <p class="auth">免密直接打开</p>
         </div>
-        <div class="act split"><span class="url">更新 11-02 14:29 | 端口 28099</span><a class="btn" href="http://120.220.73.186:28099/dashboard" target="_blank" rel="noopener">打开</a></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28081" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28081</span></div>
       </article>
       <article class="card">
         <div class="left">
-          <div class="hd">
-            <h3>网络文件柜</h3>
-            <span class="pill green">运行中</span>
-          </div>
-          <p class="desc">文件浏览 | 在线下载 | 目录挂载 | 网盘聚合</p>
-          <p class="meta">最近改动 static/shelf/index.html</p>
+          <div class="hd"><h3>OpenList 网盘聚合</h3><span class="pill green">运行中</span></div>
+          <p class="desc">68 个挂载 · 百度/夸克/115/123 聚合</p>
+          <p class="auth">admin / <span class="pw" data-b="T3Blbkxpc3RAMjAyNg==">••••••</span></p>
         </div>
-        <div class="act split"><span class="url">更新 11-03 14:55 | 端口 28180</span><a class="btn" href="http://120.220.73.186:28180" target="_blank" rel="noopener">打开</a></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28180" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28180</span></div>
       </article>
       <article class="card">
         <div class="left">
-          <div class="hd">
-            <h3>免费模型网关</h3>
-            <span class="pill green">运行中</span>
-          </div>
-          <p class="desc">模型聚合 | 请求转发 | 签到保活 | 用量统计</p>
-          <p class="meta">最近改动 packages/standalone/channels/business.mjs</p>
+          <div class="hd"><h3>免费模型网关 OFM</h3><span class="pill green">运行中</span></div>
+          <p class="desc">模型聚合 · 请求转发 · 签到保活</p>
+          <p class="auth">免密直接打开</p>
         </div>
-        <div class="act split"><span class="url">更新 10-21 10:31 | 端口 18901</span><a class="btn" href="http://120.220.73.186:18901" target="_blank" rel="noopener">打开</a></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:18901" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:18901</span></div>
       </article>
       <article class="card">
         <div class="left">
-          <div class="hd">
-            <h3>自动下注器</h3>
-            <span class="pill green">运行中</span>
-          </div>
-          <p class="desc">定时下注 | 策略触发 | 状态轮询 | 不占独立端口</p>
-          <p class="meta">最近改动 shitou-bot.js</p>
+          <div class="hd"><h3>石头岛自动下注</h3><span class="pill green">运行中</span></div>
+          <p class="desc">定时下注 · 赔率统计 · 状态轮询</p>
+          <p class="auth">免密直接打开</p>
         </div>
-        <div class="act split"><span class="url">更新 11-02 17:50 | 端口 28098</span><a class="btn" href="http://120.220.73.186:28098/bot/" target="_blank" rel="noopener">打开</a></div>
-      </article></div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28098/bot/" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28098/bot/</span></div>
+      </article>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>自动化控制台</h3><span class="pill green">运行中</span></div>
+          <p class="desc">站点状态 · 仓库备份 · 定时任务</p>
+          <p class="auth">免密直接打开</p>
+        </div>
+        <div class="act"><a class="btn" href="http://120.220.73.186:28098/autopanel/?tab=servers" target="_blank" rel="noopener">打开</a><span class="url">http://120.220.73.186:28098/autopanel/?tab=servers</span></div>
+      </article>
       </section>
-      <section class="block" id="tasksblock">
-        <div class="srvline">自动化任务 · 全部跑在服务器上，不依赖你的电脑</div>
-        <div class="cards" id="taskcards">
-      <article class="card" data-id="code-sync">
-        <div class="hd"><h3>站点代码同步</h3><span class="pill green">成功</span><span class="pill gray">每 10 分钟</span></div>
-        <p class="desc">把 8 个站点的最新代码与数据库快照推回 GitCode</p>
-        <p class="meta">上次运行 <b>2026-11-03 14:50:09</b> · 耗时 <b>8 秒</b> · ID <b>code-sync</b></p>
-        <div class="row">
-          <button class="btn" onclick="runTask('code-sync')">立即运行</button>
-          <button class="btn ghost" onclick="tlog('code-sync')">查看日志</button>
+      <section class="block">
+        <div class="ghead">
+          <h2>服务器 B</h2>
+          <code>183.146.215.78</code>
+          <span class="spec">1核1G · 便宜云 CentOS 7</span>
+          <span class="cnt">4 个项目</span>
         </div>
-        <pre class="log" id="log-code-sync"></pre>
+        <div class="ssh"><b>SSH</b> root / <span class="pw" data-b="a3Z+cCo1S0RTcjF9">••••••</span> &nbsp;·&nbsp; 端口 <code>40267</code></div>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>宝塔面板</h3><span class="pill green">运行中</span></div>
+          <p class="desc">nginx 1.26.3 · MySQL 5.7 · PHP 7.4.33 · Node 16</p>
+          <p class="auth">账号 6kgpijub / 密码待补（用 bt 命令重置）</p>
+        </div>
+        <div class="act"><a class="btn" href="http://183.146.215.78:27976/5f6413e9" target="_blank" rel="noopener">打开</a><span class="url">http://183.146.215.78:27976/5f6413e9</span></div>
       </article>
-      <article class="card" data-id="dashboard">
-        <div class="hd"><h3>看板生成与推送</h3><span class="pill green">成功</span><span class="pill gray">每 10 分钟</span></div>
-        <p class="desc">重新生成本页并推送到 GitHub Pages</p>
-        <p class="meta">上次运行 <b>2026-11-03 14:50:03</b> · 耗时 <b>2 秒</b> · ID <b>dashboard</b></p>
-        <div class="row">
-          <button class="btn" onclick="runTask('dashboard')">立即运行</button>
-          <button class="btn ghost" onclick="tlog('dashboard')">查看日志</button>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>WordPress 站</h3><span class="pill green">运行中</span></div>
+          <p class="desc">WordPress 6.x 中文版 · 目录 /www/wwwroot/wordpress</p>
+          <p class="auth">admin / <span class="pw" data-b="V3BAMjAyNmFkbWlu">••••••</span></p>
         </div>
-        <pre class="log" id="log-dashboard"></pre>
-      </article></div>
+        <div class="act"><a class="btn" href="http://183.146.215.78:38162" target="_blank" rel="noopener">打开</a><span class="url">http://183.146.215.78:38162</span></div>
+      </article>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>WP 后台</h3><span class="pill green">运行中</span></div>
+          <p class="desc">写文章 · 装插件 · 换主题</p>
+          <p class="auth">admin / <span class="pw" data-b="V3BAMjAyNmFkbWlu">••••••</span></p>
+        </div>
+        <div class="act"><a class="btn" href="http://183.146.215.78:38162/wp-admin" target="_blank" rel="noopener">打开</a><span class="url">http://183.146.215.78:38162/wp-admin</span></div>
+      </article>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>MySQL 数据库</h3><span class="pill green">运行中</span></div>
+          <p class="desc">库 wpdb · 用户 wpuser · 仅本机 3306</p>
+          <p class="auth">root / 密码待补（见凭据库）</p>
+        </div>
+        <div class="act"><a class="btn" href="http://183.146.215.78:38162" target="_blank" rel="noopener">打开</a><span class="url">http://183.146.215.78:38162</span></div>
+      </article>
       </section>
+      <section class="block">
+        <div class="ghead">
+          <h2>服务器 C</h2>
+          <code>185.242.234.53</code>
+          <span class="spec">2核2G · 香港将军澳</span>
+          <span class="cnt">2 个项目</span>
+        </div>
+        <div class="ssh"><b>SSH</b> root / <span class="pw" data-b="c3AyaGpndUtEZkk0">••••••</span> &nbsp;·&nbsp; 端口 <code>5464</code> &nbsp;·&nbsp; 80/443 国内被封，只能走 8080</div>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>1zyk 资源站</h3><span class="pill green">运行中</span></div>
+          <p class="desc">WordPress 4.7.29 · Zibll 主题 · 30749 篇文章</p>
+          <p class="auth">admin / 密码待补（数据库 MD5）</p>
+        </div>
+        <div class="act"><a class="btn" href="http://185.242.234.53:8080" target="_blank" rel="noopener">打开</a><span class="url">http://185.242.234.53:8080</span></div>
+      </article>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>endns.cn 域名站</h3><span class="pill green">运行中</span></div>
+          <p class="desc">同一个站，已绑域名 endns.cn</p>
+          <p class="auth">同上</p>
+        </div>
+        <div class="act"><a class="btn" href="http://endns.cn:8080" target="_blank" rel="noopener">打开</a><span class="url">http://endns.cn:8080</span></div>
+      </article>
+      </section>
+      <section class="block">
+        <div class="ghead">
+          <h2>服务器 D</h2>
+          <code>hk.pk526.com</code>
+          <span class="spec">虚拟主机 · 100MB 配额 · PHP 7.4</span>
+          <span class="cnt">2 个项目</span>
+        </div>
+        <div class="ssh"><b>面板</b> qun894dy8f / <span class="pw" data-b="ampkOTgyMnRicA==">••••••</span> &nbsp;·&nbsp; 到期 2027-11-06</div>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>梦奈宝塔用户面板</h3><span class="pill green">运行中</span></div>
+          <p class="desc">域名绑定 · 文件管理 · 数据库 · 伪静态</p>
+          <p class="auth">qun894dy8f / <span class="pw" data-b="ampkOTgyMnRicA==">••••••</span></p>
+        </div>
+        <div class="act"><a class="btn" href="https://hk.pk526.com/user/index.php" target="_blank" rel="noopener">打开</a><span class="url">https://hk.pk526.com/user/index.php</span></div>
+      </article>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>JustNews WordPress</h3><span class="pill green">运行中</span></div>
+          <p class="desc">JustNews 6.16.7 · 占用 64.5MB / 100MB</p>
+          <p class="auth">admin / <span class="pw" data-b="V3BAcGs1MjYtMjAyNng=">••••••</span></p>
+        </div>
+        <div class="act"><a class="btn" href="http://e.new.meiti.cfd" target="_blank" rel="noopener">打开</a><span class="url">http://e.new.meiti.cfd</span></div>
+      </article>
+      </section>
+      <section class="block">
+        <div class="ghead">
+          <h2>服务器 E</h2>
+          <code>www.0168.cn</code>
+          <span class="spec">服务器购买后台</span>
+          <span class="cnt">1 个项目</span>
+        </div>
+        <div class="ssh"><b>会员</b> ID 13793 · 王新声 · 名下 1 台（ins-CDPoMPGkFjrU = 服务器 C）</div>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>0168.cn 控制台</h3><span class="pill green">运行中</span></div>
+          <p class="desc">开关机 · VNC · 重置密码 · 救援模式 · 快照 · 安全组</p>
+          <p class="auth">18682945372 / <span class="pw" data-b="d2FuZ3hzOTk5">••••••</span></p>
+        </div>
+        <div class="act"><a class="btn" href="https://www.0168.cn/account.htm" target="_blank" rel="noopener">打开</a><span class="url">https://www.0168.cn/account.htm</span></div>
+      </article>
+      </section>
+      <section class="block">
+        <div class="ghead">
+          <h2>域名与代码托管</h2>
+          <code>外部服务</code>
+          <span class="cnt">5 项</span>
+        </div>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>GitHub</h3><span class="pill green">运行中</span></div>
+          <p class="desc">代码托管 · 归档仓库 · Pages 看板</p>
+          <p class="auth">wangxsboss / 281820690@qq.com</p>
+        </div>
+        <div class="act"><a class="btn" href="https://github.com/wangxsboss" target="_blank" rel="noopener">打开</a><span class="url">https://github.com/wangxsboss</span></div>
+      </article>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>GitCode</h3><span class="pill green">运行中</span></div>
+          <p class="desc">国内镜像 · 笔记备份</p>
+          <p class="auth">chaoshen59 · 微信扫码登录</p>
+        </div>
+        <div class="act"><a class="btn" href="https://gitcode.com/chaoshen59" target="_blank" rel="noopener">打开</a><span class="url">https://gitcode.com/chaoshen59</span></div>
+      </article>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>Gitee</h3><span class="pill green">运行中</span></div>
+          <p class="desc">备用（单库 500MB 限制）</p>
+          <p class="auth">wangxsboss</p>
+        </div>
+        <div class="act"><a class="btn" href="https://gitee.com/wangxsboss" target="_blank" rel="noopener">打开</a><span class="url">https://gitee.com/wangxsboss</span></div>
+      </article>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>淘米族（域名）</h3><span class="pill green">运行中</span></div>
+          <p class="desc">endns.cn 管理 · 到期 2027-10-15</p>
+          <p class="auth">951966031@qq.com / <span class="pw" data-b="d2FuZ3hzOTk5">••••••</span></p>
+        </div>
+        <div class="act"><a class="btn" href="https://www.taomizu.com/" target="_blank" rel="noopener">打开</a><span class="url">https://www.taomizu.com/</span></div>
+      </article>
+      <article class="card">
+        <div class="left">
+          <div class="hd"><h3>西部数码（域名）</h3><span class="pill green">运行中</span></div>
+          <p class="desc">addmb.me（已过期 2026-01-04）</p>
+          <p class="auth">wangxins / <span class="pw" data-b="d2FuZ3hzOTk5">••••••</span></p>
+        </div>
+        <div class="act"><a class="btn" href="https://sy.west.cn/manager/domain/" target="_blank" rel="noopener">打开</a><span class="url">https://sy.west.cn/manager/domain/</span></div>
+      </article>
+      </section>
+
     </section>
-    <span id="gitcode"></span><section id="panel-gitcode" class="panel">
+
+    <section id="panel-gitcode" class="panel">
 
       <section class="block">
         <div class="ghead">
@@ -533,6 +699,59 @@ async function tlog(id){
 }
 loadTasks();
 setInterval(loadTasks, 60000);
+/* ===== 密码解锁 ===== */
+var LOCK_B64 = "d3hzIzIwMjY=";
+function b64d(s){ try { return decodeURIComponent(escape(atob(s))); } catch(e){ return atob(s); } }
+function unlock(){
+  var el = document.getElementById('lkIn');
+  var v = el.value.trim();
+  if(!v){ document.getElementById('lkMsg').textContent='请输入口令'; return; }
+  if(b64d(LOCK_B64) === v){
+    localStorage.setItem('sb_unlock','1');
+    el.value='';
+    revealAll();
+  } else {
+    document.getElementById('lkMsg').textContent='口令不对';
+  }
+}
+function revealAll(){
+  var tags = document.querySelectorAll('.pw');
+  for(var i=0;i<tags.length;i++){
+    var b = tags[i].getAttribute('data-b');
+    if(b) tags[i].textContent = b64d(b);
+    tags[i].classList.add('on');
+  }
+  var t = document.getElementById('lkTxt');
+  if(t){ t.textContent='密码已显示'; t.classList.add('ok'); }
+  var ic = document.querySelector('.lk-ico'); if(ic) ic.textContent='\uD83D\uDD13';
+  var m = document.getElementById('lkMsg'); if(m) m.textContent='';
+}
+function lockAll(){
+  localStorage.removeItem('sb_unlock');
+  var tags = document.querySelectorAll('.pw');
+  for(var i=0;i<tags.length;i++){
+    if(tags[i].getAttribute('data-b')) tags[i].textContent='••••••';
+    tags[i].classList.remove('on');
+  }
+  var t = document.getElementById('lkTxt');
+  if(t){ t.textContent='密码已隐藏'; t.classList.remove('ok'); }
+  var ic = document.querySelector('.lk-ico'); if(ic) ic.textContent='\uD83D\uDD12';
+}
+(function(){
+  if(localStorage.getItem('sb_unlock')==='1'){ setTimeout(revealAll, 60); }
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    if(t && t.classList && t.classList.contains('pw') && t.getAttribute('data-b')){
+      if(t.textContent.indexOf('•') > -1){
+        t.textContent = b64d(t.getAttribute('data-b')); t.classList.add('on');
+      } else {
+        t.textContent='••••••'; t.classList.remove('on');
+      }
+    }
+  });
+})();
+
+
 </script>
 </body>
 </html>
